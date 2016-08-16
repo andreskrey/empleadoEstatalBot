@@ -40,9 +40,9 @@ class lanacioncomarParser extends newspaperParser
         $this->dom->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', "UTF-8"));
         $xpath = new DOMXPath($this->dom);
 
-        $titulo = $xpath->query("//*[@itemprop='headline']")->item(0)->nodeValue;
-        $bajada = $xpath->query("//*[@itemprop='description']")->item(0)->nodeValue;
-        $cuerpo = $xpath->query("//*[@itemprop='articleBody']")->item(0)->nodeValue;
+        $titulo = $this->dom->saveHTML($xpath->query("//*[@itemprop='headline']")->item(0));
+        $bajada = $this->dom->saveHTML($xpath->query("//*[@itemprop='description']")->item(0));
+        $cuerpo = $this->dom->saveHTML($xpath->query("//*[@itemprop='articleBody']")->item(0));
 
         return [
             'titulo' => $titulo,
