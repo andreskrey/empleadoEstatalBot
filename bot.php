@@ -75,7 +75,7 @@ class empleadoEstatal
             $text = $this->client->get($i['data']['url'])->send();
 
             $parser = new newspaperParser(str_replace('.', '', $i['data']['domain']));
-            $things[$k]['parsed'] = $parser->parse(utf8_decode($text->getBody(true)));
+            $things[$k]['parsed'] = $parser->parse($text->getBody(true));
         }
 
         return $things;
@@ -96,22 +96,21 @@ class empleadoEstatal
 
     private function buildMarkdown($parsed)
     {
-        $converter = new HtmlConverter();
-
-        $html = $parsed['titulo'] . $parsed['bajada'] . $parsed['cuerpo'];
-        $markdown = $converter->convert($html, [
+        $converter = new HtmlConverter([
             'strip_tags' => true,
             'header_style' => 'atx'
         ]);
 
-        return $titulo . $bajada . $cuerpo;
+        $markdown = utf8_decode($converter->convert($parsed));
+
+        return $markdown;
     }
 }
 
-$ñoqui = new empleadoEstatal();
-$posts = $ñoqui->getNewPosts();
+$Ã±oqui = new empleadoEstatal();
+$posts = $Ã±oqui->getNewPosts();
 
 if ($posts) {
-    $posts = $ñoqui->getNewspaperText($posts);
-    $posts = $ñoqui->postComments($posts);
+    $posts = $Ã±oqui->getNewspaperText($posts);
+    $posts = $Ã±oqui->postComments($posts);
 }

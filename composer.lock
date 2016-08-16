@@ -4,59 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d8dada0fc65e0ee8348e4abadaa66023",
-    "content-hash": "c26ae43fcbee580e4c1d8ed006f1077e",
+    "hash": "87709bdd809e54b0a4b7eb4dced2fad5",
+    "content-hash": "ecfb8cae1ae4b1161fd6a28065928ba6",
     "packages": [
-        {
-            "name": "fluentdom/fluentdom",
-            "version": "5.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FluentDOM/FluentDOM.git",
-                "reference": "19c5a3c77c91871d2a2545949b5bde20889fcb45"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FluentDOM/FluentDOM/zipball/19c5a3c77c91871d2a2545949b5bde20889fcb45",
-                "reference": "19c5a3c77c91871d2a2545949b5bde20889fcb45",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "php": ">=5.4.0"
-            },
-            "suggest": {
-                "fluentdom/css-selector": "Allows to use css selectors."
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/FluentDOM.php"
-                ],
-                "psr-4": {
-                    "FluentDOM\\": "src/FluentDOM"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "FluentDOM Contributors",
-                    "homepage": "https://github.com/FluentDOM/FluentDOM/contributors"
-                }
-            ],
-            "description": "A fluent api for the php dom extension.",
-            "homepage": "http://fluentdom.org",
-            "keywords": [
-                "Xpath",
-                "dom",
-                "jquery",
-                "xml"
-            ],
-            "time": "2015-07-07 13:34:07"
-        },
         {
             "name": "guzzle/guzzle",
             "version": "v3.9.3",

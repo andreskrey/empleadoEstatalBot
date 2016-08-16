@@ -27,7 +27,7 @@ interface NewspaperInterface
 
 class lanacioncomarParser extends newspaperParser
 {
-    protected $dom;
+    public $dom;
 
     public function __construct()
     {
@@ -40,14 +40,19 @@ class lanacioncomarParser extends newspaperParser
         $this->dom->loadHTML($text);
         $xpath = new DOMXPath($this->dom);
 
-        $titulo = utf8_decode('<h1>' . $xpath->query("//*[@itemprop='headline']")->item(0)->nodeValue . '</h1>');
-        $bajada = utf8_decode('<h2>' . $xpath->query("//*[@itemprop='description']")->item(0)->nodeValue . '</h2>');
-        $cuerpo = utf8_decode($this->dom->saveHTML($xpath->query("//*[@itemprop='articleBody']")->item(0)));
+        $html = '<!DOCTYPE html><html><head><title></title></head><body>';
+        $html .= '<h1>' . $xpath->query("//*[@itemprop='headline']")->item(0)->nodeValue . '</h1>';
+        $html .= '<h2>' . $xpath->query("//*[@itemprop='description']")->item(0)->nodeValue . '</h2>';
 
-        return [
-            'titulo' => $titulo,
-            'bajada' => $bajada,
-            'cuerpo' => $cuerpo
-        ];
+        $cuerpo = $this->dom->getElementById('cuerpo');
+        foreach ($cuerpo->childNodes as $i) {
+            if ($i->tagName == 'section') break;
+            if ($i->nodeValue && $i->nodeValue != "0\r\n          ") {
+                $html .= $this->dom->saveHTML($i);
+            }
+        }
+        $html .= '</body></html>';
+
+        return $html;
     }
 }
