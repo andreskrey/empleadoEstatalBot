@@ -12,6 +12,7 @@ class empleadoEstatal
     ];
 
     private $client;
+    private $headers;
 
 
     public function __construct()
@@ -24,18 +25,31 @@ class empleadoEstatal
             'scopes' => empleadoEstatalConfig::$SCOPES,
         ]);
 
-        $accessToken = $reddit->getAccessToken('password', [
-            'username' => empleadoEstatalConfig::$USERNAME,
-            'password' => empleadoEstatalConfig::$PASSWORD,
-        ]);
+        $tokenExists = file_exists('tmp/tokens.reddit');
+
+        if (!$tokenExists) {
+            $accessToken = $reddit->getAccessToken('password', [
+                'username' => empleadoEstatalConfig::$USERNAME,
+                'password' => empleadoEstatalConfig::$PASSWORD,
+            ]);
+
+            $token = $accessToken->accessToken;
+            file_put_contents('tmp/tokens.reddit', $tokenExists);
+        } else {
+            $token = file_get_contents('tmp/tokens.reddit');
+        }
 
         $this->client = $reddit->getHttpClient();
+        $this->headers = $reddit->getHeaders($token);
     }
 
     public function getNewPosts()
     {
-        foreach ($this->subreddits as $subrredit) {
-            $test = $this->client->get('/r/' . $subrredit . '/new');
+        foreach ($this->subreddits as $subredit) {
+            $test = $this->client->get('https://oauth.reddit.com/r/' . $subredit . '/new/.json', $this->headers);
+            $result = $test->send()->json();
+
+            foreach()
         }
     }
 }
