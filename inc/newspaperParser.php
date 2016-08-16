@@ -32,6 +32,8 @@ class lanacioncomarParser extends newspaperParser
     public function __construct()
     {
         $this->dom = new DOMDocument();
+
+        // La mayoria de los html de lanacion no validan y sin la siguiente linea DOMDocument tira mil warnings
         libxml_use_internal_errors(true);
     }
 
@@ -56,6 +58,8 @@ class lanacioncomarParser extends newspaperParser
                 $html .= $this->dom->saveHTML($i);
             }
         }
+
+        $html .= empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;
