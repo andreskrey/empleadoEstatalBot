@@ -1,0 +1,5 @@
+{
+    "require": {
+        "rtheunissen/oauth2-reddit": "^1.2"
+    }
+}
