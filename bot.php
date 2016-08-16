@@ -101,7 +101,7 @@ class empleadoEstatal
             'header_style' => 'atx'
         ]);
 
-        $markdown = utf8_decode($converter->convert($parsed));
+        $markdown = $converter->convert($parsed);
 
         return $markdown;
     }
