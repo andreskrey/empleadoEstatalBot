@@ -1,6 +1,7 @@
 {
     "require": {
         "rtheunissen/oauth2-reddit": "^1.2",
-        "league/html-to-markdown": "^4.2"
+        "league/html-to-markdown": "^4.2",
+        "fluentdom/fluentdom": "^5.3"
     }
 }

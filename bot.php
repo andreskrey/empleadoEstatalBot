@@ -4,6 +4,7 @@ require_once('inc/newspaperParser.php');
 require 'vendor/autoload.php';
 
 use Rudolf\OAuth2\Client\Provider\Reddit;
+use League\HTMLToMarkdown\HtmlConverter;
 
 
 class empleadoEstatal
@@ -95,9 +96,13 @@ class empleadoEstatal
 
     private function buildMarkdown($parsed)
     {
-        $titulo = '#' . $parsed['titulo'] . PHP_EOL . PHP_EOL;
-        $bajada = '**' . $parsed['bajada'] . '**' . PHP_EOL . PHP_EOL;
-        $cuerpo = $parsed['cuerpo'] . PHP_EOL;
+        $converter = new HtmlConverter();
+
+        $html = $parsed['titulo'] . $parsed['bajada'] . $parsed['cuerpo'];
+        $markdown = $converter->convert($html, [
+            'strip_tags' => true,
+            'header_style' => 'atx'
+        ]);
 
         return $titulo . $bajada . $cuerpo;
     }
