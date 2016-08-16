@@ -32,7 +32,7 @@ class lanacioncomarParser extends newspaperParser
     public function __construct()
     {
         $this->dom = new DOMDocument();
-        //libxml_use_internal_errors(true);
+        libxml_use_internal_errors(true);
     }
 
     public function parseText($text)

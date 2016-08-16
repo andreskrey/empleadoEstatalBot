@@ -9,7 +9,7 @@ use Rudolf\OAuth2\Client\Provider\Reddit;
 class empleadoEstatal
 {
     private $subreddits = [
-        'argentina'
+        'empleadoEstatalBot'
     ];
 
     private $newspapers = [
@@ -79,6 +79,28 @@ class empleadoEstatal
 
         return $things;
     }
+
+    public function postComments($things)
+    {
+        foreach ($things as $i) {
+
+            $result = $this->client->post('https://oauth.reddit.com/api/comment', $this->headers, [
+                'thing_id' => 't3_' . $i['data']['id'],
+                'text' => $this->buildMarkdown($i['parsed'])
+            ])
+                ->send();
+        }
+
+    }
+
+    private function buildMarkdown($parsed)
+    {
+        $titulo = '#' . $parsed['titulo'] . PHP_EOL . PHP_EOL;
+        $bajada = '**' . $parsed['bajada'] . '**' . PHP_EOL . PHP_EOL;
+        $cuerpo = $parsed['cuerpo'] . PHP_EOL;
+
+        return $titulo . $bajada . $cuerpo;
+    }
 }
 
 $ñoqui = new empleadoEstatal();
@@ -86,4 +108,5 @@ $posts = $ñoqui->getNewPosts();
 
 if ($posts) {
     $posts = $ñoqui->getNewspaperText($posts);
+    $posts = $ñoqui->postComments($posts);
 }
