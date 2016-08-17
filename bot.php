@@ -10,7 +10,7 @@ use League\HTMLToMarkdown\HtmlConverter;
 class empleadoEstatal
 {
     private $subreddits = [
-        'empleadoEstatalBot'
+        'argentina'
     ];
 
     private $newspapers = [
