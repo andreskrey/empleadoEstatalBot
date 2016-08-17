@@ -85,8 +85,9 @@ class clarincomParser extends newspaperParser
         $html .= '<h1>' . $this->dom->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
         $html .= '<h2>' . $xpath->query("//*[contains(@class, 'int-nota-title')]")->item(0)->childNodes->item(6)->nodeValue . '</h2>';
 
-        foreach ($xpath->query('//*[@class="nota"]') as $i) {
-            if ($i->nodeValue) {
+        foreach ($xpath->query('//*[@class="nota"]')->item(0)->childNodes as $i) {
+            // Skipear los links de "Mira tambien".
+            if (mb_substr($i->nodeValue, 0, 12) != 'Mirá también') {
                 $html .= $this->dom->saveHTML($i);
             }
         }
