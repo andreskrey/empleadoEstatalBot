@@ -79,7 +79,7 @@ class empleadoEstatal
                 $result = $this->client
                     ->get('https://oauth.reddit.com/r/' . $subredit . '/new/.json', $this->headers, ['query' => [
                         'before' => $this->lastestPost,
-                        'limit' => 3
+                        'limit' => 1
                     ]])
                     ->send()
                     ->json();
