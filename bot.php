@@ -143,3 +143,5 @@ if ($posts) {
     $posts = $ñoqui->getNewspaperText($posts);
     $posts = $ñoqui->postComments($posts);
 }
+
+echo 'Done. ' . count($posts) . ' posts.';
