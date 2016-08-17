@@ -83,6 +83,8 @@ class clarincomParser extends newspaperParser
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
         $html .= '<h1>' . $this->dom->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
+
+        // El nodo 6 tiene la bajada. Esta linea es para cagadas pero bue. Eventualmente se va a romper
         $html .= '<h2>' . $xpath->query("//*[contains(@class, 'int-nota-title')]")->item(0)->childNodes->item(6)->nodeValue . '</h2>';
 
         foreach ($xpath->query('//*[@class="nota"]')->item(0)->childNodes as $i) {
