@@ -1,5 +1,9 @@
 <?php
-require_once('config.php');
+if(getenv('CURRENT_ENV') == 'HEROKU'){
+    require_once('config.heroku.php');
+}else {
+    require_once('config.php');
+}
 require_once('inc/newspaperParser.php');
 require 'vendor/autoload.php';
 
