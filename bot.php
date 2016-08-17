@@ -153,4 +153,5 @@ if ($posts) {
     $posts = $ñoqui->postComments($posts);
 }
 
-echo 'Done. ' . count($posts) . ' posts.';
+echo 'Done. ' . count($posts) . ' posts.' . PHP_EOL;
+if (count($posts)) print_r($posts);
