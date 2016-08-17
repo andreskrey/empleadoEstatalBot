@@ -1,12 +1,14 @@
 <?php
+const APP_PATH = __DIR__ . DIRECTORY_SEPARATOR;
+
 if (getenv('CURRENT_ENV') == 'HEROKU') {
-    require_once('config.heroku.php');
+    require_once(APP_PATH . 'config.heroku.php');
     new empleadoEstatalConfig();
 } else {
-    require_once('config.php');
+    require_once(APP_PATH . 'config.php');
 }
-require_once('inc/newspaperParser.php');
-require 'vendor/autoload.php';
+require_once(APP_PATH . 'inc/newspaperParser.php');
+require APP_PATH . 'vendor/autoload.php';
 
 use Rudolf\OAuth2\Client\Provider\Reddit;
 use League\HTMLToMarkdown\HtmlConverter;
@@ -46,10 +48,10 @@ class empleadoEstatal
             'scopes' => empleadoEstatalConfig::$SCOPES
         ]);
 
-        $tokenExists = file_exists('tmp/tokens.reddit');
-        if ($tokenExists && filemtime('tmp/tokens.reddit') + (60 * 50) < time()) {
+        $tokenExists = file_exists(APP_PATH . 'tmp/tokens.reddit');
+        if ($tokenExists && filemtime(APP_PATH . 'tmp/tokens.reddit') + (60 * 50) < time()) {
             $tokenExists = false;
-            unlink('tmp/tokens.reddit');
+            unlink(APP_PATH . 'tmp/tokens.reddit');
         }
 
         if (!$tokenExists) {
@@ -59,15 +61,15 @@ class empleadoEstatal
             ]);
 
             $token = $accessToken->accessToken;
-            file_put_contents('tmp/tokens.reddit', $token);
+            file_put_contents(APP_PATH . 'tmp/tokens.reddit', $token);
         } else {
-            $token = file_get_contents('tmp/tokens.reddit');
+            $token = file_get_contents(APP_PATH . 'tmp/tokens.reddit');
         }
 
         $this->client = $reddit->getHttpClient();
         $this->headers = $reddit->getHeaders($token);
 
-        if (file_exists('tmp/lastest.post')) $this->lastestPost = file_get_contents('tmp/lastest.post');
+        if (file_exists(APP_PATH . 'tmp/lastest.post')) $this->lastestPost = file_get_contents(APP_PATH . 'tmp/lastest.post');
     }
 
     public function getNewPosts()
@@ -96,7 +98,7 @@ class empleadoEstatal
                 }
             }
 
-            if (isset($i) && !$this->debug) file_put_contents('tmp/lastest.post', $firstPost);
+            if (isset($i) && !$this->debug) file_put_contents(APP_PATH . 'tmp/lastest.post', $firstPost);
 
         }
 
