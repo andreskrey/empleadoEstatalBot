@@ -151,3 +151,4 @@ if ($posts) {
 }
 
 echo 'Done. ' . count($posts) . ' posts.';
+echo 'Current dir ' . getcwd();
