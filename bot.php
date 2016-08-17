@@ -20,6 +20,7 @@ class empleadoEstatal
         'infobae.com',
         'cronista.com',
         'telam.com.ar',
+        'buenosairesherald.com',
     ];
 
     private $lastestPost = null;

@@ -227,3 +227,35 @@ class telamcomarParser extends newspaperParser
         return $html;
     }
 }
+
+class buenosairesheraldcomParser extends newspaperParser
+{
+    public $dom;
+
+    public function __construct()
+    {
+        $this->dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+    }
+
+    public function parseText($text)
+    {
+        $this->dom->loadHTML($text);
+        $xpath = new DOMXPath($this->dom);
+
+        $html = '<!DOCTYPE html><html><head><title></title></head><body>';
+        $html .= '<h1>' . $this->dom->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
+
+        foreach ($this->dom->getElementById('nota_despliegue')->childNodes as $pos => $i) {
+            if ($pos < 8) continue;
+            if (trim($i->nodeValue)) {
+                $html .= '<p>' . $this->dom->saveHTML($i) . '<p>';
+            }
+        }
+
+        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= '</body></html>';
+
+        return $html;
+    }
+}
