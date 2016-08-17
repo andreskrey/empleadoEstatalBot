@@ -18,7 +18,7 @@ Por ahora la lista de diarios que parsea correctamente son:
 
 ## Como bajo e instalo el proyecto?
 
-Create un fork o clonalo, o bajolo como zip. En la consola pone composer install. Agarra el config.sample.php, renombralo a config.php y pone tus credenciales.
+Create un fork y clonalo, o bajalo como zip. En la consola pone composer install. Agarra el config.sample.php, renombralo a config.php y pone tus credenciales.
 
 ## Como puedo agregar un diario nuevo?
 
