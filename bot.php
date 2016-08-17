@@ -90,8 +90,8 @@ class empleadoEstatal
 
             $firstPost = null;
             foreach ($result['data']['children'] as $i) {
+                if (!$firstPost) $firstPost = 't3_' . $i['data']['id'];
                 if (in_array($i['data']['domain'], $this->newspapers)) {
-                    if (!$firstPost) $firstPost = 't3_' . $i['data']['id'];
                     $things[] = $i;
                 }
             }
