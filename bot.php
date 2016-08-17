@@ -18,6 +18,7 @@ class empleadoEstatal
         'clarin.com',
         'infobae.com',
         'cronista.com',
+        'telam.com.ar',
     ];
 
     private $lastestPost = null;

@@ -160,3 +160,36 @@ class cronistacomParser extends newspaperParser
         return $html;
     }
 }
+
+class telamcomarParser extends newspaperParser
+{
+    public $dom;
+
+    public function __construct()
+    {
+        $this->dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+    }
+
+    public function parseText($text)
+    {
+        $this->dom->loadHTML($text);
+        $xpath = new DOMXPath($this->dom);
+
+        $html = '<!DOCTYPE html><html><head><title></title></head><body>';
+        $html .= '<h1>' . $this->dom->getElementsByTagName('h2')->item(0)->nodeValue . '</h1>';
+        $html .= '<h2>' . $xpath->query("//*[contains(@class, 'copete')]")->item(0)->nodeValue . '</h2>';
+
+
+        foreach ($xpath->query("//*[contains(@class, 'editable-content')]")->item(0)->childNodes as $i) {
+            if (trim($i->nodeValue)) {
+                $html .= '<p>' . $this->dom->saveHTML($i) . '<p>';
+            }
+        }
+
+        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= '</body></html>';
+
+        return $html;
+    }
+}
