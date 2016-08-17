@@ -16,7 +16,8 @@ class empleadoEstatal
     private $newspapers = [
         'lanacion.com.ar',
         'clarin.com',
-        'infobae.com'
+        'infobae.com',
+        'cronista.com',
     ];
 
     private $lastestPost = null;
