@@ -15,6 +15,7 @@ Por ahora la lista de diarios que parsea correctamente son:
 - Cronista
 - Telam
 - Buenos Aires Herald
+- Pagina 12
 
 ## Como bajo e instalo el proyecto?
 

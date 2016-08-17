@@ -241,7 +241,6 @@ class buenosairesheraldcomParser extends newspaperParser
     public function parseText($text)
     {
         $this->dom->loadHTML($text);
-        $xpath = new DOMXPath($this->dom);
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
         $html .= '<h1>' . $this->dom->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
@@ -252,6 +251,34 @@ class buenosairesheraldcomParser extends newspaperParser
                 $html .= '<p>' . $this->dom->saveHTML($i) . '<p>';
             }
         }
+
+        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= '</body></html>';
+
+        return $html;
+    }
+}
+
+class pagina12comarParser extends newspaperParser
+{
+    public $dom;
+
+    public function __construct()
+    {
+        $this->dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+    }
+
+    public function parseText($text)
+    {
+        $this->dom->loadHTML($text);
+        $xpath = new DOMXPath($this->dom);
+
+        $html = '<!DOCTYPE html><html><head><title></title></head><body>';
+        $html .= '<h1>' . $this->dom->getElementsByTagName('h2')->item(0)->nodeValue . '</h1>';
+        $html .= '<h2>' . $xpath->query("//*[contains(@class, 'intro')]")->item(0)->nodeValue . '</h2>';
+
+        $html .= $this->dom->saveHTML($this->dom->getElementById('cuerpo'));
 
         $html .= empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';

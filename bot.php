@@ -28,6 +28,7 @@ class empleadoEstatal
         'cronista.com',
         'telam.com.ar',
         'buenosairesherald.com',
+        'pagina12.com.ar',
     ];
 
     private $lastestPost = null;
