@@ -1,8 +1,8 @@
 <?php
-if(getenv('CURRENT_ENV') == 'HEROKU'){
+if (getenv('CURRENT_ENV') == 'HEROKU') {
     require_once('config.heroku.php');
     new empleadoEstatalConfig();
-}else {
+} else {
     require_once('config.php');
 }
 require_once('inc/newspaperParser.php');
@@ -78,7 +78,8 @@ class empleadoEstatal
             try {
                 $result = $this->client
                     ->get('https://oauth.reddit.com/r/' . $subredit . '/new/.json', $this->headers, ['query' => [
-                        'before' => $this->lastestPost
+                        'before' => $this->lastestPost,
+                        'limit' => 3
                     ]])
                     ->send()
                     ->json();
