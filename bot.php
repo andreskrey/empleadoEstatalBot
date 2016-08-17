@@ -14,11 +14,16 @@ class empleadoEstatal
     ];
 
     private $newspapers = [
-        'lanacion.com.ar'
+        'lanacion.com.ar',
+        'clarin.com'
     ];
+
+    private $lastestPost = null;
 
     private $client;
     private $headers;
+
+    private $debug = true;
 
 
     public function __construct()
@@ -28,15 +33,19 @@ class empleadoEstatal
             'clientSecret' => empleadoEstatalConfig::$SECRET_KEY,
             'redirectUri' => empleadoEstatalConfig::$REDIRECT_URI,
             'userAgent' => 'PHP:empleadoEstatalBot:0.0.1, (by /u/subtepass)',
-            'scopes' => empleadoEstatalConfig::$SCOPES,
+            'scopes' => empleadoEstatalConfig::$SCOPES
         ]);
 
         $tokenExists = file_exists('tmp/tokens.reddit');
+        if ($tokenExists && filemtime('tmp/tokens.reddit') + (60 * 50) < time()) {
+            $tokenExists = false;
+            unlink('tmp/tokens.reddit');
+        }
 
         if (!$tokenExists) {
             $accessToken = $reddit->getAccessToken('password', [
                 'username' => empleadoEstatalConfig::$USERNAME,
-                'password' => empleadoEstatalConfig::$PASSWORD,
+                'password' => empleadoEstatalConfig::$PASSWORD
             ]);
 
             $token = $accessToken->accessToken;
@@ -47,6 +56,8 @@ class empleadoEstatal
 
         $this->client = $reddit->getHttpClient();
         $this->headers = $reddit->getHeaders($token);
+
+        if (file_exists('tmp/lastest.post')) $this->lastestPost = file_get_contents('tmp/lastest.post');
     }
 
     public function getNewPosts()
@@ -54,16 +65,28 @@ class empleadoEstatal
         $things = [];
 
         foreach ($this->subreddits as $subredit) {
-            $result = $this->client
-                ->get('https://oauth.reddit.com/r/' . $subredit . '/new/.json', $this->headers)
-                ->send()
-                ->json();
+            try {
+                $result = $this->client
+                    ->get('https://oauth.reddit.com/r/' . $subredit . '/new/.json', $this->headers, ['query' => [
+                        'before' => $this->lastestPost
+                    ]])
+                    ->send()
+                    ->json();
+            } catch (Exception $e) {
+                unlink('tmp/tokens.reddit');
+                die();
+            }
 
+            $firstPost = null;
             foreach ($result['data']['children'] as $i) {
                 if (in_array($i['data']['domain'], $this->newspapers)) {
+                    if (!$firstPost) $firstPost = 't3_' . $i['data']['id'];
                     $things[] = $i;
                 }
             }
+
+            if (isset($i) && !$this->debug) file_put_contents('tmp/lastest.post', $firstPost);
+
         }
 
         return $things;
@@ -92,6 +115,7 @@ class empleadoEstatal
                 ->send();
         }
 
+        return $result;
     }
 
     private function buildMarkdown($parsed)

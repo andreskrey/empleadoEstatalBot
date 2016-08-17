@@ -65,3 +65,35 @@ class lanacioncomarParser extends newspaperParser
         return $html;
     }
 }
+
+class clarincomParser extends newspaperParser
+{
+    public $dom;
+
+    public function __construct()
+    {
+        $this->dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+    }
+
+    public function parseText($text)
+    {
+        $this->dom->loadHTML($text);
+        $xpath = new DOMXPath($this->dom);
+
+        $html = '<!DOCTYPE html><html><head><title></title></head><body>';
+        $html .= '<h1>' . $this->dom->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
+        $html .= '<h2>' . $xpath->query("//*[contains(@class, 'int-nota-title')]")->item(0)->childNodes->item(6)->nodeValue . '</h2>';
+
+        foreach ($xpath->query('//*[@class="nota"]') as $i) {
+            if ($i->nodeValue) {
+                $html .= $this->dom->saveHTML($i);
+            }
+        }
+
+        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= '</body></html>';
+
+        return $html;
+    }
+}
