@@ -121,15 +121,12 @@ class empleadoEstatal
     public function postComments($things)
     {
         foreach ($things as $i) {
-
-            $result = $this->client->post('https://oauth.reddit.com/api/comment', $this->headers, [
+            $this->client->post('https://oauth.reddit.com/api/comment', $this->headers, [
                 'thing_id' => 't3_' . $i['data']['id'],
                 'text' => $this->buildMarkdown($i['parsed'])
             ])
                 ->send();
         }
-
-        return $result;
     }
 
     private function buildMarkdown($parsed)
@@ -150,7 +147,7 @@ $posts = $ñoqui->getNewPosts();
 
 if ($posts) {
     $posts = $ñoqui->getNewspaperText($posts);
-    $posts = $ñoqui->postComments($posts);
+    $ñoqui->postComments($posts);
 }
 
 echo 'Done. ' . count($posts) . ' posts.' . PHP_EOL;
