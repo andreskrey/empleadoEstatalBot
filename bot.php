@@ -16,6 +16,7 @@ class empleadoEstatal
     private $newspapers = [
         'lanacion.com.ar',
         'clarin.com',
+        'ieco.clarin.com',
         'infobae.com',
         'cronista.com',
         'telam.com.ar',
