@@ -100,3 +100,35 @@ class clarincomParser extends newspaperParser
         return $html;
     }
 }
+
+class infobaecomParser extends newspaperParser
+{
+    public $dom;
+
+    public function __construct()
+    {
+        $this->dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+    }
+
+    public function parseText($text)
+    {
+        $this->dom->loadHTML($text);
+        $xpath = new DOMXPath($this->dom);
+
+        $html = '<!DOCTYPE html><html><head><title></title></head><body>';
+        $html .= '<h1>' . $this->dom->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
+        $html .= '<h2>' . $xpath->query("//*[contains(@class, 'subheadline')]")->item(0)->nodeValue . '</h2>';
+
+        foreach ($this->dom->getElementById('article-content')->childNodes as $i) {
+            if (trim($i->nodeValue)) {
+                $html .= $this->dom->saveHTML($i);
+            }
+        }
+
+        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= '</body></html>';
+
+        return $html;
+    }
+}
