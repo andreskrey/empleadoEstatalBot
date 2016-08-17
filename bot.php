@@ -1,6 +1,7 @@
 <?php
 if(getenv('CURRENT_ENV') == 'HEROKU'){
     require_once('config.heroku.php');
+    new empleadoEstatalConfig();
 }else {
     require_once('config.php');
 }
