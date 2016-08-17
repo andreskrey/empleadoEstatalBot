@@ -15,7 +15,7 @@ use League\HTMLToMarkdown\HtmlConverter;
 class empleadoEstatal
 {
     private $subreddits = [
-        'empleadoEstatalBot'
+        'argentina'
     ];
 
     private $newspapers = [
@@ -151,4 +151,3 @@ if ($posts) {
 }
 
 echo 'Done. ' . count($posts) . ' posts.';
-echo 'Current dir ' . getcwd();
