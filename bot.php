@@ -29,6 +29,7 @@ class empleadoEstatal
         'telam.com.ar',
         'buenosairesherald.com',
         'pagina12.com.ar',
+        'minutouno.com',
     ];
 
     private $lastestPost = null;
