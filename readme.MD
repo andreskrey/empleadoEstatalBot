@@ -16,6 +16,7 @@ Por ahora la lista de diarios que parsea correctamente son:
 - Telam
 - Buenos Aires Herald
 - Pagina 12
+- Minuto Uno
 
 ## Como bajo e instalo el proyecto?
 
