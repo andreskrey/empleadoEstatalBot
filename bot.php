@@ -133,7 +133,8 @@ class empleadoEstatal
     {
         $converter = new HtmlConverter([
             'strip_tags' => true,
-            'header_style' => 'atx'
+            'header_style' => 'atx',
+            'remove_nodes' => 'img'
         ]);
 
         $markdown = $converter->convert($parsed);
@@ -151,4 +152,3 @@ if ($posts) {
 }
 
 echo 'Done. ' . count($posts) . ' posts.' . PHP_EOL;
-if (count($posts)) print_r($posts);

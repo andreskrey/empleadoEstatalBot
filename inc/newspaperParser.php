@@ -50,8 +50,11 @@ class lanacioncomarParser extends newspaperParser
         foreach ($cuerpo->childNodes as $i) {
             // section define la parte de tags de la nota, que significa que el texto del cuerpo se acabo
             if ($i->tagName == 'section') break;
-            // No interesan los divs, por lo general estan vacios o incluyen la parte de "del editor, que significa"
-            if ($i->tagName == 'div') continue;
+            /*
+             * No interesan los divs, por lo general estan vacios o incluyen la parte de "del editor, que significa"
+             * Tampoco los figure, que son fotos con bajada.
+             */
+            if ($i->tagName == 'div' || $i->tagName == 'figure' || $i->tagName == 'aside') continue;
 
             // Al principio de las notas aparece un 0 con rn por alguna razon, eso se skipea
             if ($i->nodeValue && $i->nodeValue != "0\r\n          ") {
