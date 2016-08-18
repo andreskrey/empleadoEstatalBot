@@ -53,8 +53,9 @@ class lanacioncomarParser extends newspaperParser
             /*
              * No interesan los divs, por lo general estan vacios o incluyen la parte de "del editor, que significa"
              * Tampoco los figure, que son fotos con bajada.
+             * El strpos de breadcrum es para no sacar los links que aparecen abajo como breadcrum
              */
-            if ($i->tagName == 'div' || $i->tagName == 'figure' || $i->tagName == 'aside') continue;
+            if ($i->tagName == 'div' || $i->tagName == 'figure' || $i->tagName == 'aside'|| (isset($i->attributes->item(2)->value) && strpos($i->attributes->item(2)->value, 'breadcrum') !== false)) continue;
 
             // Al principio de las notas aparece un 0 con rn por alguna razon, eso se skipea
             if ($i->nodeValue && $i->nodeValue != "0\r\n          ") {
