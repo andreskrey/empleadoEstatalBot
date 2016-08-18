@@ -32,7 +32,7 @@ class empleadoEstatal
         'minutouno.com',
     ];
 
-    private $lastestPost = null;
+    private $previousPosts = [];
 
     private $client;
     private $headers;
@@ -71,36 +71,41 @@ class empleadoEstatal
         $this->client = $reddit->getHttpClient();
         $this->headers = $reddit->getHeaders($token);
 
-        if (file_exists(APP_PATH . 'tmp/lastest.post')) $this->lastestPost = file_get_contents(APP_PATH . 'tmp/lastest.post');
+        if (file_exists(APP_PATH . 'tmp/previousPosts.json')) $this->previousPosts = json_decode(file_get_contents(APP_PATH . 'tmp/previousPosts.json'), true);
     }
 
     public function getNewPosts()
     {
-        $things = [];
+        $things = $posts = [];
 
         foreach ($this->subreddits as $subredit) {
             try {
                 $result = $this->client
                     ->get('https://oauth.reddit.com/r/' . $subredit . '/new/.json', $this->headers, ['query' => [
-                        'before' => $this->lastestPost,
-                        'limit' => 2
+                        'limit' => 5
                     ]])
                     ->send()
                     ->json();
             } catch (Exception $e) {
-                unlink('tmp/tokens.reddit');
-                die();
+                unlink(APP_PATH . 'tmp/tokens.reddit');
+                die('Failed to get reddit data');
             }
 
-            $firstPost = null;
             foreach ($result['data']['children'] as $i) {
-                if (!$firstPost) $firstPost = 't3_' . $i['data']['id'];
-                if (in_array($i['data']['domain'], $this->newspapers)) {
+                $posts[] = $i['data']['id'];
+
+                /*
+                 * Chequear dos cosas
+                 * 1. Que el domain del thing este dentro de la lista de diarios parsebles
+                 * 2. Que el id no coincida con los ids obtenidos en la ejecucion anterior
+                 * (para evitar postear dos veces en el mismo post)
+                 */
+                if (in_array($i['data']['domain'], $this->newspapers) && !in_array($i['data']['id'], $this->previousPosts)) {
                     $things[] = $i;
                 }
             }
 
-            if (isset($i) && !$this->debug) file_put_contents(APP_PATH . 'tmp/lastest.post', $firstPost);
+            if ($posts && !$this->debug) file_put_contents(APP_PATH . 'tmp/previousPosts.json', json_encode($posts));
 
         }
 
