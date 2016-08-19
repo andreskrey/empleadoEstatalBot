@@ -17,6 +17,7 @@ Por ahora la lista de diarios que parsea correctamente son:
 - Buenos Aires Herald
 - Pagina 12
 - Minuto Uno
+- Autoblog
 
 ## Como bajo e instalo el proyecto?
 
