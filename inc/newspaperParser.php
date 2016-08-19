@@ -55,7 +55,7 @@ class lanacioncomarParser extends newspaperParser
              * Tampoco los figure, que son fotos con bajada.
              * El strpos de breadcrum es para no sacar los links que aparecen abajo como breadcrum
              */
-            if ($i->tagName == 'div' || $i->tagName == 'figure' || $i->tagName == 'aside'|| (isset($i->attributes->item(2)->value) && strpos($i->attributes->item(2)->value, 'breadcrum') !== false)) continue;
+            if ($i->tagName == 'div' || $i->tagName == 'figure' || $i->tagName == 'aside' || (isset($i->attributes->item(2)->value) && strpos($i->attributes->item(2)->value, 'breadcrum') !== false)) continue;
 
             // Al principio de las notas aparece un 0 con rn por alguna razon, eso se skipea
             if ($i->nodeValue && $i->nodeValue != "0\r\n          ") {
@@ -311,6 +311,38 @@ class minutounocomParser extends newspaperParser
         $html .= '<h2>' . $xpath->query("//*[contains(@class, 'main-quote')]")->item(0)->nodeValue . '</h2>';
 
         $html .= $this->dom->saveHTML($xpath->query("//*[contains(@class, 'article-content')]")->item(0));
+
+        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= '</body></html>';
+
+        return $html;
+    }
+}
+
+class autoblogcomarParser extends newspaperParser
+{
+    public $dom;
+
+    public function __construct()
+    {
+        $this->dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+    }
+
+    public function parseText($text)
+    {
+        $this->dom->loadHTML($text);
+        $xpath = new DOMXPath($this->dom);
+
+        $html = '<!DOCTYPE html><html><head><title></title></head><body>';
+        $html .= '<h1>' . $this->dom->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
+
+        foreach ($xpath->query("//*[contains(@class, 'entry-inner')]")->item(0)->childNodes as $i) {
+            if ($i->nodeName == 'div') continue;
+            if (trim($i->nodeValue)) {
+                $html .= $this->dom->saveHTML($i);
+            }
+        }
 
         $html .= empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';

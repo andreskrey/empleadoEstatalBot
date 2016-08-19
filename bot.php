@@ -30,6 +30,7 @@ class empleadoEstatal
         'buenosairesherald.com',
         'pagina12.com.ar',
         'minutouno.com',
+        'autoblog.com.ar',
     ];
 
     private $previousPosts = [];
