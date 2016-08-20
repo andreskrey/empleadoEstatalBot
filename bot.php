@@ -31,6 +31,7 @@ class empleadoEstatal
         'pagina12.com.ar',
         'minutouno.com',
         'autoblog.com.ar',
+        'perfil.com',
     ];
 
     private $previousPosts = [];

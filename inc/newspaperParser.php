@@ -354,3 +354,35 @@ class autoblogcomarParser extends newspaperParser
         return $html;
     }
 }
+
+class perfilcomParser extends newspaperParser
+{
+    public $dom;
+
+    public function __construct()
+    {
+        $this->dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+    }
+
+    public function parseText($text)
+    {
+        $this->dom->loadHTML($text);
+        $xpath = new DOMXPath($this->dom);
+
+        $html = '<!DOCTYPE html><html><head><title></title></head><body>';
+        $html .= '<h1>' . $xpath->query("//*[contains(@class, 'articulob-title')]")->item(0)->nodeValue . '</h1>';
+        $html .= '<h2>' . $xpath->query("//*[contains(@class, 'articulob-subtitle')]")->item(0)->nodeValue . '</h2>';
+
+        foreach ($xpath->query("//*[contains(@class, 'textbody')]")->item(0)->childNodes as $i) {
+            if (trim($i->nodeValue)) {
+                $html .= $this->dom->saveHTML($i);
+            }
+        }
+
+        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= '</body></html>';
+
+        return $html;
+    }
+}
