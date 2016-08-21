@@ -40,7 +40,7 @@ class empleadoEstatal
 
     private $client;
     private $headers;
-    private $log;
+    public $log;
 
     private $debug = false;
 
@@ -170,9 +170,9 @@ $posts = $ñoqui->getNewPosts();
 if ($posts) {
     $posts = $ñoqui->getNewspaperText($posts);
     $ñoqui->postComments($posts);
-    $this->log->addInfo('Done posting comments.');
+    $ñoqui->log->addInfo('Done posting comments.');
 } else {
-    $this->log->addInfo('No new posts.');
+    $ñoqui->log->addInfo('No new posts.');
 }
 
 echo 'Done. ' . count($posts) . ' posts.' . PHP_EOL;
