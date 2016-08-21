@@ -12,6 +12,8 @@ require APP_PATH . 'vendor/autoload.php';
 
 use Rudolf\OAuth2\Client\Provider\Reddit;
 use League\HTMLToMarkdown\HtmlConverter;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 
 class empleadoEstatal
@@ -38,6 +40,7 @@ class empleadoEstatal
 
     private $client;
     private $headers;
+    private $log;
 
     private $debug = false;
 
@@ -74,11 +77,17 @@ class empleadoEstatal
         $this->headers = $reddit->getHeaders($token);
 
         if (file_exists(APP_PATH . 'tmp/previousPosts.json')) $this->previousPosts = json_decode(file_get_contents(APP_PATH . 'tmp/previousPosts.json'), true);
+
+        $this->log = new Logger('chePibe');
+        $this->log->pushHandler(new StreamHandler(APP_PATH . '/tmp/log.log', Logger::INFO));
+
+        $this->log->addInfo('Previous posts at start:', $this->previousPosts);
+
     }
 
     public function getNewPosts()
     {
-        $things = $posts = [];
+        $things = $posts = $selectedPosts = [];
 
         foreach ($this->subreddits as $subredit) {
             try {
@@ -90,6 +99,7 @@ class empleadoEstatal
                     ->json();
             } catch (Exception $e) {
                 unlink(APP_PATH . 'tmp/tokens.reddit');
+                $this->log->addError('Failed to get subreddit /new posts.');
                 die('Failed to get reddit data');
             }
 
@@ -104,6 +114,7 @@ class empleadoEstatal
                  */
                 if (in_array($i['data']['domain'], $this->newspapers) && !in_array($i['data']['id'], $this->previousPosts)) {
                     $things[] = $i;
+                    $selectedPosts[] = $i['data']['id'];
                 }
             }
 
@@ -111,6 +122,8 @@ class empleadoEstatal
 
         }
 
+        $this->log->addInfo('New posts after getting /new data:', $posts);
+        $this->log->addInfo('Selected posts to comment:', $selectedPosts);
         return $things;
     }
 
@@ -157,6 +170,9 @@ $posts = $ñoqui->getNewPosts();
 if ($posts) {
     $posts = $ñoqui->getNewspaperText($posts);
     $ñoqui->postComments($posts);
+    $this->log->addInfo('Done posting comments.');
+} else {
+    $this->log->addInfo('No new posts.');
 }
 
 echo 'Done. ' . count($posts) . ' posts.' . PHP_EOL;

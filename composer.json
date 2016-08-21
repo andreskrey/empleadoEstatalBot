@@ -2,6 +2,7 @@
     "require": {
         "rtheunissen/oauth2-reddit": "^1.2",
         "league/html-to-markdown": "^4.2",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "monolog/monolog": "^1.21"
     }
 }
