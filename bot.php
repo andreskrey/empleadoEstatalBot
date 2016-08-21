@@ -76,12 +76,15 @@ class empleadoEstatal
         $this->client = $reddit->getHttpClient();
         $this->headers = $reddit->getHeaders($token);
 
-        if (file_exists(APP_PATH . 'tmp/previousPosts.json')) $this->previousPosts = json_decode(file_get_contents(APP_PATH . 'tmp/previousPosts.json'), true);
+        if (file_exists(APP_PATH . 'tmp/previousPosts.json')) {
+            $this->previousPosts = json_decode(file_get_contents(APP_PATH . 'tmp/previousPosts.json'), true);
+            $this->log->addInfo('previousPosts.json loaded:', $this->previousPosts);
+        } else {
+            $this->log->addInfo('No previousPosts.json file found.');
+        }
 
         $this->log = new Logger('chePibe');
         $this->log->pushHandler(new StreamHandler(APP_PATH . '/tmp/log.log', Logger::INFO));
-
-        $this->log->addInfo('Previous posts at start:', $this->previousPosts);
 
     }
 
