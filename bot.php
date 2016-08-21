@@ -90,7 +90,14 @@ class empleadoEstatal
 
     public function getNewPosts()
     {
-        $things = $posts = $selectedPosts = [];
+        $things = $posts = $selectedPosts = $alreadyCommented = [];
+
+        /*
+         * Como en heroku no hay forma de guardar archivos permanentemente y soy un cabeza
+         * y me da pajota hacer una ddbb para dos datos de mierda, en caso de que no haya
+         * previousPosts.json, primero hay que chequear si ya comentó el bot ahi.
+         */
+        if (!$this->previousPosts) $alreadyCommented = $this->alreadyCommented();
 
         foreach ($this->subreddits as $subredit) {
             try {
@@ -110,12 +117,13 @@ class empleadoEstatal
                 $posts[] = $i['data']['id'];
 
                 /*
-                 * Chequear dos cosas
+                 * Chequear tres cosas
                  * 1. Que el domain del thing este dentro de la lista de diarios parsebles
                  * 2. Que el id no coincida con los ids obtenidos en la ejecucion anterior
                  * (para evitar postear dos veces en el mismo post)
+                 * 3. Chequear que no haya comentado ya (en caso de que previousPosts.json no exista.
                  */
-                if (in_array($i['data']['domain'], $this->newspapers) && !in_array($i['data']['id'], $this->previousPosts)) {
+                if (in_array($i['data']['domain'], $this->newspapers) && !in_array($i['data']['id'], $this->previousPosts) && !in_array($i['data']['id'], $alreadyCommented)) {
                     $things[] = $i;
                     $selectedPosts[] = $i['data']['id'];
                 }
@@ -151,6 +159,25 @@ class empleadoEstatal
             ])
                 ->send();
         }
+    }
+
+    private function alreadyCommented()
+    {
+        $ids = [];
+
+        $comments = $this->client->get('https://oauth.reddit.com/user/empleadoEstatalBot', $this->headers, [
+            'show' => 'comments',
+            'sort' => 'new',
+            'count' => 100
+        ])
+            ->send()
+            ->json();
+
+        foreach ($comments['data']['children'] as $i) {
+            if (isset($i['data']['link_id'])) $ids[] = substr($i['data']['link_id'], 3);
+        }
+
+        return $ids;
     }
 
     private function buildMarkdown($parsed)

@@ -383,6 +383,7 @@ class perfilcomParser extends newspaperParser
         $html .= empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';
 
-        return $html;
+        // Ni idea por que, pero perfil le gusta doble encodear sus articulos.
+        return utf8_decode(utf8_decode($html));
     }
 }
