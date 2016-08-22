@@ -90,10 +90,10 @@ class empleadoEstatal
          * cargar los posts ya comentados para matchearlos al postear y evitar doble comment.
          */
         if ($this->redis->dbsize()) {
-            $this->log->addAlert('Posted comments ddbb empty.');
+            $this->log->addInfo('Posted comments ddbb NOT empty. :)');
         } else {
             $alreadyCommented = $this->alreadyCommented();
-            $this->log->addInfo('Posted comments ddbb NOT empty. :)');
+            $this->log->addAlert('Posted comments ddbb empty.');
         }
 
         foreach ($this->subreddits as $subredit) {
