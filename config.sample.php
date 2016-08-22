@@ -11,5 +11,7 @@ class empleadoEstatalConfig
     static $USERNAME = 'USERNAME';
     static $PASSWORD = 'PASSWORD';
 
+    static $REDIS_URL = 'REDIS URL';
+
     static $SIGNATURE = 'SIGNATURE EN HTML';
 }

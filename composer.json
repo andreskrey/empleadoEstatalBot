@@ -3,6 +3,7 @@
         "rtheunissen/oauth2-reddit": "^1.2",
         "league/html-to-markdown": "^4.2",
         "ext-mbstring": "*",
-        "monolog/monolog": "^1.21"
+        "monolog/monolog": "^1.21",
+        "predis/predis": "^1.1"
     }
 }

@@ -36,9 +36,8 @@ class empleadoEstatal
         'perfil.com',
     ];
 
-    private $previousPosts = [];
-
     private $client;
+    private $redis;
     private $headers;
     public $log;
 
@@ -47,6 +46,8 @@ class empleadoEstatal
 
     public function __construct()
     {
+        $this->redis = new Predis\Client(empleadoEstatalConfig::$REDIS_URL);
+
         $reddit = new Reddit([
             'clientId' => empleadoEstatalConfig::$CLIENT_ID,
             'clientSecret' => empleadoEstatalConfig::$SECRET_KEY,
@@ -78,14 +79,6 @@ class empleadoEstatal
 
         $this->log = new Logger('chePibe');
         $this->log->pushHandler(new StreamHandler(APP_PATH . '/tmp/log.log', Logger::INFO));
-
-        if (file_exists(APP_PATH . 'tmp/previousPosts.json')) {
-            $this->previousPosts = json_decode(file_get_contents(APP_PATH . 'tmp/previousPosts.json'), true);
-            $this->log->addInfo('previousPosts.json loaded:', $this->previousPosts);
-        } else {
-            $this->log->addInfo('No previousPosts.json file found.');
-        }
-
     }
 
     public function getNewPosts()
@@ -93,11 +86,15 @@ class empleadoEstatal
         $things = $posts = $selectedPosts = $alreadyCommented = [];
 
         /*
-         * Como en heroku no hay forma de guardar archivos permanentemente y soy un cabeza
-         * y me da pajota hacer una ddbb para dos datos de mierda, en caso de que no haya
-         * previousPosts.json, primero hay que chequear si ya comentó el bot ahi.
+         * Caso de que la ddbb de redis este vacia (por que heroku la borra cada tanto en el hosting gratuito,
+         * cargar los posts ya comentados para matchearlos al postear y evitar doble comment.
          */
-        if (!$this->previousPosts) $alreadyCommented = $this->alreadyCommented();
+        if ($this->redis->dbsize()) {
+            $this->log->addAlert('Posted comments ddbb empty.');
+        } else {
+            $alreadyCommented = $this->alreadyCommented();
+            $this->log->addInfo('Posted comments ddbb NOT empty. :)');
+        }
 
         foreach ($this->subreddits as $subredit) {
             try {
@@ -119,17 +116,20 @@ class empleadoEstatal
                 /*
                  * Chequear tres cosas
                  * 1. Que el domain del thing este dentro de la lista de diarios parsebles
-                 * 2. Que el id no coincida con los ids obtenidos en la ejecucion anterior
-                 * (para evitar postear dos veces en el mismo post)
-                 * 3. Chequear que no haya comentado ya (en caso de que previousPosts.json no exista.
+                 * 2. Que el id no coincida con los que ya existen en la ddbb de redis
+                 * 3. Chequear que no haya comentado ya (en caso de que la ddbb de redis este vacia).
                  */
-                if (in_array($i['data']['domain'], $this->newspapers) && !in_array($i['data']['id'], $this->previousPosts) && !in_array($i['data']['id'], $alreadyCommented)) {
+                if (in_array($i['data']['domain'], $this->newspapers)
+                    && !$this->redis->get($i['data']['id'])
+                    && !in_array($i['data']['id'], $alreadyCommented)
+                ) {
                     $things[] = $i;
-                    $selectedPosts[] = $i['data']['id'];
+                    if (!$this->debug) {
+                        $selectedPosts[] = $i['data']['id'];
+                        $this->redis->set($i['data']['id'], date('c'));
+                    }
                 }
             }
-
-            if ($posts && !$this->debug) file_put_contents(APP_PATH . 'tmp/previousPosts.json', json_encode($posts));
 
         }
 

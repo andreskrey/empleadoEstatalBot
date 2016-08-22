@@ -11,6 +11,8 @@ class empleadoEstatalConfig
     static $USERNAME = null;
     static $PASSWORD = null;
 
+    static $REDIS_URL = null;
+
     static $SIGNATURE = '<hr><p><em>Hola, soy <strong>empleadoEstatalBot</strong> y como todo empleado estatal a veces hago mal mi trabajo, o por la
     mitad o incluso desaparezco un tiempo sin previo aviso. Si no me llaman para militar o no estoy tomando mate, posteo
     el contenido completo de las notas periodísticas que aparecen en /r/argentina</em>.</p><p><a href="/u/subtepass">Autor</a>
@@ -23,5 +25,6 @@ class empleadoEstatalConfig
         empleadoEstatalConfig::$REDIRECT_URI = getenv('REDIRECT_URI');
         empleadoEstatalConfig::$USERNAME = getenv('USERNAME');
         empleadoEstatalConfig::$PASSWORD = getenv('PASSWORD');
+        empleadoEstatalConfig::$REDIS_URL = getenv('REDIS_URL');
     }
 }
