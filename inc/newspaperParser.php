@@ -376,14 +376,13 @@ class perfilcomParser extends newspaperParser
 
         foreach ($xpath->query("//*[contains(@class, 'textbody')]")->item(0)->childNodes as $i) {
             if (trim($i->nodeValue)) {
-                $html .= $this->dom->saveHTML($i);
+                $html .= utf8_decode($this->dom->saveHTML($i));
             }
         }
 
         $html .= empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';
 
-        // Ni idea por que, pero perfil le gusta doble encodear sus articulos.
-        return utf8_decode(utf8_decode($html));
+        return $html;
     }
 }

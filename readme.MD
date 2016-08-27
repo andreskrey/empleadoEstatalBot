@@ -2,7 +2,7 @@
 
 ## Que es?
 
-Es un bot medio berretón de reddit que busca los posts de ciertos diarios, toma el texto y lo postea como un comentario en el link original.
+Es un bot medio berretÃ³n de reddit que busca los posts de ciertos diarios, toma el texto y lo postea como un comentario en el link original.
 
 ## Que diarios soporta?
 
@@ -34,4 +34,4 @@ Por que soy un pesimo programador. Malagradecido.
 
 ## Podrias haber puesto algun comentario en las miles de lineas de codigo, eh
 
-Cierto, pero me dió fiaca.
+Cierto, pero me diÃ³ fiaca.

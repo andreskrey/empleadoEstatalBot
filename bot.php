@@ -33,7 +33,7 @@ class empleadoEstatal
         'pagina12.com.ar',
         'minutouno.com',
         'autoblog.com.ar',
-        'perfil.com',
+        //'perfil.com',
     ];
 
     private $client;
@@ -163,6 +163,8 @@ class empleadoEstatal
 
     private function alreadyCommented()
     {
+        if ($this->debug) return [];
+
         $ids = [];
 
         $comments = $this->client->get('https://oauth.reddit.com/user/empleadoEstatalBot', $this->headers, [
