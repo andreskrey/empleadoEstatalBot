@@ -6,6 +6,11 @@ class newspaperParser
 
     protected $dom;
 
+    private $URLShorteners = [
+        't.co',
+        'goo.gl',
+    ];
+
     public function __construct($adapter)
     {
         if (class_exists($adapter . 'Parser')) {
@@ -18,12 +23,37 @@ class newspaperParser
     public function parse($text)
     {
         $parser = new $this->newspaper();
-        return $parser->parseText($text);
+
+        $parsed = $parser->parseText($text);
+        $solved = $this->solveURLShorteners($parsed);
+
+        return $solved;
     }
 
-    public function solveURLShorteners()
+    public function solveURLShorteners($html)
     {
+        $this->dom = new DOMDocument('1.0', 'utf-8');
+        // Hack horrible para evitar que DOMDocument se mande cagadas con UTF8
+        $this->dom->loadHTML('<?xml encoding="utf-8"?>' . $html);
+        $this->dom->encoding = 'utf-8';
 
+        foreach ($this->dom->getElementsByTagName('a') as $i) {
+
+            $link = $i->getAttribute("href");
+            if (in_array(parse_url($link, PHP_URL_HOST), $this->URLShorteners)) {
+                $headers = get_headers($link);
+
+                $headers = array_filter($headers, function ($key) {
+                    return (strpos(strtolower($key), 'location:') !== false) ? true : false;
+                });
+
+                $finalURL = substr(end($headers), 10);
+                $i->setAttribute('href', $finalURL);
+            }
+        }
+
+        // Hack horrible para sacar el hack horrible anterior
+        return str_replace('<?xml encoding="utf-8"?>', '',$this->dom->saveHTML());
     }
 }
 
@@ -100,7 +130,8 @@ class clarincomParser extends newspaperParser
                 && mb_substr($i->nodeValue, 0, 12) != 'Mirá también'
                 && mb_substr($i->nodeValue, 0, 11) != 'También leé'
                 && $i->nodeName != 'script'
-                && $i->nodeName != 'div') {
+                && $i->nodeName != 'div'
+            ) {
                 $html .= $this->dom->saveHTML($i);
             }
         }
@@ -361,7 +392,7 @@ class perfilcomParser extends newspaperParser
 
         foreach ($xpath->query("//*[contains(@class, 'textbody')]")->item(0)->childNodes as $i) {
             if (trim($i->nodeValue)) {
-                $html .= utf8_decode($this->dom->saveHTML($i));
+                $html .= $this->dom->saveHTML($i);
             }
         }
 
