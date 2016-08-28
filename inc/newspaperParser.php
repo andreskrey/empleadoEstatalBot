@@ -53,7 +53,7 @@ class newspaperParser
         }
 
         // Hack horrible para sacar el hack horrible anterior
-        return str_replace('<?xml encoding="utf-8"?>', '',$this->dom->saveHTML());
+        return str_replace('<?xml encoding="utf-8"?>', '', $this->dom->saveHTML());
     }
 }
 
@@ -383,7 +383,8 @@ class perfilcomParser extends newspaperParser
 
     public function parseText($text)
     {
-        $this->dom->loadHTML($text);
+        $this->dom->loadHTML('<?xml encoding="utf-8"?>' . $text);
+        $this->dom->encoding = 'utf-8';
         $xpath = new DOMXPath($this->dom);
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
@@ -391,8 +392,9 @@ class perfilcomParser extends newspaperParser
         $html .= '<h2>' . $xpath->query("//*[contains(@class, 'articulob-subtitle')]")->item(0)->nodeValue . '</h2>';
 
         foreach ($xpath->query("//*[contains(@class, 'textbody')]")->item(0)->childNodes as $i) {
+            if ($i->nodeName == 'div') continue;
             if (trim($i->nodeValue)) {
-                $html .= $this->dom->saveHTML($i);
+                $html .= '<p>' . $this->dom->saveHTML($i) . '</p>';
             }
         }
 
