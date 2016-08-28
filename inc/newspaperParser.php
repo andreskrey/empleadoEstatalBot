@@ -4,6 +4,8 @@ class newspaperParser
 {
     protected $newspaper;
 
+    protected $dom;
+
     public function __construct($adapter)
     {
         if (class_exists($adapter . 'Parser')) {
@@ -18,6 +20,11 @@ class newspaperParser
         $parser = new $this->newspaper();
         return $parser->parseText($text);
     }
+
+    public function solveURLShorteners()
+    {
+
+    }
 }
 
 interface NewspaperInterface
@@ -27,8 +34,6 @@ interface NewspaperInterface
 
 class lanacioncomarParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
@@ -72,8 +77,6 @@ class lanacioncomarParser extends newspaperParser
 
 class clarincomParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
@@ -111,8 +114,6 @@ class clarincomParser extends newspaperParser
 
 class iecoclarincomParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
@@ -145,8 +146,6 @@ class iecoclarincomParser extends newspaperParser
 
 class infobaecomParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
@@ -177,8 +176,6 @@ class infobaecomParser extends newspaperParser
 
 class cronistacomParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
@@ -205,8 +202,6 @@ class cronistacomParser extends newspaperParser
 
 class telamcomarParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
@@ -238,8 +233,6 @@ class telamcomarParser extends newspaperParser
 
 class buenosairesheraldcomParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
@@ -269,8 +262,6 @@ class buenosairesheraldcomParser extends newspaperParser
 
 class pagina12comarParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
@@ -297,8 +288,6 @@ class pagina12comarParser extends newspaperParser
 
 class minutounocomParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
@@ -325,8 +314,6 @@ class minutounocomParser extends newspaperParser
 
 class autoblogcomarParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
@@ -357,8 +344,6 @@ class autoblogcomarParser extends newspaperParser
 
 class perfilcomParser extends newspaperParser
 {
-    public $dom;
-
     public function __construct()
     {
         $this->dom = new DOMDocument();
