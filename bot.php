@@ -34,7 +34,7 @@ class empleadoEstatal
         'minutouno.com',
         'autoblog.com.ar',
         'perfil.com',
-        'ambito.com',
+        //'ambito.com',
     ];
 
     private $client;
