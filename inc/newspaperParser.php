@@ -37,7 +37,11 @@ class newspaperParser
         $this->dom->loadHTML('<?xml encoding="utf-8"?>' . $html);
         $this->dom->encoding = 'utf-8';
 
-        foreach ($this->dom->getElementsByTagName('a') as $i) {
+        $links = $this->dom->getElementsByTagName('a');
+
+        if (!count($links)) return $html;
+
+        foreach ($links as $i) {
 
             $link = $i->getAttribute("href");
             if (in_array(parse_url($link, PHP_URL_HOST), $this->URLShorteners)) {
@@ -82,6 +86,14 @@ class lanacioncomarParser extends newspaperParser
         $html .= '<h2>' . $xpath->query("//*[@itemprop='description']")->item(0)->nodeValue . '</h2>';
 
         $cuerpo = $this->dom->getElementById('cuerpo');
+
+        foreach ($cuerpo->getElementsByTagName('a') as $i) {
+            $link = $i->getAttribute("href");
+            if (!parse_url($link, PHP_URL_HOST)) {
+                $i->setAttribute('href', 'http://www.lanacion.com.ar' . $link);
+            }
+        }
+
         foreach ($cuerpo->childNodes as $i) {
             // section define la parte de tags de la nota, que significa que el texto del cuerpo se acabo
             if ($i->tagName == 'section') break;
