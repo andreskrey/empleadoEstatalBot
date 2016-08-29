@@ -93,7 +93,7 @@ class lanacioncomarParser extends newspaperParser
             if ($i->tagName == 'div' || $i->tagName == 'figure' || $i->tagName == 'aside' || (isset($i->attributes->item(2)->value) && strpos($i->attributes->item(2)->value, 'breadcrum') !== false)) continue;
 
             // Al principio de las notas aparece un 0 con rn por alguna razon, eso se skipea
-            if ($i->nodeValue && $i->nodeValue != "0\r\n          ") {
+            if (trim($i->nodeValue)) {
                 $html .= $this->dom->saveHTML($i);
             }
         }
