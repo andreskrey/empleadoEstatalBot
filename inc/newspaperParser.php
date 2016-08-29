@@ -48,7 +48,7 @@ class newspaperParser
                 $headers = get_headers($link);
 
                 $headers = array_filter($headers, function ($key) {
-                    return (strpos(strtolower($key), 'location:') !== false) ? true : false;
+                    return (strpos(strtolower($key), 'location:') !== false && strlen($key) > 10) ? true : false;
                 });
 
                 $finalURL = substr(end($headers), 10);
