@@ -34,6 +34,7 @@ class empleadoEstatal
         'minutouno.com',
         'autoblog.com.ar',
         'perfil.com',
+        'ambito.com',
     ];
 
     private $client;
@@ -187,7 +188,7 @@ class empleadoEstatal
         $converter = new HtmlConverter([
             'strip_tags' => true,
             'header_style' => 'atx',
-            'remove_nodes' => 'img'
+            'remove_nodes' => 'img script'
         ]);
 
         $markdown = $converter->convert($parsed);

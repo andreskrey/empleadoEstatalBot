@@ -19,6 +19,7 @@ Por ahora la lista de diarios que parsea correctamente son:
 - Minuto Uno
 - Autoblog
 - Perfil
+- Ámbito
 
 ## Como bajo e instalo el proyecto?
 
