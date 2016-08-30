@@ -143,9 +143,15 @@ class empleadoEstatal
     {
         foreach ($things as $k => $i) {
             $text = $this->client->get($i['data']['url'])->send();
+            $body = $text->getBody(true);
+
+            // Por alguna razon a veces minutouno manda gzippeado y guzzle no lo descomprime
+            // Los tres chars son los magic numbers de zip
+            $isGZip = 0 === mb_strpos($body , "\x1f" . "\x8b" . "\x08");
+            if ($isGZip) $body = gzdecode($body);
 
             $parser = new newspaperParser(str_replace('.', '', $i['data']['domain']));
-            $things[$k]['parsed'] = $parser->parse($text->getBody(true));
+            $things[$k]['parsed'] = $parser->parse($body);
         }
 
         return $things;
