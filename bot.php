@@ -101,7 +101,7 @@ class empleadoEstatal
             try {
                 $result = $this->client
                     ->get('https://oauth.reddit.com/r/' . $subredit . '/new/.json', $this->headers, ['query' => [
-                        'limit' => 5
+                        'limit' => 10
                     ]])
                     ->send()
                     ->json();
