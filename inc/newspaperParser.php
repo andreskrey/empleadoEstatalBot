@@ -201,7 +201,9 @@ class infobaecomParser extends newspaperParser
         $xpath = new DOMXPath($this->dom);
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
-        $html .= '<h1>' . $this->dom->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
+        // Hay que pasar por xpath en vez de agarrar el h1 por que infobae a veces usa el h1 para noticias en el header,
+        // antes del titulo de la noticia que esta parseando
+        $html .= '<h1>' . $xpath->query("//*[contains(@class, 'article-header')]")->item(0)->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
         $html .= '<h2>' . $xpath->query("//*[contains(@class, 'subheadline')]")->item(0)->nodeValue . '</h2>';
 
         foreach ($this->dom->getElementById('article-content')->childNodes as $i) {
