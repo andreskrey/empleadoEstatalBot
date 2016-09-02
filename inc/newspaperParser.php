@@ -213,6 +213,7 @@ class infobaecomParser extends newspaperParser
         $html .= '<h2>' . $xpath->query("//*[contains(@class, 'subheadline')]")->item(0)->nodeValue . '</h2>';
 
         foreach ($this->dom->getElementById('article-content')->childNodes as $i) {
+            if (strpos('LEA MÁS:', trim($i->nodeValue)) === 0) break;
             if (trim($i->nodeValue)) {
                 $html .= $this->dom->saveHTML($i);
             }
