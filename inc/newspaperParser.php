@@ -213,8 +213,8 @@ class infobaecomParser extends newspaperParser
         $html .= '<h2>' . $xpath->query("//*[contains(@class, 'subheadline')]")->item(0)->nodeValue . '</h2>';
 
         foreach ($this->dom->getElementById('article-content')->childNodes as $i) {
-            if (strpos('LEA MÁS:', trim($i->nodeValue)) === 0) break;
             if (trim($i->nodeValue)) {
+                if (strpos('LEA MÁS:', trim($i->nodeValue)) === 0) break;
                 $html .= $this->dom->saveHTML($i);
             }
         }
@@ -356,6 +356,32 @@ class minutounocomParser extends newspaperParser
         $html .= '<h2>' . $xpath->query("//*[contains(@class, 'main-quote')]")->item(0)->nodeValue . '</h2>';
 
         $html .= $this->dom->saveHTML($xpath->query("//*[contains(@class, 'article-content')]")->item(0));
+
+        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= '</body></html>';
+
+        return $html;
+    }
+}
+
+class cronicacomarParser extends newspaperParser
+{
+    public function __construct()
+    {
+        $this->dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+    }
+
+    public function parseText($text)
+    {
+        $this->dom->loadHTML($text);
+        $xpath = new DOMXPath($this->dom);
+
+        $html = '<!DOCTYPE html><html><head><title></title></head><body>';
+        $html .= '<h1>' . $xpath->query("//*[contains(@class, 'article-title')]")->item(0)->nodeValue . '</h1>';
+        $html .= '<h2>' . $xpath->query("//*[contains(@class, 'article-lead')]")->item(0)->nextSibling->nodeValue . '</h2>';
+
+        $html .= $this->dom->saveHTML($xpath->query("//*[contains(@class, 'article-text')]")->item(0));
 
         $html .= empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';

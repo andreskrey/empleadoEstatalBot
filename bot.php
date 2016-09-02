@@ -34,6 +34,7 @@ class empleadoEstatal
         'minutouno.com',
         'autoblog.com.ar',
         'perfil.com',
+        'cronica.com.ar',
         //'ambito.com',
     ];
 
