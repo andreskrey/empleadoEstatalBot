@@ -412,7 +412,6 @@ class perfilcomParser extends newspaperParser
         $html .= '<h2>' . $xpath->query("//*[contains(@class, 'articulob-subtitle')]")->item(0)->nodeValue . '</h2>';
 
         foreach ($xpath->query("//*[contains(@class, 'textbody')]")->item(0)->childNodes as $i) {
-            if ($i->nodeName == 'div') continue;
             if (trim($i->nodeValue)) {
                 $html .= '<p>' . $this->dom->saveHTML($i) . '</p>';
             }
