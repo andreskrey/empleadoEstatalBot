@@ -13,9 +13,7 @@ class empleadoEstatalConfig
 
     static $REDIS_URL = null;
 
-    static $SIGNATURE = '<hr><p><em>Hola, soy <strong>empleadoEstatalBot</strong> y como todo empleado estatal a veces hago mal mi trabajo, o por la
-    mitad o incluso desaparezco un tiempo sin previo aviso. Si no me llaman para militar o no estoy tomando mate, posteo
-    el contenido completo de las notas periodísticas que aparecen en /r/argentina</em>.</p><p><a href="/u/subtepass">Autor</a>
+    static $SIGNATURE = '<hr><p><em><strong>empleadoEstatalBot</strong>, el primer bot de reddit 100% peronista. Ensamblado en TdF. ^(Hecho en China.)</em></p><p><a href="/u/subtepass">Autor</a>
     | <a href="https://github.com/andreskrey/empleadoEstatalBot">Código fuente</a> | <a href="https://github.com/andreskrey/empleadoEstatalBot#que-diarios-soporta">Lista de diarios <soportados></soportados></a></p>';
 
     public function __construct()
