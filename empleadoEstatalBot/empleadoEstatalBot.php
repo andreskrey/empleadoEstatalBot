@@ -2,13 +2,13 @@
 const APP_PATH = __DIR__ . DIRECTORY_SEPARATOR;
 
 if (getenv('CURRENT_ENV') == 'HEROKU') {
-    require_once(APP_PATH . 'config.heroku.php');
+    require_once(APP_PATH . 'config' . DIRECTORY_SEPARATOR . 'config.heroku.php');
     new empleadoEstatalConfig();
 } else {
-    require_once(APP_PATH . 'config.php');
+    require_once(APP_PATH . 'config' . DIRECTORY_SEPARATOR . 'config.php');
 }
 require_once(APP_PATH . 'inc/newspaperParser.php');
-require APP_PATH . 'vendor/autoload.php';
+require APP_PATH . '../vendor/autoload.php';
 
 use Rudolf\OAuth2\Client\Provider\Reddit;
 use League\HTMLToMarkdown\HtmlConverter;
@@ -43,11 +43,13 @@ class empleadoEstatal
     private $headers;
     public $log;
 
-    private $debug = false;
+    private $debug = true;
 
 
     public function __construct()
     {
+        if ($this->debug) $this->subreddits = ['empleadoEstatalBot'];
+
         $this->redis = new Predis\Client(empleadoEstatalConfig::$REDIS_URL);
 
         $reddit = new Reddit([
@@ -83,7 +85,7 @@ class empleadoEstatal
         $this->log->pushHandler(new StreamHandler(APP_PATH . '/tmp/log.log', Logger::INFO));
     }
 
-    public function getNewPosts()
+    private function getNewPosts()
     {
         $things = $posts = $selectedPosts = $alreadyCommented = [];
 
@@ -140,7 +142,7 @@ class empleadoEstatal
         return $things;
     }
 
-    public function getNewspaperText($things)
+    private function getNewspaperText($things)
     {
         foreach ($things as $k => $i) {
             $text = $this->client->get($i['data']['url'])->send();
@@ -148,7 +150,7 @@ class empleadoEstatal
 
             // Por alguna razon a veces minutouno manda gzippeado y guzzle no lo descomprime
             // Los tres chars son los magic numbers de zip
-            $isGZip = 0 === mb_strpos($body , "\x1f" . "\x8b" . "\x08");
+            $isGZip = 0 === mb_strpos($body, "\x1f" . "\x8b" . "\x08");
             if ($isGZip) $body = gzdecode($body);
 
             $parser = new newspaperParser(str_replace('.', '', $i['data']['domain']));
@@ -158,7 +160,7 @@ class empleadoEstatal
         return $things;
     }
 
-    public function postComments($things)
+    private function postComments($things)
     {
         foreach ($things as $i) {
             $this->client->post('https://oauth.reddit.com/api/comment', $this->headers, [
@@ -202,17 +204,19 @@ class empleadoEstatal
 
         return $markdown;
     }
+
+    public function laburar()
+    {
+        $posts = $this->getNewPosts();
+
+        if ($posts) {
+            $posts = $this->getNewspaperText($posts);
+            $this->postComments($posts);
+            $this->log->addInfo('Done posting comments.');
+        } else {
+            $this->log->addInfo('No new posts.');
+        }
+
+        return count($posts);
+    }
 }
-
-$ñoqui = new empleadoEstatal();
-$posts = $ñoqui->getNewPosts();
-
-if ($posts) {
-    $posts = $ñoqui->getNewspaperText($posts);
-    $ñoqui->postComments($posts);
-    $ñoqui->log->addInfo('Done posting comments.');
-} else {
-    $ñoqui->log->addInfo('No new posts.');
-}
-
-echo 'Done. ' . count($posts) . ' posts.' . PHP_EOL;
