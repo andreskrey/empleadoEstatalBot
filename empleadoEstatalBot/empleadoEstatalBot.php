@@ -10,6 +10,10 @@ if (getenv('CURRENT_ENV') == 'HEROKU') {
 require_once(APP_PATH . 'inc/newspaperParser.php');
 require APP_PATH . '../vendor/autoload.php';
 
+spl_autoload_register(function ($parser) {
+    include 'inc/Parser/' . $parser . '.php';
+});
+
 use Rudolf\OAuth2\Client\Provider\Reddit;
 use League\HTMLToMarkdown\HtmlConverter;
 use Monolog\Logger;
@@ -153,7 +157,12 @@ class empleadoEstatal
             $isGZip = 0 === mb_strpos($body, "\x1f" . "\x8b" . "\x08");
             if ($isGZip) $body = gzdecode($body);
 
-            $parser = new newspaperParser(str_replace('.', '', $i['data']['domain']));
+            $newspaper = str_replace('.', '', $i['data']['domain']) . 'Parser';
+            try {
+                $parser = new $newspaper;
+            } catch (Exception $e) {
+                throw new BadFunctionCallException();
+            }
             $things[$k]['parsed'] = $parser->parse($body);
         }
 
