@@ -1,19 +1,18 @@
 <?php
+namespace empleadoEstatalBot;
+
 const APP_PATH = __DIR__ . DIRECTORY_SEPARATOR;
 
 if (getenv('CURRENT_ENV') == 'HEROKU') {
     require_once(APP_PATH . 'config' . DIRECTORY_SEPARATOR . 'config.heroku.php');
-    new empleadoEstatalConfig();
+    new \empleadoEstatalConfig();
 } else {
     require_once(APP_PATH . 'config' . DIRECTORY_SEPARATOR . 'config.php');
 }
-require_once(APP_PATH . 'inc/newspaperParser.php');
 require APP_PATH . '../vendor/autoload.php';
 
-spl_autoload_register(function ($parser) {
-    include 'inc/Parser/' . $parser . '.php';
-});
-
+use Exception;
+use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Rudolf\OAuth2\Client\Provider\Reddit;
 use League\HTMLToMarkdown\HtmlConverter;
 use Monolog\Logger;
@@ -54,14 +53,14 @@ class empleadoEstatal
     {
         if ($this->debug) $this->subreddits = ['empleadoEstatalBot'];
 
-        $this->redis = new Predis\Client(empleadoEstatalConfig::$REDIS_URL);
+        $this->redis = new \Predis\Client(\empleadoEstatalConfig::$REDIS_URL);
 
         $reddit = new Reddit([
-            'clientId' => empleadoEstatalConfig::$CLIENT_ID,
-            'clientSecret' => empleadoEstatalConfig::$SECRET_KEY,
-            'redirectUri' => empleadoEstatalConfig::$REDIRECT_URI,
+            'clientId' => \empleadoEstatalConfig::$CLIENT_ID,
+            'clientSecret' => \empleadoEstatalConfig::$SECRET_KEY,
+            'redirectUri' => \empleadoEstatalConfig::$REDIRECT_URI,
             'userAgent' => 'PHP:empleadoEstatalBot:0.0.1, (by /u/subtepass)',
-            'scopes' => empleadoEstatalConfig::$SCOPES
+            'scopes' => \empleadoEstatalConfig::$SCOPES
         ]);
 
         $tokenExists = file_exists(APP_PATH . 'tmp/tokens.reddit');
@@ -72,8 +71,8 @@ class empleadoEstatal
 
         if (!$tokenExists) {
             $accessToken = $reddit->getAccessToken('password', [
-                'username' => empleadoEstatalConfig::$USERNAME,
-                'password' => empleadoEstatalConfig::$PASSWORD
+                'username' => \empleadoEstatalConfig::$USERNAME,
+                'password' => \empleadoEstatalConfig::$PASSWORD
             ]);
 
             $token = $accessToken->accessToken;
@@ -158,11 +157,12 @@ class empleadoEstatal
             if ($isGZip) $body = gzdecode($body);
 
             $newspaper = str_replace('.', '', $i['data']['domain']) . 'Parser';
-            try {
+            if (class_exists($newspaper)) {
                 $parser = new $newspaper;
-            } catch (Exception $e) {
-                throw new BadFunctionCallException();
+            } else {
+                throw new \BadFunctionCallException();
             }
+
             $things[$k]['parsed'] = $parser->parse($body);
         }
 

@@ -1,5 +1,9 @@
 <?php
 
+namespace empleadoEstatalBot;
+
+use DOMDocument;
+
 abstract class newspaperParser
 {
     protected $newspaper;

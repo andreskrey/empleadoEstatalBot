@@ -1,4 +1,6 @@
 <?php
+use empleadoEstatalBot\empleadoEstatal;
+
 include '..' . DIRECTORY_SEPARATOR . 'empleadoEstatalBot.php';
 
 $ñoqui = new empleadoEstatal();

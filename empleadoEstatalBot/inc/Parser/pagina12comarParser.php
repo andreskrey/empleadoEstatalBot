@@ -1,5 +1,7 @@
 <?php
 
+use empleadoEstatalBot\newspaperParser;
+
 class pagina12comarParser extends newspaperParser
 {
     public function __construct()

@@ -1,5 +1,7 @@
 <?php
 
+use empleadoEstatalBot\newspaperParser;
+
 class iecoclarincomParser extends newspaperParser
 {
     public function __construct()
