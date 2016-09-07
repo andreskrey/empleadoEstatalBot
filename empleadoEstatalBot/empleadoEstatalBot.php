@@ -1,7 +1,7 @@
 <?php
 namespace empleadoEstatalBot;
 
-const APP_PATH = __DIR__ . DIRECTORY_SEPARATOR;
+define('APP_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
 if (getenv('CURRENT_ENV') == 'HEROKU') {
     require_once(APP_PATH . 'config' . DIRECTORY_SEPARATOR . 'config.heroku.php');
@@ -44,7 +44,7 @@ class empleadoEstatal
     private $headers;
     public $log;
 
-    private $debug = true;
+    private $debug = false;
 
 
     public function __construct()
