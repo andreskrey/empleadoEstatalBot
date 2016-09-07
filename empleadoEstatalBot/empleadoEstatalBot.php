@@ -12,12 +12,10 @@ if (getenv('CURRENT_ENV') == 'HEROKU') {
 require APP_PATH . '../vendor/autoload.php';
 
 use Exception;
-use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Rudolf\OAuth2\Client\Provider\Reddit;
 use League\HTMLToMarkdown\HtmlConverter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-
 
 class empleadoEstatal
 {

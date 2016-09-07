@@ -40,8 +40,6 @@ abstract class newspaperParser
 
         $links = $this->dom->getElementsByTagName('a');
 
-        if (!count($links)) return $html;
-
         foreach ($links as $i) {
 
             $link = $i->getAttribute("href");
