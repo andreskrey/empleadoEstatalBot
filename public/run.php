@@ -1,7 +1,7 @@
 <?php
 use empleadoEstatalBot\empleadoEstatal;
 
-include '..' . DIRECTORY_SEPARATOR . 'empleadoEstatalBot.php';
+include '../empleadoEstatalBot/empleadoEstatalBot.php';
 
 $ñoqui = new empleadoEstatal();
 $posts = $ñoqui->laburar();

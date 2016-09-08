@@ -1,1 +1,1 @@
-web: vendor/bin/heroku-php-apache2 empleadoEstatalBot/public/
+web: vendor/bin/heroku-php-apache2 public/

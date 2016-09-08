@@ -11,10 +11,10 @@ use empleadoEstatalBot\NewspaperProcessor;
 define('APP_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
 if (getenv('CURRENT_ENV') == 'HEROKU') {
-    require_once(APP_PATH . 'config' . DIRECTORY_SEPARATOR . 'config.heroku.php');
+    require_once(APP_PATH . '../config/config.heroku.php');
     new Config();
 } else {
-    require_once(APP_PATH . 'config' . DIRECTORY_SEPARATOR . 'config.php');
+    require_once(APP_PATH . '../config/config.php');
 }
 require APP_PATH . '../vendor/autoload.php';
 
