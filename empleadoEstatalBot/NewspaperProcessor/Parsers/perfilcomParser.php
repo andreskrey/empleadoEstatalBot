@@ -24,7 +24,9 @@ class perfilcomParser extends NewspaperProcessor
 
         foreach ($xpath->query("//*[contains(@class, 'textbody')]")->item(0)->childNodes as $i) {
             if (trim($i->nodeValue)) {
-                $html .= '<p>' . $this->dom->saveHTML($i) . '</p>';
+                $html .= $this->dom->saveHTML($i);
+            } else {
+                if ($i->nodeName == 'br') $html .= '<br>';
             }
         }
 
