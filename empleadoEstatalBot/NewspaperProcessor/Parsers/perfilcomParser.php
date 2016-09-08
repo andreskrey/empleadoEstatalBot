@@ -1,8 +1,10 @@
 <?php
 
-use empleadoEstatalBot\newspaperParser;
+namespace empleadoEstatalBot\NewspaperProcessor;
 
-class perfilcomParser extends newspaperParser
+use empleadoEstatalBot\NewspaperProcessor;
+
+class perfilcomParser extends NewspaperProcessor
 {
     public function __construct()
     {
@@ -13,7 +15,7 @@ class perfilcomParser extends newspaperParser
     {
         $this->dom->loadHTML('<?xml encoding="utf-8"?>' . $text);
         $this->dom->encoding = 'utf-8';
-        $xpath = new DOMXPath($this->dom);
+        $xpath = new \DOMXPath($this->dom);
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
         $html .= '<h1>' . $xpath->query("//*[contains(@class, 'articulob-title')]")->item(0)->nodeValue . '</h1>';
@@ -25,7 +27,7 @@ class perfilcomParser extends newspaperParser
             }
         }
 
-        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= \empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

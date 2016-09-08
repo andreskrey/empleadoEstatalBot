@@ -1,8 +1,10 @@
 <?php
 
-use empleadoEstatalBot\newspaperParser;
+namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
-class lanacioncomarParser extends newspaperParser
+use empleadoEstatalBot\NewspaperProcessor;
+
+class lanacioncomarParser extends NewspaperProcessor
 {
     public function __construct()
     {
@@ -12,7 +14,7 @@ class lanacioncomarParser extends newspaperParser
     public function parseText($text)
     {
         $this->dom->loadHTML($text);
-        $xpath = new DOMXPath($this->dom);
+        $xpath = new \DOMXPath($this->dom);
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
         $html .= '<h1>' . $xpath->query("//*[@itemprop='headline']")->item(0)->nodeValue . '</h1>';
@@ -49,7 +51,7 @@ class lanacioncomarParser extends newspaperParser
             }
         }
 
-        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= \empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

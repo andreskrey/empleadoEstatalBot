@@ -1,6 +1,13 @@
 <?php
 namespace empleadoEstatalBot;
 
+use Exception;
+use Rudolf\OAuth2\Client\Provider\Reddit;
+use League\HTMLToMarkdown\HtmlConverter;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use empleadoEstatalBot\NewspaperProcessor;
+
 define('APP_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
 if (getenv('CURRENT_ENV') == 'HEROKU') {
@@ -11,11 +18,6 @@ if (getenv('CURRENT_ENV') == 'HEROKU') {
 }
 require APP_PATH . '../vendor/autoload.php';
 
-use Exception;
-use Rudolf\OAuth2\Client\Provider\Reddit;
-use League\HTMLToMarkdown\HtmlConverter;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 
 class empleadoEstatal
 {
@@ -154,7 +156,7 @@ class empleadoEstatal
             $isGZip = 0 === mb_strpos($body, "\x1f" . "\x8b" . "\x08");
             if ($isGZip) $body = gzdecode($body);
 
-            $newspaper = str_replace('.', '', $i['data']['domain']) . 'Parser';
+            $newspaper = 'empleadoEstatalBot\NewspaperProcessor\Parsers\\' . str_replace('.', '', $i['data']['domain']) . 'Parser';
             if (class_exists($newspaper)) {
                 $parser = new $newspaper;
             } else {

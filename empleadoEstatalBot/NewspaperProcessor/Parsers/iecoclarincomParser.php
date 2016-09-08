@@ -1,8 +1,10 @@
 <?php
 
-use empleadoEstatalBot\newspaperParser;
+namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
-class iecoclarincomParser extends newspaperParser
+use empleadoEstatalBot\NewspaperProcessor;
+
+class iecoclarincomParser extends NewspaperProcessor
 {
     public function __construct()
     {
@@ -12,7 +14,7 @@ class iecoclarincomParser extends newspaperParser
     public function parseText($text)
     {
         $this->dom->loadHTML($text);
-        $xpath = new DOMXPath($this->dom);
+        $xpath = new \DOMXPath($this->dom);
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
         $html .= '<h1>' . $this->dom->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
@@ -26,7 +28,7 @@ class iecoclarincomParser extends newspaperParser
             }
         }
 
-        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= \empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

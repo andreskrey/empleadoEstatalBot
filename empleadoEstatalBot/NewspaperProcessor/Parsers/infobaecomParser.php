@@ -1,8 +1,10 @@
 <?php
 
-use empleadoEstatalBot\newspaperParser;
+namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
-class infobaecomParser extends newspaperParser
+use empleadoEstatalBot\NewspaperProcessor;
+
+class infobaecomParser extends NewspaperProcessor
 {
     public function __construct()
     {
@@ -12,7 +14,7 @@ class infobaecomParser extends newspaperParser
     public function parseText($text)
     {
         $this->dom->loadHTML($text);
-        $xpath = new DOMXPath($this->dom);
+        $xpath = new \DOMXPath($this->dom);
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
         // Hay que pasar por xpath en vez de agarrar el h1 por que infobae a veces usa el h1 para noticias en el header,
@@ -27,7 +29,7 @@ class infobaecomParser extends newspaperParser
             }
         }
 
-        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= \empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

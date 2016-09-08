@@ -1,8 +1,10 @@
 <?php
 
-use empleadoEstatalBot\newspaperParser;
+namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
-class buenosairesheraldcomParser extends newspaperParser
+use empleadoEstatalBot\NewspaperProcessor;
+
+class buenosairesheraldcomParser extends NewspaperProcessor
 {
     public function __construct()
     {
@@ -23,7 +25,7 @@ class buenosairesheraldcomParser extends newspaperParser
             }
         }
 
-        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= \empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

@@ -4,7 +4,7 @@ namespace empleadoEstatalBot;
 
 use DOMDocument;
 
-abstract class newspaperParser
+abstract class NewspaperProcessor extends empleadoEstatal
 {
     protected $newspaper;
 
@@ -31,7 +31,7 @@ abstract class newspaperParser
         return $solved;
     }
 
-    public function solveURLShorteners($html)
+    private function solveURLShorteners($html)
     {
         $this->dom = new DOMDocument('1.0', 'utf-8');
         // Hack horrible para evitar que DOMDocument se mande cagadas con UTF8

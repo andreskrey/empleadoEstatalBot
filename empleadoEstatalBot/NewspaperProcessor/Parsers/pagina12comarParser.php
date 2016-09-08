@@ -1,8 +1,10 @@
 <?php
 
-use empleadoEstatalBot\newspaperParser;
+namespace empleadoEstatalBot\NewspaperProcessor;
 
-class pagina12comarParser extends newspaperParser
+use empleadoEstatalBot\NewspaperProcessor;
+
+class pagina12comarParser extends NewspaperProcessor
 {
     public function __construct()
     {
@@ -12,7 +14,7 @@ class pagina12comarParser extends newspaperParser
     public function parseText($text)
     {
         $this->dom->loadHTML($text);
-        $xpath = new DOMXPath($this->dom);
+        $xpath = new \DOMXPath($this->dom);
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
         $html .= '<h1>' . $this->dom->getElementsByTagName('h2')->item(0)->nodeValue . '</h1>';
@@ -20,7 +22,7 @@ class pagina12comarParser extends newspaperParser
 
         $html .= $this->dom->saveHTML($this->dom->getElementById('cuerpo'));
 
-        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= \empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

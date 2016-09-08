@@ -1,8 +1,10 @@
 <?php
 
-use empleadoEstatalBot\newspaperParser;
+namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
-class cronistacomParser extends newspaperParser
+use empleadoEstatalBot\NewspaperProcessor;
+
+class cronistacomParser extends NewspaperProcessor
 {
     public function __construct()
     {
@@ -12,7 +14,7 @@ class cronistacomParser extends newspaperParser
     public function parseText($text)
     {
         $this->dom->loadHTML($text);
-        $xpath = new DOMXPath($this->dom);
+        $xpath = new \DOMXPath($this->dom);
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
         $html .= '<h1>' . $xpath->query("//*[@itemprop='name']")->item(0)->nodeValue . '</h1>';
@@ -20,7 +22,7 @@ class cronistacomParser extends newspaperParser
 
         $html .= $this->dom->saveHTML($xpath->query("//*[@itemprop='articleBody']")->item(0));
 
-        $html .= empleadoEstatalConfig::$SIGNATURE;
+        $html .= \empleadoEstatalConfig::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

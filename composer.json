@@ -8,7 +8,8 @@
         "phpunit/phpunit": "5.5.*"
     },
     "autoload": {
-        "psr-4": {"empleadoEstatalBot\\": "empleadoEstatalBot/inc/"},
-        "classmap": ["empleadoEstatalBot/inc/Parser"]
+        "psr-4": {
+            "empleadoEstatalBot\\": "empleadoEstatalBot"
+        }
     }
 }
