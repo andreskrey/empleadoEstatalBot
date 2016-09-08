@@ -3,6 +3,7 @@
 namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
 use empleadoEstatalBot\NewspaperProcessor;
+use empleadoEstatalBot\Config;
 
 class cronistacomParser extends NewspaperProcessor
 {
@@ -22,7 +23,7 @@ class cronistacomParser extends NewspaperProcessor
 
         $html .= $this->dom->saveHTML($xpath->query("//*[@itemprop='articleBody']")->item(0));
 
-        $html .= \empleadoEstatalConfig::$SIGNATURE;
+        $html .= Config::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

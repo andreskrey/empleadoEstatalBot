@@ -12,7 +12,7 @@ define('APP_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
 if (getenv('CURRENT_ENV') == 'HEROKU') {
     require_once(APP_PATH . 'config' . DIRECTORY_SEPARATOR . 'config.heroku.php');
-    new \empleadoEstatalConfig();
+    new Config();
 } else {
     require_once(APP_PATH . 'config' . DIRECTORY_SEPARATOR . 'config.php');
 }
@@ -53,14 +53,14 @@ class empleadoEstatal
     {
         if ($this->debug) $this->subreddits = ['empleadoEstatalBot'];
 
-        $this->redis = new \Predis\Client(\empleadoEstatalConfig::$REDIS_URL);
+        $this->redis = new \Predis\Client(Config::$REDIS_URL);
 
         $reddit = new Reddit([
-            'clientId' => \empleadoEstatalConfig::$CLIENT_ID,
-            'clientSecret' => \empleadoEstatalConfig::$SECRET_KEY,
-            'redirectUri' => \empleadoEstatalConfig::$REDIRECT_URI,
+            'clientId' => Config::$CLIENT_ID,
+            'clientSecret' => Config::$SECRET_KEY,
+            'redirectUri' => Config::$REDIRECT_URI,
             'userAgent' => 'PHP:empleadoEstatalBot:0.0.1, (by /u/subtepass)',
-            'scopes' => \empleadoEstatalConfig::$SCOPES
+            'scopes' => Config::$SCOPES
         ]);
 
         $tokenExists = file_exists(APP_PATH . 'tmp/tokens.reddit');
@@ -71,8 +71,8 @@ class empleadoEstatal
 
         if (!$tokenExists) {
             $accessToken = $reddit->getAccessToken('password', [
-                'username' => \empleadoEstatalConfig::$USERNAME,
-                'password' => \empleadoEstatalConfig::$PASSWORD
+                'username' => Config::$USERNAME,
+                'password' => Config::$PASSWORD
             ]);
 
             $token = $accessToken->accessToken;

@@ -1,8 +1,9 @@
 <?php
 
-namespace empleadoEstatalBot\NewspaperProcessor;
+namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
 use empleadoEstatalBot\NewspaperProcessor;
+use empleadoEstatalBot\Config;
 
 class pagina12comarParser extends NewspaperProcessor
 {
@@ -22,7 +23,7 @@ class pagina12comarParser extends NewspaperProcessor
 
         $html .= $this->dom->saveHTML($this->dom->getElementById('cuerpo'));
 
-        $html .= \empleadoEstatalConfig::$SIGNATURE;
+        $html .= Config::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

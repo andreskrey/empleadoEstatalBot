@@ -1,8 +1,9 @@
 <?php
 
-namespace empleadoEstatalBot\NewspaperProcessor;
+namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
 use empleadoEstatalBot\NewspaperProcessor;
+use empleadoEstatalBot\Config;
 
 class perfilcomParser extends NewspaperProcessor
 {
@@ -27,7 +28,7 @@ class perfilcomParser extends NewspaperProcessor
             }
         }
 
-        $html .= \empleadoEstatalConfig::$SIGNATURE;
+        $html .= Config::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

@@ -3,6 +3,7 @@
 namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
 use empleadoEstatalBot\NewspaperProcessor;
+use empleadoEstatalBot\Config;
 
 class buenosairesheraldcomParser extends NewspaperProcessor
 {
@@ -25,7 +26,7 @@ class buenosairesheraldcomParser extends NewspaperProcessor
             }
         }
 
-        $html .= \empleadoEstatalConfig::$SIGNATURE;
+        $html .= Config::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

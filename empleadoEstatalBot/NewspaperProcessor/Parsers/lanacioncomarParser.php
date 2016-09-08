@@ -3,6 +3,7 @@
 namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
 use empleadoEstatalBot\NewspaperProcessor;
+use empleadoEstatalBot\Config;
 
 class lanacioncomarParser extends NewspaperProcessor
 {
@@ -51,7 +52,7 @@ class lanacioncomarParser extends NewspaperProcessor
             }
         }
 
-        $html .= \empleadoEstatalConfig::$SIGNATURE;
+        $html .= Config::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

@@ -1,8 +1,9 @@
 <?php
 
-namespace empleadoEstatalBot\NewspaperProcessor;
+namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
 
 use empleadoEstatalBot\NewspaperProcessor;
+use empleadoEstatalBot\Config;
 
 class telamcomarParser extends NewspaperProcessor
 {
@@ -27,7 +28,7 @@ class telamcomarParser extends NewspaperProcessor
             }
         }
 
-        $html .= \empleadoEstatalConfig::$SIGNATURE;
+        $html .= Config::$SIGNATURE;
         $html .= '</body></html>';
 
         return $html;

@@ -1,6 +1,8 @@
 <?php
 
-class empleadoEstatalConfig
+namespace empleadoEstatalBot;
+
+class Config
 {
     static $CLIENT_ID = 'CLIENT_ID';
     static $SECRET_KEY = 'SECRET_KEY';

@@ -1,6 +1,8 @@
 <?php
 
-class empleadoEstatalConfig
+namespace empleadoEstatalBot;
+
+class Config
 {
     static $CLIENT_ID = null;
     static $SECRET_KEY = null;
@@ -18,11 +20,11 @@ class empleadoEstatalConfig
 
     public function __construct()
     {
-        empleadoEstatalConfig::$CLIENT_ID = getenv('CLIENT_ID');
-        empleadoEstatalConfig::$SECRET_KEY = getenv('SECRET_KEY');
-        empleadoEstatalConfig::$REDIRECT_URI = getenv('REDIRECT_URI');
-        empleadoEstatalConfig::$USERNAME = getenv('USERNAME');
-        empleadoEstatalConfig::$PASSWORD = getenv('PASSWORD');
-        empleadoEstatalConfig::$REDIS_URL = getenv('REDIS_URL');
+        Config::$CLIENT_ID = getenv('CLIENT_ID');
+        Config::$SECRET_KEY = getenv('SECRET_KEY');
+        Config::$REDIRECT_URI = getenv('REDIRECT_URI');
+        Config::$USERNAME = getenv('USERNAME');
+        Config::$PASSWORD = getenv('PASSWORD');
+        Config::$REDIS_URL = getenv('REDIS_URL');
     }
 }
