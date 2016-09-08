@@ -4,7 +4,7 @@ namespace empleadoEstatalBot;
 
 use DOMDocument;
 
-abstract class NewspaperProcessor extends empleadoEstatal
+abstract class NewspaperProcessor
 {
     protected $newspaper;
 
