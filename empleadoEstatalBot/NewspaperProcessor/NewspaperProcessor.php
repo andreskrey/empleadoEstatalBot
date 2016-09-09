@@ -81,6 +81,7 @@ abstract class NewspaperProcessor
 
                 $finalURL = substr(end($headers), 10);
                 $i->setAttribute('href', $finalURL);
+                $i->nodeValue = $finalURL;
             }
         }
 
