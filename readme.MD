@@ -19,7 +19,7 @@ Por ahora la lista de diarios que parsea correctamente son:
 - Minuto Uno
 - Autoblog
 - Perfil
-- Ámbito
+- ~~Ámbito~~. Fuck Ámbito, el cuerpo de la noticia viene por AJAX.
 
 ## Como bajo e instalo el proyecto?
 
@@ -27,8 +27,8 @@ Create un fork y clonalo, o bajalo como zip. En la consola pone composer install
 
 ## Como puedo agregar un diario nuevo?
 
-Primero tenes que definirlo dentro de $newspapers en bot.php. El nombre tiene que ser el que devuelve reddit en el key hostname. Generalmente es el dominio sin el www adelante.
-Luego vas a inc/newspaperParser.php y agregas una clase nueva a la interfaz que se llame igual que el hostname, pero sin puntos y terminado en ...Parser. Ahi invocas a Cthulhu, parseas el texto como mas te guste, asegurandote de devolver un html con h1, h2 y texto mas la firma del bot.
+Primero tenes que definirlo dentro de $newspapers en empleadoEstatalBot/NewspaperProcessor/NewspaperProcessor.php. El nombre tiene que ser el que devuelve reddit en el key hostname. Generalmente es el dominio sin el www adelante.
+Luego vas a Parsers y agregas una clase nueva al abstract que se llame igual que el hostname, pero sin puntos y terminado en ...Parser. Ahi invocas a Cthulhu, parseas el texto como mas te guste, asegurandote de devolver un html con h1, h2 y texto mas la firma del bot.
 
 ## Por que el codigo es tan horrible?
 
