@@ -21,6 +21,7 @@ abstract class NewspaperProcessor
         'perfil.com',
         'cronica.com.ar',
         //'ambito.com',
+        'diarioregistrado.com',
     ];
 
     protected $dom;
