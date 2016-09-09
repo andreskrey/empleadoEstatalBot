@@ -151,7 +151,7 @@ class RedditManager
         $converter = new HtmlConverter([
             'strip_tags' => true,
             'header_style' => 'atx',
-            'remove_nodes' => 'img script'
+            'remove_nodes' => 'img script figure'
         ]);
 
         $markdown = $converter->convert($parsed);
