@@ -3,10 +3,25 @@
 namespace empleadoEstatalBot;
 
 use DOMDocument;
+use Guzzle\Service\Client as GuzzleClient;
 
 abstract class NewspaperProcessor
 {
-    protected $newspaper;
+    static public $newspapers = [
+        'lanacion.com.ar',
+        'clarin.com',
+        'ieco.clarin.com',
+        'infobae.com',
+        'cronista.com',
+        'telam.com.ar',
+        'buenosairesherald.com',
+        'pagina12.com.ar',
+        'minutouno.com',
+        'autoblog.com.ar',
+        'perfil.com',
+        'cronica.com.ar',
+        //'ambito.com',
+    ];
 
     protected $dom;
 
@@ -29,6 +44,20 @@ abstract class NewspaperProcessor
         $solved = $this->solveURLShorteners($parsed);
 
         return $solved;
+    }
+
+    public function getNewspaperText($url)
+    {
+        $client = new GuzzleClient();
+        $text = $client->get($url)->send();
+        $body = $text->getBody(true);
+
+        // Por alguna razon a veces minutouno manda gzippeado y guzzle no lo descomprime
+        // Los tres chars son los magic numbers de zip
+        $isGZip = 0 === mb_strpos($body, "\x1f" . "\x8b" . "\x08");
+        if ($isGZip) $body = gzdecode($body);
+
+        return $body;
     }
 
     private function solveURLShorteners($html)
