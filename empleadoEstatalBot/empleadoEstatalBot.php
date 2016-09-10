@@ -31,7 +31,7 @@ class empleadoEstatal
 
     private function generatePosts($things)
     {
-        $newspaperManager = new NewspaperManager();
+        $newspaperManager = new NewspaperFactory();
         foreach ($things as $k => $i) {
             $parser = $newspaperManager->getProcessor($i['data']['domain']);
 

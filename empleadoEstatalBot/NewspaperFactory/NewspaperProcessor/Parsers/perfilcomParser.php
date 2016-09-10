@@ -1,8 +1,8 @@
 <?php
 
-namespace empleadoEstatalBot\NewspaperManager\NewspaperProcessor\Parsers;
+namespace empleadoEstatalBot\NewspaperFactory\NewspaperProcessor\Parsers;
 
-use empleadoEstatalBot\NewspaperManager\NewspaperProcessor;
+use empleadoEstatalBot\NewspaperFactory\NewspaperProcessor;
 use empleadoEstatalBot\Config;
 
 class perfilcomParser extends NewspaperProcessor

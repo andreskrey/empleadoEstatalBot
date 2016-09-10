@@ -1,6 +1,6 @@
 <?php
 
-namespace empleadoEstatalBot\NewspaperManager;
+namespace empleadoEstatalBot\NewspaperFactory;
 
 use DOMDocument;
 use Guzzle\Service\Client as GuzzleClient;
