@@ -1,5 +1,5 @@
 <?php
-namespace empleadoEstatalBot;
+namespace empleadoEstatalBot\NewspaperFactory;
 
 use empleadoEstatalBot\NewspaperFactory\NewspaperProcessor\Parsers;
 

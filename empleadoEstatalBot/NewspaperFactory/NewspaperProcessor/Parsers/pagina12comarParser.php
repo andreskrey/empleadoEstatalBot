@@ -2,7 +2,7 @@
 
 namespace empleadoEstatalBot\NewspaperFactory\NewspaperProcessor\Parsers;
 
-use empleadoEstatalBot\NewspaperFactory\NewspaperProcessor;
+use empleadoEstatalBot\NewspaperFactory\NewspaperProcessor\NewspaperProcessor;
 use empleadoEstatalBot\Config;
 
 class pagina12comarParser extends NewspaperProcessor

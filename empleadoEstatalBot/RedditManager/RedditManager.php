@@ -1,8 +1,10 @@
 <?php
 
-namespace empleadoEstatalBot;
+namespace empleadoEstatalBot\RedditManager;
 
-use empleadoEstatalBot\NewspaperFactory\NewspaperProcessor;
+use empleadoEstatalBot\Config;
+use empleadoEstatalBot\empleadoEstatal;
+use empleadoEstatalBot\NewspaperFactory\NewspaperProcessor\NewspaperProcessor;
 use Exception;
 use League\HTMLToMarkdown\HtmlConverter;
 use Rudolf\OAuth2\Client\Provider\Reddit;

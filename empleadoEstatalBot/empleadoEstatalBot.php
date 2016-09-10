@@ -1,6 +1,8 @@
 <?php
 namespace empleadoEstatalBot;
 
+use empleadoEstatalBot\NewspaperFactory\NewspaperFactory;
+use empleadoEstatalBot\RedditManager\RedditManager;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 

@@ -2,8 +2,8 @@
 
 namespace empleadoEstatalBot\NewspaperFactory\NewspaperProcessor\Parsers;
 
-use empleadoEstatalBot\NewspaperFactory\NewspaperProcessor;
 use empleadoEstatalBot\Config;
+use empleadoEstatalBot\NewspaperFactory\NewspaperProcessor\NewspaperProcessor;
 
 class infobaecomParser extends NewspaperProcessor
 {
