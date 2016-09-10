@@ -3,8 +3,6 @@ namespace empleadoEstatalBot;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use empleadoEstatalBot\NewspaperProcessor;
-use empleadoEstatalBot\RedditManager;
 
 define('APP_PATH', __DIR__ . DIRECTORY_SEPARATOR);
 
