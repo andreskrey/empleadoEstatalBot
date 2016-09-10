@@ -28,7 +28,7 @@ class empleadoEstatal
         if (php_sapi_name() == "cli") self::$debug = true;
 
         self::$log = new Logger('chePibe');
-        self::$log->pushHandler(new StreamHandler(APP_PATH . '/tmp/log.log', Logger::INFO));
+        self::$log->pushHandler(new StreamHandler('php://stderr'));
     }
 
     private function generatePosts($things)
