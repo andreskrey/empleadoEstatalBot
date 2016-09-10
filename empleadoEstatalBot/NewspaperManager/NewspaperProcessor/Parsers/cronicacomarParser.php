@@ -1,8 +1,8 @@
 <?php
 
-namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
+namespace empleadoEstatalBot\NewspaperManager\NewspaperProcessor\Parsers;
 
-use empleadoEstatalBot\NewspaperProcessor;
+use empleadoEstatalBot\NewspaperManager\NewspaperProcessor;
 use empleadoEstatalBot\Config;
 
 class cronicacomarParser extends NewspaperProcessor

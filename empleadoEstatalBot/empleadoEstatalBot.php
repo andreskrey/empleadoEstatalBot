@@ -33,14 +33,9 @@ class empleadoEstatal
 
     private function generatePosts($things)
     {
+        $newspaperManager = new NewspaperManager();
         foreach ($things as $k => $i) {
-
-            $newspaper = 'empleadoEstatalBot\NewspaperProcessor\Parsers\\' . str_replace('.', '', $i['data']['domain']) . 'Parser';
-            if (class_exists($newspaper)) {
-                $parser = new $newspaper;
-            } else {
-                throw new \BadFunctionCallException();
-            }
+            $parser = $newspaperManager->getProcessor($i['data']['domain']);
 
             $text = $parser->getNewspaperText($i['data']['url']);
             $things[$k]['parsed'] = $parser->parse($text);

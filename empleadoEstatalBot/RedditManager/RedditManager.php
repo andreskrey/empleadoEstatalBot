@@ -2,6 +2,7 @@
 
 namespace empleadoEstatalBot;
 
+use empleadoEstatalBot\NewspaperManager\NewspaperProcessor;
 use Exception;
 use League\HTMLToMarkdown\HtmlConverter;
 use Rudolf\OAuth2\Client\Provider\Reddit;

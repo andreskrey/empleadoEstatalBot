@@ -1,11 +1,11 @@
 <?php
 
-namespace empleadoEstatalBot\NewspaperProcessor\Parsers;
+namespace empleadoEstatalBot\NewspaperManager\NewspaperProcessor\Parsers;
 
-use empleadoEstatalBot\NewspaperProcessor;
+use empleadoEstatalBot\NewspaperManager\NewspaperProcessor;
 use empleadoEstatalBot\Config;
 
-class minutounocomParser extends NewspaperProcessor
+class autoblogcomarParser extends NewspaperProcessor
 {
     public function __construct()
     {
@@ -19,15 +19,11 @@ class minutounocomParser extends NewspaperProcessor
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
         $html .= '<h1>' . $this->dom->getElementsByTagName('h1')->item(0)->nodeValue . '</h1>';
-        $html .= '<h2>' . $xpath->query("//*[contains(@class, 'main-quote')]")->item(0)->nodeValue . '</h2>';
 
-        foreach ($xpath->query("//*[contains(@class, 'article-content')]")->item(0)->childNodes as $i) {
-            if (trim($i->nodeValue)
-                && $i->nodeName != 'div'
-            ) {
+        foreach ($xpath->query("//*[contains(@class, 'entry-inner')]")->item(0)->childNodes as $i) {
+            if ($i->nodeName == 'div') continue;
+            if (trim($i->nodeValue)) {
                 $html .= $this->dom->saveHTML($i);
-            } else {
-                if ($i->nodeName == 'br') $html .= '<br>';
             }
         }
 
