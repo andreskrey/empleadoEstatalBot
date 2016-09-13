@@ -19,6 +19,8 @@ Por ahora la lista de diarios que parsea correctamente son:
 - Minuto Uno
 - Autoblog
 - Perfil
+- Diario Registrado
+- La Voz
 - ~~Ámbito~~. Fuck Ámbito, el cuerpo de la noticia viene por AJAX.
 
 ## Como bajo e instalo el proyecto?

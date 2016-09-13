@@ -22,6 +22,7 @@ abstract class NewspaperProcessor
         'cronica.com.ar',
         //'ambito.com',
         'diarioregistrado.com',
+        'lavoz.com.ar',
     ];
 
     protected $dom;
