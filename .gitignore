@@ -1,1 +1,4 @@
-/config.php
+/config/config.php
+/empleadoEstatalBot/tmp
+.idea/
+vendor/
