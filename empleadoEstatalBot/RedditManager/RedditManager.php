@@ -108,7 +108,7 @@ class RedditManager
     private function checkDomains($things)
     {
         $posts = $selectedPosts = $alreadyCommented = [];
-        $selectedThings = false;
+        $selectedThings = null;
 
         /*
          * Caso de que la ddbb de redis este vacia (por que heroku la borra cada tanto en el hosting gratuito,
