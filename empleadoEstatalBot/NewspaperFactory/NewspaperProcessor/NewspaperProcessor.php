@@ -23,7 +23,7 @@ abstract class NewspaperProcessor
         //'ambito.com',
         'diarioregistrado.com',
         'lavoz.com.ar',
-        'mdzol.com.ar',
+        'mdzol.com',
     ];
 
     protected $dom;

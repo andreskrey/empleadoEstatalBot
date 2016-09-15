@@ -60,4 +60,23 @@ class empleadoEstatal
 
         return count($posts);
     }
+
+    public function laburarPost($id = null)
+    {
+        if (!$id) return false;
+
+        $reddit = new RedditManager();
+        $reddit->login();
+        $posts = $reddit->getPost($id);
+
+        if ($posts) {
+            $posts = $this->generatePosts($posts);
+            $reddit->postComments($posts);
+            self::$log->addInfo('Done posting comments.');
+        } else {
+            self::$log->addInfo('No new posts.');
+        }
+
+        return $posts;
+    }
 }

@@ -61,18 +61,7 @@ class RedditManager
 
     public function getNewPosts()
     {
-        $things = $posts = $selectedPosts = $alreadyCommented = [];
-
-        /*
-         * Caso de que la ddbb de redis este vacia (por que heroku la borra cada tanto en el hosting gratuito,
-         * cargar los posts ya comentados para matchearlos al postear y evitar doble comment.
-         */
-        if ($this->redis->dbsize()) {
-            empleadoEstatal::$log->addInfo('Posted comments ddbb NOT empty. :)');
-        } else {
-            $alreadyCommented = $this->alreadyCommented();
-            empleadoEstatal::$log->addAlert('Posted comments ddbb empty.');
-        }
+        $things = [];
 
         foreach ($this->subreddits as $subredit) {
             try {
@@ -88,33 +77,75 @@ class RedditManager
                 die('Failed to get reddit data');
             }
 
-            foreach ($result['data']['children'] as $i) {
-                $posts[] = $i['data']['id'];
-
-                /*
-                 * Chequear tres cosas
-                 * 1. Que el domain del thing este dentro de la lista de diarios parsebles
-                 * 2. Que el id no coincida con los que ya existen en la ddbb de redis
-                 * 3. Chequear que no haya comentado ya (en caso de que la ddbb de redis este vacia).
-                 */
-                if (in_array($i['data']['domain'], NewspaperProcessor::$newspapers)
-                    && !$this->redis->get($i['data']['id'])
-                    && !in_array($i['data']['id'], $alreadyCommented)
-                ) {
-                    $things[] = $i;
-                    if (!empleadoEstatal::$debug) {
-                        $selectedPosts[] = $i['data']['id'];
-                        $this->redis->set($i['data']['id'], date('c'));
-                    }
-                }
-            }
-
+            $things = $this->checkDomains($things);
         }
 
-        empleadoEstatal::$log->addInfo('New posts after getting /new data:', $posts);
-        empleadoEstatal::$log->addInfo('Selected posts to comment:', $selectedPosts);
+        return $things;
+    }
+
+    public function getPost($ids = null)
+    {
+        $things = [];
+        $ids = array_unique($ids);
+
+        foreach ($ids as $id) {
+            try {
+                $thing = $this->client
+                    ->get('https://oauth.reddit.com/by_id/t3_' . $id . '/.json', $this->headers)
+                    ->send()
+                    ->json();
+
+                $postable = $this->checkDomains($thing['data']['children']);
+                if ($postable) $things[] = $postable[0];
+            } catch (Exception $e) {
+                return false;
+            }
+        }
 
         return $things;
+    }
+
+    private function checkDomains($things)
+    {
+        $posts = $selectedPosts = $alreadyCommented = [];
+        $selectedThings = false;
+
+        /*
+         * Caso de que la ddbb de redis este vacia (por que heroku la borra cada tanto en el hosting gratuito,
+         * cargar los posts ya comentados para matchearlos al postear y evitar doble comment.
+         */
+        if ($this->redis->dbsize()) {
+            empleadoEstatal::$log->addInfo('Posted comments ddbb NOT empty. :)');
+        } else {
+            $alreadyCommented = $this->alreadyCommented();
+            empleadoEstatal::$log->addAlert('Posted comments ddbb empty.');
+        }
+
+        foreach ($things as $i) {
+            $posts[] = $i['data']['id'];
+
+            /*
+             * Chequear tres cosas
+             * 1. Que el domain del thing este dentro de la lista de diarios parsebles
+             * 2. Que el id no coincida con los que ya existen en la ddbb de redis
+             * 3. Chequear que no haya comentado ya (en caso de que la ddbb de redis este vacia).
+             */
+            if (in_array($i['data']['domain'], NewspaperProcessor::$newspapers)
+                && !$this->redis->get($i['data']['id'])
+                && !in_array($i['data']['id'], $alreadyCommented)
+            ) {
+                $selectedThings[] = $i;
+                if (!empleadoEstatal::$debug) {
+                    $selectedPosts[] = $i['data']['id'];
+                    $this->redis->set($i['data']['id'], date('c'));
+                }
+            }
+        }
+
+        empleadoEstatal::$log->addInfo('New posts after getting data:', $posts);
+        empleadoEstatal::$log->addInfo('Selected posts to comment:', $selectedPosts);
+
+        return $selectedThings;
     }
 
     public function postComments($things)

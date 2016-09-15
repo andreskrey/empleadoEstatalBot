@@ -5,7 +5,7 @@ namespace empleadoEstatalBot\NewspaperFactory\NewspaperProcessor\Parsers;
 use empleadoEstatalBot\NewspaperFactory\NewspaperProcessor\NewspaperProcessor;
 use empleadoEstatalBot\Config;
 
-class mdzolcomarParser extends NewspaperProcessor
+class mdzolcomParser extends NewspaperProcessor
 {
     public function __construct()
     {
