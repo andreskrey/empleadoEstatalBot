@@ -77,6 +77,6 @@ class empleadoEstatal
             self::$log->addInfo('No new posts.');
         }
 
-        return $posts;
+        return count($posts);
     }
 }
