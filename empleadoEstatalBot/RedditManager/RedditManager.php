@@ -71,13 +71,12 @@ class RedditManager
                     ]])
                     ->send()
                     ->json();
+                $things = array_merge($things, $this->checkDomains($result['data']['children']));
             } catch (Exception $e) {
                 unlink(APP_PATH . 'tmp/tokens.reddit');
                 empleadoEstatal::$log->addError('Failed to get subreddit /new posts.');
                 die('Failed to get reddit data');
             }
-
-            $things = $this->checkDomains($things);
         }
 
         return $things;
