@@ -97,7 +97,7 @@ class RedditManager
                 $postable = $this->checkDomains($thing['data']['children']);
                 if ($postable) $things[] = $postable[0];
             } catch (Exception $e) {
-                empleadoEstatal::$log->addError('Wrong ID sent', $id);
+                empleadoEstatal::$log->addError('Wrong ID sent: ' . $id);
             }
         }
 
