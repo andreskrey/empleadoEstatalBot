@@ -39,6 +39,10 @@ class empleadoEstatal
 
             $text = $parser->getNewspaperText($i['data']['url']);
             $things[$k]['parsed'] = $parser->parse($text);
+            if (!$parser->checkLength($things[$k]['parsed'])) {
+                self::$log->addInfo('Post ' . $i['data']['id'] . ' discarded. Too short.');
+                unset($things[$k]);
+            }
         }
 
         return $things;

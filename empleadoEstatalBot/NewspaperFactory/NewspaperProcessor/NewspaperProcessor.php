@@ -3,6 +3,7 @@
 namespace empleadoEstatalBot\NewspaperFactory\NewspaperProcessor;
 
 use DOMDocument;
+use empleadoEstatalBot\Config;
 use Guzzle\Service\Client as GuzzleClient;
 
 abstract class NewspaperProcessor
@@ -91,5 +92,22 @@ abstract class NewspaperProcessor
 
         // Hack horrible para sacar el hack horrible anterior
         return str_replace('<?xml encoding="utf-8"?>', '', $this->dom->saveHTML());
+    }
+
+    public function checkLength($html)
+    {
+        $this->dom = new DOMDocument('1.0', 'utf-8');
+        $this->dom->loadHTML('<?xml encoding="utf-8"?>' . $html);
+        $this->dom->encoding = 'utf-8';
+
+
+        $headerSize = 0;
+        $headerSize += strlen($this->dom->getElementsByTagName('h1')->item(0)->nodeValue);
+        $headerSize += strlen($this->dom->getElementsByTagName('h2')->item(0)->nodeValue);
+
+        // Cuerpo de la noticia sin la firma (sin tags html)
+        $bodySize = strlen($this->dom->textContent) - strlen(strip_tags(Config::$SIGNATURE));
+
+        return ($bodySize <=> $headerSize) > 0;
     }
 }
