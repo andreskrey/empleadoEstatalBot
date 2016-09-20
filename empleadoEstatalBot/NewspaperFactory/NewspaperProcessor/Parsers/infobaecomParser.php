@@ -25,7 +25,7 @@ class infobaecomParser extends NewspaperProcessor
 
         foreach ($this->dom->getElementById('article-content')->childNodes as $i) {
             if (trim($i->nodeValue)) {
-                if (mb_strpos(mb_strtolower(trim($i->nodeValue)), 'lea más:') === 0) break;
+                if (mb_strpos(mb_strtolower(trim($i->nodeValue)), 'lea más') === 0) break;
                 $html .= $this->dom->saveHTML($i);
             }
         }
