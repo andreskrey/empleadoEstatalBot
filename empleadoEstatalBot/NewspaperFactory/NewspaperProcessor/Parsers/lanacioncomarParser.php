@@ -41,6 +41,7 @@ class lanacioncomarParser extends NewspaperProcessor
             if ($i->tagName == 'div'
                 || $i->tagName == 'figure'
                 || $i->tagName == 'aside'
+                || $i->tagName == 'q'
                 || (isset($i->attributes->item(2)->value) && strpos($i->attributes->item(2)->value, 'breadcrum') !== false
                     || mb_strpos($i->nodeValue, 'Break: más noticias') === 0
                     || strpos($i->nodeValue, 'Break, noticias ') === 0)
