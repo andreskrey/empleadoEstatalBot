@@ -24,6 +24,7 @@ abstract class NewspaperProcessor
         'diarioregistrado.com',
         'lavoz.com.ar',
         'mdzol.com',
+        'tn.com.ar',
     ];
 
     protected $dom;
