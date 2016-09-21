@@ -22,6 +22,9 @@ Por ahora la lista de diarios que parsea correctamente son:
 - Diario Registrado
 - La Voz
 - ~~Ámbito~~. Fuck Ámbito, el cuerpo de la noticia viene por AJAX.
+- Mendoza Online
+- TN
+- Cronica
 
 ## Como bajo e instalo el proyecto?
 
