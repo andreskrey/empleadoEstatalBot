@@ -104,8 +104,8 @@ abstract class NewspaperProcessor
         $headerSize += mb_strlen($this->dom->getElementsByTagName('h1')->item(0)->nodeValue);
         $headerSize += mb_strlen($this->dom->getElementsByTagName('h2')->item(0)->nodeValue);
 
-        // Cuerpo de la noticia sin la firma (sin tags html)
-        $bodySize = mb_strlen($this->dom->textContent) - mb_strlen(strip_tags(Config::$SIGNATURE));
+        // Cuerpo de la noticia sin la firma (sin tags html), sin los titulos
+        $bodySize = mb_strlen($this->dom->textContent) - mb_strlen(strip_tags(Config::$SIGNATURE)) - $headerSize;
 
         return ($bodySize <=> $headerSize) > 0;
     }
