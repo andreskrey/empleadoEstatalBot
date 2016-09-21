@@ -100,13 +100,12 @@ abstract class NewspaperProcessor
         $this->dom->loadHTML('<?xml encoding="utf-8"?>' . $html);
         $this->dom->encoding = 'utf-8';
 
-
         $headerSize = 0;
-        $headerSize += strlen($this->dom->getElementsByTagName('h1')->item(0)->nodeValue);
-        $headerSize += strlen($this->dom->getElementsByTagName('h2')->item(0)->nodeValue);
+        $headerSize += mb_strlen($this->dom->getElementsByTagName('h1')->item(0)->nodeValue);
+        $headerSize += mb_strlen($this->dom->getElementsByTagName('h2')->item(0)->nodeValue);
 
         // Cuerpo de la noticia sin la firma (sin tags html)
-        $bodySize = strlen($this->dom->textContent) - strlen(strip_tags(Config::$SIGNATURE));
+        $bodySize = mb_strlen($this->dom->textContent) - mb_strlen(strip_tags(Config::$SIGNATURE));
 
         return ($bodySize <=> $headerSize) > 0;
     }
