@@ -94,6 +94,11 @@ abstract class NewspaperProcessor
         return str_replace('<?xml encoding="utf-8"?>', '', $this->dom->saveHTML());
     }
 
+    /*
+     * La idea es solo publicar notas que tengan una buena cantidad de texto en el cuerpo.
+     * Esto se decide multiplicando por dos la cantidad de caracteres que componen el titulo y la bajada
+     * Si este numero es mayor a la cantidad de caracteres el cuerpo, no se publica el post.
+     */
     public function checkLength($html)
     {
         $this->dom = new DOMDocument('1.0', 'utf-8');
@@ -107,6 +112,7 @@ abstract class NewspaperProcessor
         // Cuerpo de la noticia sin la firma (sin tags html), sin los titulos
         $bodySize = mb_strlen($this->dom->textContent) - mb_strlen(strip_tags(Config::$SIGNATURE)) - $headerSize;
 
-        return ($bodySize <=> $headerSize) > 0;
+        // Bodysize contra headerSize por 2
+        return ($bodySize <=> $headerSize * 2) > 0;
     }
 }

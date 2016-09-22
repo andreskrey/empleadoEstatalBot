@@ -14,7 +14,7 @@ class RedditManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testMarkdownGeneratorGeneratesMarkdown($originalString, $expectedResult)
     {
-        $reddit = new empleadoEstatalBot\RedditManager();
+        $reddit = new empleadoEstatalBot\RedditManager\RedditManager();
         $result = $this->invokeMethod($reddit, 'buildMarkdown', array($originalString));
 
         $this->assertEquals($expectedResult, $result);

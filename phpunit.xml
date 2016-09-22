@@ -5,4 +5,9 @@
             <directory>./empleadoEstatalBot/Test/</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./empleadoEstatalBot/</directory>
+        </whitelist>
+    </filter>
 </phpunit>
