@@ -26,6 +26,7 @@ abstract class NewspaperProcessor
         'lavoz.com.ar',
         'mdzol.com',
         'tn.com.ar',
+        'infonews.com',
     ];
 
     protected $dom;

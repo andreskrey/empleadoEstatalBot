@@ -25,6 +25,7 @@ Por ahora la lista de diarios que parsea correctamente son:
 - Mendoza Online
 - TN
 - Cronica
+- Infonews
 
 ## Como bajo e instalo el proyecto?
 
