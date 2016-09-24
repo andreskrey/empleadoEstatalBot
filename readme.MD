@@ -26,6 +26,7 @@ Por ahora la lista de diarios que parsea correctamente son:
 - TN
 - Cronica
 - Infonews
+- La Politica Online
 
 ## Como bajo e instalo el proyecto?
 

@@ -27,6 +27,7 @@ abstract class NewspaperProcessor
         'mdzol.com',
         'tn.com.ar',
         'infonews.com',
+        'lapoliticaonline.com',
     ];
 
     protected $dom;
