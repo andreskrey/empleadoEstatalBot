@@ -15,7 +15,7 @@ class Config
 
     static $REDIS_URL = null;
 
-    static $SIGNATURE = '<hr><p><em><strong>empleadoEstatalBot</strong>, el primer bot de reddit 100% peronista. Ensamblado en TdF. ^(Hecho en China.)</em></p><p><a href="/u/subtepass">Autor</a>
+    static $SIGNATURE = '<hr><p><em><strong>empleadoEstatalBot</strong>, el bot que por solo XXX por mes te ahorra unos clicks.</em></p><p><a href="/u/subtepass">Autor</a>
     | <a href="https://github.com/andreskrey/empleadoEstatalBot">Código fuente</a> | <a href="https://github.com/andreskrey/empleadoEstatalBot#que-diarios-soporta">Lista de diarios</a></p>';
 
     public function __construct()
@@ -26,5 +26,7 @@ class Config
         Config::$USERNAME = getenv('USERNAME');
         Config::$PASSWORD = getenv('PASSWORD');
         Config::$REDIS_URL = getenv('REDIS_URL');
+
+        Config::$SIGNATURE = str_replace('XXX', round((time() - strtotime('05/10/2016')) * 1.6 / 150000, 2), Config::$SIGNATURE);
     }
 }
