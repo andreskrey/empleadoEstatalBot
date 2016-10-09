@@ -18,7 +18,7 @@ class lapoliticaonlinecomParser extends NewspaperProcessor
         $xpath = new \DOMXPath($this->dom);
 
         $html = '<!DOCTYPE html><html><head><title></title></head><body>';
-        $html .= '<h1>' . $this->dom->getElementById('readerZenv08565v1-title')->nodeValue . '</h1>';
+        $html .= '<h1>' . $xpath->query("//*[contains(@class, 'zleftbig')]/*[contains(@class, 'title')]")->item(0)->nodeValue . '</h1>';
         $html .= '<h2>' . $xpath->query("//*[contains(@class, 'description')]")->item(0)->nodeValue . '</h2>';
 
         foreach ($this->dom->getElementById('vsmcontent')->childNodes as $i) {

@@ -49,8 +49,29 @@ abstract class NewspaperProcessor
     {
         $parsed = $this->parseText($text);
         $solved = $this->solveURLShorteners($parsed);
+        $kicified = $this->checkForKicilove($solved);
 
-        return $solved;
+        return $kicified;
+    }
+
+    public function checkForKicilove($text)
+    {
+        if (stripos($text, 'kicillof') !== false) {
+            $this->dom = new DOMDocument('1.0', 'utf-8');
+            $this->dom->loadHTML('<?xml encoding="utf-8"?>' . $text);
+            $this->dom->encoding = 'utf-8';
+
+            $frag = $this->dom->createDocumentFragment();
+            $frag->appendXML('<p>- - - - - -</p>');
+            $frag->appendXML('<p>En esta nota se menciona a Kicillof y por reglas de /r/argentina es obligatorio recordar este video: <b><a href="https://www.youtube.com/watch?v=htCUanVT4Dg">Prat-Gay humilló a Axel Kicillof</a></b>.</p>');
+
+            $firma = $this->dom->getElementById('firma');
+            $firma->appendChild($frag);
+
+            return str_replace('<?xml encoding="utf-8"?>', '', $this->dom->saveHTML());
+        } else {
+            return $text;
+        }
     }
 
     public function getNewspaperText($url)
