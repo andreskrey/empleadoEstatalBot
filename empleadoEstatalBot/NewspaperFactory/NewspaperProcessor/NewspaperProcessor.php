@@ -90,6 +90,10 @@ abstract class NewspaperProcessor
     public function getNewspaperText($url)
     {
         $client = new GuzzleClient();
+
+        // For the gorras out there
+        $client->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0');
+
         $text = $client->get($url)->send();
         $body = $text->getBody(true);
 
