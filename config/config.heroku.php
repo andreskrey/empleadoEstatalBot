@@ -4,6 +4,7 @@ namespace empleadoEstatalBot;
 
 class Config
 {
+
     static $CLIENT_ID = null;
     static $SECRET_KEY = null;
     static $REDIRECT_URI = null;
