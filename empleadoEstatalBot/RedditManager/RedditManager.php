@@ -4,7 +4,6 @@ namespace empleadoEstatalBot\RedditManager;
 
 use empleadoEstatalBot\Config;
 use empleadoEstatalBot\empleadoEstatal;
-use empleadoEstatalBot\NewspaperFactory\NewspaperProcessor\NewspaperProcessor;
 use Exception;
 use League\HTMLToMarkdown\HtmlConverter;
 use Rudolf\OAuth2\Client\Provider\Reddit;
@@ -18,6 +17,15 @@ class RedditManager
 
     private $subreddits = [
         'argentina'
+    ];
+
+    private $bannedDomains = [
+        'imgur.com',
+        'twitter.com',
+        'youtube.com',
+        'i.reddit.com',
+        'reddit.com',
+        'ambito.com'
     ];
 
     public function __construct()
@@ -63,10 +71,10 @@ class RedditManager
     {
         $things = [];
 
-        foreach ($this->subreddits as $subredit) {
+        foreach ($this->subreddits as $subreddit) {
             try {
                 $result = $this->client
-                    ->get('https://oauth.reddit.com/r/' . $subredit . '/new/.json', $this->headers, ['query' => [
+                    ->get('https://oauth.reddit.com/r/' . $subreddit . '/new/.json', $this->headers, ['query' => [
                         'limit' => 10
                     ]])
                     ->send()
@@ -124,11 +132,11 @@ class RedditManager
 
             /*
              * Chequear tres cosas
-             * 1. Que el domain del thing este dentro de la lista de diarios parsebles
+             * 1. Que el domain del thing no este dentro de los domains banneados
              * 2. Que el id no coincida con los que ya existen en la ddbb de redis
              * 3. Chequear que no haya comentado ya (en caso de que la ddbb de redis este vacia).
              */
-            if (in_array($i['data']['domain'], NewspaperProcessor::$newspapers)
+            if (!in_array($i['data']['domain'], $this->bannedDomains)
                 && !$this->redis->get($i['data']['id'])
                 && !in_array($i['data']['id'], $alreadyCommented)
             ) {
@@ -183,7 +191,7 @@ class RedditManager
         $converter = new HtmlConverter([
             'strip_tags' => true,
             'header_style' => 'atx',
-            'remove_nodes' => 'img script figure'
+            'remove_nodes' => 'img'
         ]);
 
         $markdown = $converter->convert($parsed);

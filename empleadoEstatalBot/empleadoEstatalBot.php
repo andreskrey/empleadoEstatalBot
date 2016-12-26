@@ -1,7 +1,7 @@
 <?php
 namespace empleadoEstatalBot;
 
-use empleadoEstatalBot\NewspaperFactory\NewspaperFactory;
+use empleadoEstatalBot\NewspaperProcessor\NewspaperProcessor;
 use empleadoEstatalBot\RedditManager\RedditManager;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -21,7 +21,7 @@ class empleadoEstatal
 {
     static public $log;
 
-    static public $debug = false;
+    static public $debug = true;
 
     public function __construct()
     {
@@ -33,11 +33,13 @@ class empleadoEstatal
 
     private function generatePosts($things)
     {
-        $newspaperManager = new NewspaperFactory();
         foreach ($things as $k => $i) {
-            $parser = $newspaperManager->getProcessor($i['data']['domain']);
 
-            $text = $parser->getNewspaperText($i['data']['url']);
+            $parser = new NewspaperProcessor($i['data']['url'], [
+                'fixRelativeURLs' => true,
+            ]);
+
+            $text = $parser->getNewspaperText();
             $things[$k]['parsed'] = $parser->parse($text);
             if (!$parser->checkLength($things[$k]['parsed'])) {
                 self::$log->addInfo('Post ' . $i['data']['id'] . ' discarded. Too short.');
