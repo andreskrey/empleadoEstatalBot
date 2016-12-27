@@ -34,7 +34,11 @@ class NewspaperProcessor
             )
         );
 
-        $result = $readability->parse($text);
+        try {
+            $result = $readability->parse($text);
+        } catch (\Error $e) {
+            $result = false;
+        }
 
         if ($result) {
             if ($result['image']) {
