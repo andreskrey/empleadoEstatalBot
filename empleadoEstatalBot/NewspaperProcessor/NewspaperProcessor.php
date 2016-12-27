@@ -13,6 +13,7 @@ class NewspaperProcessor
     private $URLShorteners = [
         't.co',
         'goo.gl',
+        'bit.ly',
     ];
 
     private $url;
