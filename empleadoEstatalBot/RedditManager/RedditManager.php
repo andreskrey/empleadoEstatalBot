@@ -21,11 +21,13 @@ class RedditManager
 
     private $bannedDomains = [
         'imgur.com',
+        'i.imgur.com',
         'twitter.com',
         'youtube.com',
         'i.reddit.com',
         'reddit.com',
-        'ambito.com'
+        'ambito.com',
+        'self.argentina'
     ];
 
     public function __construct()
