@@ -21,7 +21,7 @@ class empleadoEstatal
 {
     static public $log;
 
-    static public $debug = true;
+    static public $debug = false;
 
     public function __construct()
     {
