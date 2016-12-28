@@ -61,6 +61,9 @@ class NewspaperProcessor
             return false;
         }
 
+        // Envolviendo en blockquote el asunto para triggerear la regla css que oculta el texto
+        $parsed = '<blockquote>' . $parsed . '</blockquote>' . "\n";
+
         $signed = $this->signPost($parsed);
         $solved = $this->solveURLShorteners($signed);
 
