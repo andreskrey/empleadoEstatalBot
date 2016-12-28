@@ -27,7 +27,9 @@ class RedditManager
         'i.reddit.com',
         'reddit.com',
         'ambito.com',
-        'self.argentina'
+        'self.argentina',
+        'youtube.com',
+        'storify.com',
     ];
 
     public function __construct()
