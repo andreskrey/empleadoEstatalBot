@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "62e5a637bcecaf0b6d51fedbc77b2bfc",
-    "content-hash": "22195afba1090edf15184c3162122d93",
+    "hash": "0d7b3835bb226165330a9fc0872aee99",
+    "content-hash": "1c5ced4a4d2538d06ca76eceb49327be",
     "packages": [
         {
             "name": "andreskrey/readability.php",
-            "version": "v0.1.2",
+            "version": "dev-development",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andreskrey/readability.php.git",
-                "reference": "a7d7a636ec1aaa8fb0884d4f27c787a9c22ed5ca"
+                "reference": "2df802f40f20c177a3eceb2771b2913b60b4a0dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/a7d7a636ec1aaa8fb0884d4f27c787a9c22ed5ca",
-                "reference": "a7d7a636ec1aaa8fb0884d4f27c787a9c22ed5ca",
+                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/2df802f40f20c177a3eceb2771b2913b60b4a0dd",
+                "reference": "2df802f40f20c177a3eceb2771b2913b60b4a0dd",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "html",
                 "readability"
             ],
-            "time": "2016-12-26 23:13:07"
+            "time": "2016-12-26 22:36:56"
         },
         {
             "name": "doctrine/instantiator",
@@ -207,16 +207,16 @@
         },
         {
             "name": "league/html-to-markdown",
-            "version": "4.3.1",
+            "version": "dev-reddit-flavored-markdown",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thephpleague/html-to-markdown.git",
-                "reference": "c5b05d50c646d4e3cdfcc27b6d5ed62dfaeef4c1"
+                "url": "https://github.com/andreskrey/html-to-markdown.git",
+                "reference": "90cc289c12da99fd5020125a60b76bed3b1fb87d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/c5b05d50c646d4e3cdfcc27b6d5ed62dfaeef4c1",
-                "reference": "c5b05d50c646d4e3cdfcc27b6d5ed62dfaeef4c1",
+                "url": "https://api.github.com/repos/andreskrey/html-to-markdown/zipball/90cc289c12da99fd5020125a60b76bed3b1fb87d",
+                "reference": "90cc289c12da99fd5020125a60b76bed3b1fb87d",
                 "shasum": ""
             },
             "require": {
@@ -243,7 +243,11 @@
                     "League\\HTMLToMarkdown\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "League\\HTMLToMarkdown\\Test\\": "tests"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -267,7 +271,10 @@
                 "html",
                 "markdown"
             ],
-            "time": "2016-10-27 20:05:57"
+            "support": {
+                "source": "https://github.com/andreskrey/html-to-markdown/tree/dev-reddit-flavored-markdown"
+            },
+            "time": "2016-12-28 17:57:06"
         },
         {
             "name": "league/oauth2-client",
@@ -1863,9 +1870,19 @@
         }
     ],
     "packages-dev": [],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "4.2",
+            "alias_normalized": "4.2.0.0",
+            "version": "dev-reddit-flavored-markdown",
+            "package": "league/html-to-markdown"
+        }
+    ],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "league/html-to-markdown": 20,
+        "andreskrey/readability.php": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

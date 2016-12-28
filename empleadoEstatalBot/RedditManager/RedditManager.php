@@ -29,6 +29,7 @@ class RedditManager
         'self.argentina',
         'youtube.com',
         'storify.com',
+        'buzzfeed.com',
     ];
 
     public function __construct()

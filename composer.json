@@ -1,12 +1,19 @@
 {
+    "repositories":
+    [
+        {
+            "type": "vcs",
+            "url": "https://github.com/andreskrey/html-to-markdown"
+        }
+    ],
     "require": {
         "rtheunissen/oauth2-reddit": "^1.2",
-        "league/html-to-markdown": "^4.2",
+        "league/html-to-markdown": "dev-reddit-flavored-markdown as 4.2",
         "ext-mbstring": "*",
         "monolog/monolog": "^1.21",
         "predis/predis": "^1.1",
         "phpunit/phpunit": "5.5.*",
-        "andreskrey/Readability.php": "^0.1.2"
+        "andreskrey/Readability.php": "dev-development"
     },
     "autoload": {
         "psr-4": {
