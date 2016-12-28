@@ -26,7 +26,6 @@ class RedditManager
         'youtube.com',
         'i.reddit.com',
         'reddit.com',
-        'ambito.com',
         'self.argentina',
         'youtube.com',
         'storify.com',
