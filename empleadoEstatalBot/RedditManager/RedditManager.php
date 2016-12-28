@@ -194,8 +194,7 @@ class RedditManager
     {
         $converter = new HtmlConverter([
             'strip_tags' => true,
-            'header_style' => 'atx',
-            'remove_nodes' => 'img'
+            'header_style' => 'atx'
         ]);
 
         $markdown = $converter->convert($parsed);
