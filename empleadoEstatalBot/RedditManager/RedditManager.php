@@ -200,6 +200,10 @@ class RedditManager
 
         $markdown = $converter->convert($parsed);
 
+        // Agregar la marca de markdown para hacer el hover de css
+
+        $markdown = "#####&#009;\n\n######&#009;\n\n####&#009;\n\n" . $markdown;
+
         return $markdown;
     }
 }
