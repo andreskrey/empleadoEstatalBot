@@ -63,9 +63,8 @@ class NewspaperProcessor
 
         $signed = $this->signPost($parsed);
         $solved = $this->solveURLShorteners($signed);
-        $kicified = $this->checkForKicilove($solved);
 
-        return $kicified;
+        return $solved;
     }
 
     public function signPost($text)
