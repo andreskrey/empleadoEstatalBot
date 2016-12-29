@@ -28,6 +28,7 @@ class RedditManager
         'reddit.com',
         'self.argentina',
         'youtube.com',
+        'youtu.be',
         'storify.com',
         'buzzfeed.com',
     ];
