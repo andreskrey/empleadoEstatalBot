@@ -43,9 +43,9 @@ class NewspaperProcessor
 
         if ($result) {
             if ($result['image']) {
-                $html = '<h1>[' . $result['title'] . '](' . $result['image'] . ')</h1>' . "<br/><br/>";
+                $html = '<h1>[' . htmlspecialchars($result['title']) . '](' . $result['image'] . ')</h1>' . "<br/><br/>";
             } else {
-                $html = '<h1>' . $result['title'] . '</h1>' . "<br/><br/>";
+                $html = '<h1>' . htmlspecialchars($result['title']) . '</h1>' . "<br/><br/>";
             }
             return $html . $result['html'];
         }
