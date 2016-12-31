@@ -31,6 +31,8 @@ class RedditManager
         'youtu.be',
         'storify.com',
         'buzzfeed.com',
+        'ar.radiocut.fm',
+        'radiocut.fm',
     ];
 
     public function __construct()
