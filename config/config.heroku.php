@@ -15,8 +15,8 @@ class Config
 
     static $REDIS_URL = null;
 
-    static $SIGNATURE = '<div id="firma"><hr><p><em><strong>empleadoEstatalBot</strong>, el bot que trabaja para el estado pero es monotributista.</em></p><p><a href="/u/subtepass">Autor</a>
-    | <a href="https://github.com/andreskrey/empleadoEstatalBot">Código fuente</a> | <a href="https://github.com/andreskrey/empleadoEstatalBot#que-diarios-soporta">Lista de diarios</a></p></div>';
+    static $SIGNATURE = '<div id="firma"><hr><p><em><strong>empleadoEstatalBot</strong>, si lo tocan a CyberJIT el quilombo que se va a armar.</em></p><p><a href="/u/subtepass">Autor</a>
+    | <a href="https://github.com/andreskrey/empleadoEstatalBot">Código fuente</a></p></div>';
 
     public function __construct()
     {
