@@ -33,6 +33,7 @@ class RedditManager
         'buzzfeed.com',
         'ar.radiocut.fm',
         'radiocut.fm',
+        'vid.me',
     ];
 
     public function __construct()
