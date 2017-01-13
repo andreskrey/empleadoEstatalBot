@@ -22,6 +22,7 @@ class RedditManager
     private $bannedDomains = [
         'imgur.com',
         'i.imgur.com',
+        'm.imgur.com',
         'twitter.com',
         'youtube.com',
         'i.reddit.com',
