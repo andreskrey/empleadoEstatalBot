@@ -28,6 +28,17 @@ class NewspaperProcessor
 
     public function parseText($text)
     {
+        /*
+         * Perdoname, Oh Dios, por parsear HTML con regex.
+         * Es culpa de Clarin y su espantoso JS.
+         */
+        if (strpos($text, 'CLARIN') !== false) {
+            $text = preg_replace('/inline: {(.|\n)*?},/', '', $text);
+        }
+        /*
+         * Amen
+         */
+
         $readability = new HTMLParser(
             array_merge(
                 $this->options,
@@ -73,39 +84,6 @@ class NewspaperProcessor
     public function signPost($text)
     {
         return $text . "<br/><br/><br/>" . Config::$SIGNATURE;
-    }
-
-    public function checkForKicilove($text)
-    {
-        $politicos = [
-            'kicillof' => [
-                '<p>- - - - - -</p>',
-                '<p>En esta nota se menciona a Kicillof y por reglas de /r/argentina es obligatorio recordar este video: <b><a href="https://www.youtube.com/watch?v=htCUanVT4Dg">Prat-Gay humilló a Axel Kicillof</a></b>.</p>'
-            ],
-            'ottavis' => [
-                '<p>- - - - - -</p>',
-                '<p>Ottavis, <a href="https://i.redd.it/y1y0s803tuux.jpg">orgullo nacional</a>.</p>'
-            ]
-        ];
-        foreach ($politicos as $politico => $addon) {
-            if (stripos($text, $politico) !== false) {
-                $this->dom = new DOMDocument('1.0', 'utf-8');
-                $this->dom->loadHTML('<?xml encoding="utf-8"?>' . $text);
-                $this->dom->encoding = 'utf-8';
-
-                $frag = $this->dom->createDocumentFragment();
-                foreach ($addon as $line) {
-                    $frag->appendXML($line);
-                }
-
-                $firma = $this->dom->getElementById('firma');
-                $firma->appendChild($frag);
-
-                return str_replace('<?xml encoding="utf-8"?>', '', $this->dom->saveHTML());
-            }
-        }
-
-        return $text;
     }
 
     public function getNewspaperText()
