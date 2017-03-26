@@ -37,6 +37,7 @@ class empleadoEstatal
 
             $parser = new NewspaperProcessor($i['data']['url'], [
                 'fixRelativeURLs' => true,
+                'normalizeEntities' => true
             ]);
 
             $text = $parser->getNewspaperText();
