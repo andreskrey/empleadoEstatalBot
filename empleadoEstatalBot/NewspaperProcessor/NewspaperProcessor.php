@@ -6,6 +6,7 @@ use andreskrey\Readability\HTMLParser;
 use DOMDocument;
 use empleadoEstatalBot\Config;
 use Guzzle\Service\Client as GuzzleClient;
+use \ForceUTF8\Encoding;
 
 class NewspaperProcessor
 {
@@ -100,6 +101,10 @@ class NewspaperProcessor
         // Los tres chars son los magic numbers de zip
         $isGZip = 0 === mb_strpos($body, "\x1f" . "\x8b" . "\x08");
         if ($isGZip) $body = gzdecode($body);
+
+        // Algunos diarios mandan texto en UTF8 y Content Type declarado como otra cosa
+        // y se rompe todo el texto. Force UTF8 soluciona esto
+        $body = Encoding::toUTF8($body);
 
         return $body;
     }
