@@ -15,7 +15,7 @@ class Config
 
     static $REDIS_URL = null;
 
-    static $SIGNATURE = '<div id="firma"><hr><p><em><strong>empleadoEstatalBot</strong>, XXXX.</em></p><p><a href="/u/subtepass">Autor</a>
+    static $SIGNATURE = '<div id="firma"><hr><p><em><strong>empleadoEstatalBot</strong>, XXX.</em></p><p><a href="/u/subtepass">Autor</a>
     | <a href="https://github.com/andreskrey/empleadoEstatalBot">Código fuente</a></p></div>';
 
     public function __construct()
