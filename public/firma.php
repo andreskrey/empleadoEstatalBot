@@ -16,7 +16,7 @@ if ($fechaTimeStamp) {
     }
 } else {
     $fecha = 'Ahora!';
-    $fechaTimeStamp = 61;
+    $fechaTimeStamp = 3660;
 }
 
 if (!empty($_POST)) {
