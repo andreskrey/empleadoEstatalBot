@@ -20,11 +20,14 @@ class NewspaperProcessor
     private $url;
     private $options;
     private $dom;
+    private $redis;
 
     public function __construct($url, $options)
     {
         $this->url = $url;
         $this->options = $options;
+
+        $this->redis = new \Predis\Client(Config::$REDIS_URL);
     }
 
     public function parseText($text)
@@ -84,7 +87,7 @@ class NewspaperProcessor
 
     public function signPost($text)
     {
-        return $text . "<br/><br/><br/>" . Config::$SIGNATURE;
+        return $text . "<br/><br/><br/>" . str_replace('XXX', htmlspecialchars($this->redis->get('firma')) . ' ^<a href="http://empleadoestatalbot.herokuapp.com/firma.php">Editar</a>', Config::$SIGNATURE);
     }
 
     public function getNewspaperText()
