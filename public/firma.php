@@ -36,6 +36,7 @@ if (!empty($_POST)) {
     }
 
     if ($success) {
+        $fecha = '59 minutos';
         $firma = $_POST['firma'];
         $resultMessage = 'Actualizado!';
         $redis->set('firma', $_POST['firma']);
