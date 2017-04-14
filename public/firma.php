@@ -22,7 +22,7 @@ if ($fechaTimeStamp) {
 if (!empty($_POST)) {
     $success = true;
     if (isset($_POST['firma'])) {
-        if (strlen($_POST['firma'] > 120)) {
+        if (strlen($_POST['firma']) > 120) {
             $success = false;
             $resultMessage = 'Maximo 120 caracteres.';
         }
@@ -123,6 +123,16 @@ if (!empty($_POST)) {
             background-color: #34CACA;
         }
 
+        .preview {
+            background: #878787;
+            font-family: 'Open Sans Condensed', sans-serif;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 100;
+            padding: 20px;
+            margin: 0px -30px -30px;
+        }
+
 
     </style>
 </head>
@@ -133,9 +143,17 @@ if (!empty($_POST)) {
     <h3>Firma actual: <?= htmlspecialchars($firma) ?></h3>
     <h4>Proxima actualización: <?= $fecha ?></h4>
     <form action="firma.php" method="post">
-        <input type="text" name="firma" placeholder="Tu firma aquí"/>
+        <input type="text" name="firma" id="firma" placeholder="Tu firma aquí" onkeyup="updatePreview();"/>
         <input type="submit" value="Guardar"/>
     </form>
+    <div class="preview">Preview: "empleadoEstatalBot, <span id="preview"></span>"</div>
 </div>
+
+<script>
+    function updatePreview() {
+        var text = document.getElementById('firma').value;
+        document.getElementById('preview').innerText = text;
+    }
+</script>
 </body>
 </html>
