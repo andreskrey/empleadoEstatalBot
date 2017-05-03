@@ -87,7 +87,7 @@ class NewspaperProcessor
 
     public function signPost($text)
     {
-        return $text . "<br/><br/><br/>" . str_replace('XXX', htmlspecialchars($this->redis->get('firma')) . ' ^<a href="http://empleadoestatalbot.herokuapp.com/firma.php">Editar</a>', Config::$SIGNATURE);
+        return $text . "<br/><br/><br/>" . Config::$SIGNATURE;
     }
 
     public function getNewspaperText()
