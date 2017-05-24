@@ -82,6 +82,11 @@ class NewspaperProcessor
         $signed = $this->signPost($parsed);
         $solved = $this->solveURLShorteners($signed);
 
+        // Eliminar los mails del texto asi reddit no se pone la gorra
+        $solved = $test = preg_replace_callback('/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i', function($match){
+            return str_replace('@', ' at ', $match[0]);
+        }, $solved);
+
         return $solved;
     }
 
