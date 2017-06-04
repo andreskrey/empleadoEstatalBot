@@ -1,4 +1,5 @@
 <?php
+
 namespace empleadoEstatalBot;
 
 use empleadoEstatalBot\NewspaperProcessor\NewspaperProcessor;
@@ -20,6 +21,7 @@ require APP_PATH . '../vendor/autoload.php';
 class empleadoEstatal
 {
     static public $log;
+    static public $redis;
 
     static public $debug = false;
 
@@ -29,6 +31,15 @@ class empleadoEstatal
 
         self::$log = new Logger('chePibe');
         self::$log->pushHandler(new StreamHandler('php://stderr'));
+
+        try {
+            self::$redis = new \Predis\Client(Config::$REDIS_URL);
+            self::$redis->connect();
+        } catch (\Exception $e) {
+            self::$log->addCritical('Could not connect to redis: ' . $e->getMessage());
+            throw $e;
+        }
+
     }
 
     private function generatePosts($things)

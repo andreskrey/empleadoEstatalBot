@@ -27,6 +27,7 @@ class RedditManager
         'youtube.com',
         'np.reddit.com',
         'i.reddit.com',
+        'i.redditmedia.com',
         'reddit.com',
         'self.argentina',
         'youtube.com',
@@ -42,8 +43,6 @@ class RedditManager
     public function __construct()
     {
         if (empleadoEstatal::$debug) $this->subreddits = ['empleadoEstatalBot'];
-
-        $this->redis = new \Predis\Client(Config::$REDIS_URL);
     }
 
     public function login()
@@ -131,11 +130,8 @@ class RedditManager
          * Caso de que la ddbb de redis este vacia (por que heroku la borra cada tanto en el hosting gratuito,
          * cargar los posts ya comentados para matchearlos al postear y evitar doble comment.
          */
-        if ($this->redis->dbsize()) {
-            empleadoEstatal::$log->addInfo('Posted comments ddbb NOT empty. :)');
-        } else {
+        if (!empleadoEstatal::$redis->dbsize()) {
             $alreadyCommented = $this->alreadyCommented();
-            empleadoEstatal::$log->addAlert('Posted comments ddbb empty.');
         }
 
         foreach ($things as $i) {
@@ -148,13 +144,13 @@ class RedditManager
              * 3. Chequear que no haya comentado ya (en caso de que la ddbb de redis este vacia).
              */
             if (!in_array($i['data']['domain'], $this->bannedDomains)
-                && !$this->redis->get($i['data']['id'])
+                && !empleadoEstatal::$redis->get($i['data']['id'])
                 && !in_array($i['data']['id'], $alreadyCommented)
             ) {
                 $selectedThings[] = $i;
                 if (!empleadoEstatal::$debug) {
                     $selectedPosts[] = $i['data']['id'];
-                    $this->redis->set($i['data']['id'], date('c'));
+                    empleadoEstatal::$redis->set($i['data']['id'], date('c'));
                 }
             }
         }
