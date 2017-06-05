@@ -7,14 +7,15 @@
         }
     ],
     "require": {
-        "rtheunissen/oauth2-reddit": "^1.2",
+        "rtheunissen/oauth2-reddit": "^2.0",
         "league/html-to-markdown": "dev-reddit-flavored-markdown as 4.2",
         "ext-mbstring": "*",
-        "monolog/monolog": "^1.21",
-        "predis/predis": "^1.1",
-        "phpunit/phpunit": "5.5.*",
+        "monolog/monolog": "^1",
         "andreskrey/Readability.php": "dev-development",
-        "neitanod/forceutf8": "^2.0"
+        "neitanod/forceutf8": "^2.0",
+        "illuminate/database": "^5.4",
+        "symfony/console": "^3.3",
+        "symfony/yaml": "^3.3"
     },
     "autoload": {
         "psr-4": {

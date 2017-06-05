@@ -12,47 +12,24 @@ class RedditManager
 {
     public $client;
 
+
+    private $config;
     private $headers;
-    private $redis;
+    private $things = [];
 
-    private $subreddits = [
-        'argentina'
-    ];
-
-    private $bannedDomains = [
-        'imgur.com',
-        'i.imgur.com',
-        'm.imgur.com',
-        'twitter.com',
-        'youtube.com',
-        'np.reddit.com',
-        'i.reddit.com',
-        'i.redditmedia.com',
-        'reddit.com',
-        'self.argentina',
-        'youtube.com',
-        'm.youtube.com',
-        'youtu.be',
-        'storify.com',
-        'buzzfeed.com',
-        'ar.radiocut.fm',
-        'radiocut.fm',
-        'vid.me',
-    ];
-
-    public function __construct()
+    public function __construct($config)
     {
-        if (empleadoEstatal::$debug) $this->subreddits = ['empleadoEstatalBot'];
+        $this->config = $config;
     }
 
     public function login()
     {
         $reddit = new Reddit([
-            'clientId' => Config::$CLIENT_ID,
-            'clientSecret' => Config::$SECRET_KEY,
-            'redirectUri' => Config::$REDIRECT_URI,
+            'clientId' => $this->config['client_id'],
+            'clientSecret' => $this->config['secret_key'],
+            'redirectUri' => $this->config['redirect_uri'],
             'userAgent' => 'PHP:empleadoEstatalBot:0.0.1, (by /u/subtepass)',
-            'scopes' => Config::$SCOPES
+            'scopes' => $this->config['scopes']
         ]);
 
         $tokenExists = file_exists(APP_PATH . 'tmp/tokens.reddit');
@@ -63,11 +40,11 @@ class RedditManager
 
         if (!$tokenExists) {
             $accessToken = $reddit->getAccessToken('password', [
-                'username' => Config::$USERNAME,
-                'password' => Config::$PASSWORD
+                'username' => $this->config['username'],
+                'password' => $this->config['password']
             ]);
 
-            $token = $accessToken->accessToken;
+            $token = $accessToken->getToken();
             file_put_contents(APP_PATH . 'tmp/tokens.reddit', $token);
         } else {
             $token = file_get_contents(APP_PATH . 'tmp/tokens.reddit');
@@ -79,9 +56,7 @@ class RedditManager
 
     public function getNewPosts()
     {
-        $things = [];
-
-        foreach ($this->subreddits as $subreddit) {
+        foreach ($this->config['subreddits'] as $subreddit) {
             try {
                 $result = $this->client
                     ->get('https://oauth.reddit.com/r/' . $subreddit . '/new/.json', $this->headers, ['query' => [
@@ -89,15 +64,15 @@ class RedditManager
                     ]])
                     ->send()
                     ->json();
-                $things = array_merge($things, $this->checkDomains($result['data']['children']));
+                $this->things[] = $result['data']['children'];
             } catch (Exception $e) {
                 unlink(APP_PATH . 'tmp/tokens.reddit');
-                empleadoEstatal::$log->addError('Failed to get subreddit /new posts.');
-                die('Failed to get reddit data');
+                empleadoEstatal::$log->addError('Failed to get subreddit /new posts: ' . $e->getMessage());
+                throw $e;
             }
         }
 
-        return $things;
+        $this->things;
     }
 
     public function getPost($ids = null)

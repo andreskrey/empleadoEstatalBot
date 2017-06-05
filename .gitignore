@@ -1,5 +1,3 @@
-/config/config.php
-/empleadoEstatalBot/tmp
-test.php
-.idea/
-vendor/
+/.idea
+/vendor
+/app/config/config.yml

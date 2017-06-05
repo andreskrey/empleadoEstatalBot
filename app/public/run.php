@@ -1,7 +1,7 @@
 <?php
 use empleadoEstatalBot\empleadoEstatal;
 
-include '../empleadoEstatalBot/empleadoEstatalBot.php';
+include '../app/empleadoEstatalBot.php';
 
 $ñoqui = new empleadoEstatal();
 
