@@ -2,7 +2,7 @@
 
 namespace empleadoEstatalBot\RedditManager;
 
-use empleadoEstatalBot\Config;
+use GuzzleHttp\Client as HttpClient;
 use empleadoEstatalBot\empleadoEstatal;
 use Exception;
 use League\HTMLToMarkdown\HtmlConverter;
@@ -10,8 +10,10 @@ use Rudolf\OAuth2\Client\Provider\Reddit;
 
 class RedditManager
 {
-    public $client;
-
+    /**
+     * @var HttpClient
+     */
+    private $client;
 
     private $config;
     private $headers;
@@ -32,10 +34,10 @@ class RedditManager
             'scopes' => $this->config['scopes']
         ]);
 
-        $tokenExists = file_exists(APP_PATH . 'tmp/tokens.reddit');
-        if ($tokenExists && filemtime(APP_PATH . 'tmp/tokens.reddit') + (60 * 50) < time()) {
+        $tokenExists = file_exists('tmp/tokens.reddit');
+        if ($tokenExists && filemtime('tmp/tokens.reddit') + (60 * 50) < time()) {
             $tokenExists = false;
-            unlink(APP_PATH . 'tmp/tokens.reddit');
+            unlink('tmp/tokens.reddit');
         }
 
         if (!$tokenExists) {
@@ -45,9 +47,9 @@ class RedditManager
             ]);
 
             $token = $accessToken->getToken();
-            file_put_contents(APP_PATH . 'tmp/tokens.reddit', $token);
+            file_put_contents('tmp/tokens.reddit', $token);
         } else {
-            $token = file_get_contents(APP_PATH . 'tmp/tokens.reddit');
+            $token = file_get_contents('tmp/tokens.reddit');
         }
 
         $this->client = $reddit->getHttpClient();
@@ -58,21 +60,37 @@ class RedditManager
     {
         foreach ($this->config['subreddits'] as $subreddit) {
             try {
-                $result = $this->client
-                    ->get('https://oauth.reddit.com/r/' . $subreddit . '/new/.json', $this->headers, ['query' => [
-                        'limit' => 10
-                    ]])
-                    ->send()
-                    ->json();
-                $this->things[] = $result['data']['children'];
+                $request = $this->client
+                    ->request('GET', 'https://oauth.reddit.com/r/' . $subreddit . '/new/.json', [
+                        'headers' => $this->headers,
+                        'query' => [
+                            'limit' => 10
+                        ]]);
+                $response = json_decode($request->getBody(), true);
+                $this->things[] = $response['data']['children'];
             } catch (Exception $e) {
-                unlink(APP_PATH . 'tmp/tokens.reddit');
-                empleadoEstatal::$log->addError('Failed to get subreddit /new posts: ' . $e->getMessage());
+                if ($e->getCode() === 401) {
+                    unlink('tmp/tokens.reddit');
+                }
+
+                empleadoEstatal::$log->addCritical('Failed to get subreddit /new posts: ' . $e->getMessage());
                 throw $e;
             }
         }
 
         $this->things;
+    }
+
+    public function savePosts($posts = null)
+    {
+        if (!empty($posts)) {
+            $this->things = $posts;
+        }
+
+        foreach ($this->things as $post) {
+
+        }
+
     }
 
     public function getPost($ids = null)

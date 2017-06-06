@@ -93,7 +93,7 @@ class empleadoEstatal
         $reddit = new RedditManager($this->config['reddit']);
         $reddit->login();
         $reddit->getNewPosts();
-
+        $reddit->savePosts();
     }
 
 
@@ -101,6 +101,7 @@ class empleadoEstatal
     {
         Capsule::schema()->create('posts', function ($table) {
             $table->increments('id');
+            $table->string('subreddit');
             $table->string('thing')->unique();
             $table->string('url');
             $table->tinyInteger('status');
