@@ -2,32 +2,17 @@
 
 namespace empleadoEstatalBot\NewspaperProcessor;
 
+use empleadoEstatalBot\Post;
 use andreskrey\Readability\HTMLParser;
+use GuzzleHttp\Client as HttpClient;
 use DOMDocument;
-use empleadoEstatalBot\Config;
-use Guzzle\Service\Client as GuzzleClient;
 use \ForceUTF8\Encoding;
 
 class NewspaperProcessor
 {
-
-    private $URLShorteners = [
-        't.co',
-        'goo.gl',
-        'bit.ly',
-    ];
-
-    private $url;
-    private $options;
-    private $dom;
-    private $redis;
-
-    public function __construct($url, $options)
+    public function __construct($config)
     {
-        $this->url = $url;
-        $this->options = $options;
-
-        $this->redis = new \Predis\Client(Config::$REDIS_URL);
+        $this->config = $config;
     }
 
     public function parseText($text)
@@ -83,7 +68,7 @@ class NewspaperProcessor
         $solved = $this->solveURLShorteners($signed);
 
         // Eliminar los mails del texto asi reddit no se pone la gorra
-        $solved = $test = preg_replace_callback('/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i', function($match){
+        $solved = $test = preg_replace_callback('/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i', function ($match) {
             return str_replace('@', ' at ', $match[0]);
         }, $solved);
 
@@ -97,16 +82,25 @@ class NewspaperProcessor
 
     public function getNewspaperText()
     {
-        $client = new GuzzleClient();
+        /**
+         * @var $client HttpClient
+         */
+        $client = new HttpClient();
 
         // For the gorras out there
-        $client->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0');
+//        $client->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0');
+
+
+        foreach (Post::where(['status' => 1, ['tries', '<', 3]])->get() as $thing) {
+            $test = 12;
+        }
+
 
         $text = $client->get($this->url)->send();
         $body = $text->getBody(true);
 
         // Por alguna razon a veces minutouno manda gzippeado y guzzle no lo descomprime
-        // Los tres chars son los magic numbers de zip
+        // Los tres chars son los magic numbers de ztrp
         $isGZip = 0 === mb_strpos($body, "\x1f" . "\x8b" . "\x08");
         if ($isGZip) $body = gzdecode($body);
 

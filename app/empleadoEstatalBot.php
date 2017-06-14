@@ -2,6 +2,7 @@
 
 namespace empleadoEstatalBot;
 
+use empleadoEstatalBot\NewspaperProcessor\NewspaperProcessor;
 use empleadoEstatalBot\RedditManager\RedditManager;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -21,6 +22,13 @@ $console->register('get:start')
     ->setCode(function (InputInterface $input, OutputInterface $output) {
         $empleado = new empleadoEstatal();
         $output->writeln($empleado->get());
+    });
+
+$console->register('fetch:start')
+    ->setDescription('Start the Fetch worker.')
+    ->setCode(function (InputInterface $input, OutputInterface $output) {
+        $empleado = new empleadoEstatal();
+        $output->writeln($empleado->fetch());
     });
 
 $console->register('post:start')
@@ -99,6 +107,14 @@ class empleadoEstatal
         self::$log->addInfo('GetWorker: End.');
     }
 
+    public function fetch()
+    {
+        self::$log->addInfo('FetchWorker: Starting...');
+        $news = new NewspaperProcessor($this->config['newspaper_processor']);
+        $news->getNewspaperText();
+        self::$log->addInfo('FetchWorker: End.');
+    }
+
 
     public function seed()
     {
@@ -107,6 +123,7 @@ class empleadoEstatal
             $table->string('subreddit');
             $table->string('thing')->unique();
             $table->string('url');
+            $table->text('markdown')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->tinyInteger('tries')->unsigned()->default(0);
             $table->string('info')->nullable()->default(null);
