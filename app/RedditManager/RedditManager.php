@@ -74,7 +74,7 @@ class RedditManager
                     unlink('tmp/tokens.reddit');
                 }
 
-                empleadoEstatal::$log->addCritical('Failed to get subreddit /new posts: ' . $e->getMessage());
+                empleadoEstatal::$log->addCritical('GetWorker: Failed to get subreddit /new posts: ' . $e->getMessage());
                 throw $e;
             }
         }
@@ -87,7 +87,7 @@ class RedditManager
         foreach ($this->things as $subreddit => $things) {
             foreach ($things as $key => $thing) {
                 if (in_array($thing['data']['domain'], $this->config['banned_domains'])) {
-                    empleadoEstatal::$log->addInfo('Discarded ' . $thing['data']['name'] . '. Banned domain: ' . $thing['data']['domain']);
+                    empleadoEstatal::$log->addInfo('GetWorker: Discarded ' . $thing['data']['name'] . '. Banned domain: ' . $thing['data']['domain']);
                     unset($this->things[$subreddit][$key]);
                 }
             }
@@ -101,6 +101,8 @@ class RedditManager
             $this->things = $posts;
         }
 
+        $saved = [];
+
         foreach ($this->things as $subreddit => $things) {
             foreach ($things as $key => $thing) {
                 if (!Post::where('thing', $thing['data']['name'])->exists()) {
@@ -111,10 +113,19 @@ class RedditManager
                         'status' => 1,
                         'tries' => 0
                     ]);
+
+                    $saved[] = $thing['data']['name'];
                 }
             }
         }
 
+        if (count($saved)) {
+            empleadoEstatal::$log->addInfo('GetWorker: New posts saved to db: ' . implode(', ', $saved) . '.');
+        } else {
+            empleadoEstatal::$log->addInfo('GetWorker: No new posts to save.');
+        }
+
+        return $saved;
     }
 
     public function postComments($things)

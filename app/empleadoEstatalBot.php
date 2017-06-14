@@ -90,11 +90,13 @@ class empleadoEstatal
 
     public function get()
     {
+        self::$log->addInfo('GetWorker: Starting...');
         $reddit = new RedditManager($this->config['reddit']);
         $reddit->login();
         $reddit->getNewPosts();
         $reddit->filterPosts();
         $reddit->savePosts();
+        self::$log->addInfo('GetWorker: End.');
     }
 
 
