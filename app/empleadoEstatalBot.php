@@ -93,6 +93,7 @@ class empleadoEstatal
         $reddit = new RedditManager($this->config['reddit']);
         $reddit->login();
         $reddit->getNewPosts();
+        $reddit->filterPosts();
         $reddit->savePosts();
     }
 
@@ -104,9 +105,9 @@ class empleadoEstatal
             $table->string('subreddit');
             $table->string('thing')->unique();
             $table->string('url');
-            $table->tinyInteger('status');
-            $table->tinyInteger('tries')->unsigned();
-            $table->string('info');
+            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('tries')->unsigned()->default(0);
+            $table->string('info')->nullable()->default(null);
             $table->timestamps();
         });
 

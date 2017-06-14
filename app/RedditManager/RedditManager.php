@@ -2,6 +2,7 @@
 
 namespace empleadoEstatalBot\RedditManager;
 
+use empleadoEstatalBot\Post;
 use GuzzleHttp\Client as HttpClient;
 use empleadoEstatalBot\empleadoEstatal;
 use Exception;
@@ -67,7 +68,7 @@ class RedditManager
                             'limit' => 10
                         ]]);
                 $response = json_decode($request->getBody(), true);
-                $this->things[] = $response['data']['children'];
+                $this->things[$subreddit] = $response['data']['children'];
             } catch (Exception $e) {
                 if ($e->getCode() === 401) {
                     unlink('tmp/tokens.reddit');
@@ -78,8 +79,21 @@ class RedditManager
             }
         }
 
-        $this->things;
+        return $this->things;
     }
+
+    public function filterPosts()
+    {
+        foreach ($this->things as $subreddit => $things) {
+            foreach ($things as $key => $thing) {
+                if (in_array($thing['data']['domain'], $this->config['banned_domains'])) {
+                    empleadoEstatal::$log->addInfo('Discarded ' . $thing['data']['name'] . '. Banned domain: ' . $thing['data']['domain']);
+                    unset($this->things[$subreddit][$key]);
+                }
+            }
+        }
+    }
+
 
     public function savePosts($posts = null)
     {
@@ -87,71 +101,20 @@ class RedditManager
             $this->things = $posts;
         }
 
-        foreach ($this->things as $post) {
-
-        }
-
-    }
-
-    public function getPost($ids = null)
-    {
-        $things = [];
-        $ids = array_unique($ids);
-
-        foreach ($ids as $id) {
-            try {
-                $thing = $this->client
-                    ->get('https://oauth.reddit.com/by_id/t3_' . $id . '/.json', $this->headers)
-                    ->send()
-                    ->json();
-
-                $postable = $this->checkDomains($thing['data']['children']);
-                if ($postable) $things[] = $postable[0];
-            } catch (Exception $e) {
-                empleadoEstatal::$log->addError('Wrong ID sent: ' . $id);
-            }
-        }
-
-        return $things;
-    }
-
-    private function checkDomains($things)
-    {
-        $posts = $selectedPosts = $alreadyCommented = $selectedThings = [];
-
-        /*
-         * Caso de que la ddbb de redis este vacia (por que heroku la borra cada tanto en el hosting gratuito,
-         * cargar los posts ya comentados para matchearlos al postear y evitar doble comment.
-         */
-        if (!empleadoEstatal::$redis->dbsize()) {
-            $alreadyCommented = $this->alreadyCommented();
-        }
-
-        foreach ($things as $i) {
-            $posts[] = $i['data']['id'];
-
-            /*
-             * Chequear tres cosas
-             * 1. Que el domain del thing no este dentro de los domains banneados
-             * 2. Que el id no coincida con los que ya existen en la ddbb de redis
-             * 3. Chequear que no haya comentado ya (en caso de que la ddbb de redis este vacia).
-             */
-            if (!in_array($i['data']['domain'], $this->bannedDomains)
-                && !empleadoEstatal::$redis->get($i['data']['id'])
-                && !in_array($i['data']['id'], $alreadyCommented)
-            ) {
-                $selectedThings[] = $i;
-                if (!empleadoEstatal::$debug) {
-                    $selectedPosts[] = $i['data']['id'];
-                    empleadoEstatal::$redis->set($i['data']['id'], date('c'));
+        foreach ($this->things as $subreddit => $things) {
+            foreach ($things as $key => $thing) {
+                if (!Post::where('thing', $thing['data']['name'])->exists()) {
+                    Post::firstOrCreate([
+                        'subreddit' => $subreddit,
+                        'thing' => $thing['data']['name'],
+                        'url' => $thing['data']['url'],
+                        'status' => 1,
+                        'tries' => 0
+                    ]);
                 }
             }
         }
 
-        empleadoEstatal::$log->addInfo('New posts after getting data:', $posts);
-        empleadoEstatal::$log->addInfo('Selected posts to comment:', $selectedPosts);
-
-        return $selectedThings;
     }
 
     public function postComments($things)
