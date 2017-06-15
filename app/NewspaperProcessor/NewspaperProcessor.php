@@ -51,9 +51,7 @@ class NewspaperProcessor
 
                 // Discard failed parsings
                 if ($html === false) {
-                    empleadoEstatal::$log->addInfo(sprintf('FetchWorker: Failed to parse in Readability. Thing: %s. URL: %s', $thing->thing, $thing->url));
-                    $thing->status = empleadoEstatal::THING_REJECTED;
-                    $thing->save();
+                    throw new \ErrorException('Readability');
                 }
 
                 $html = $this->sanitizeHTML($html);
@@ -63,6 +61,9 @@ class NewspaperProcessor
                 $thing->markdown = $markdown;
                 $thing->status = empleadoEstatal::THING_FETCHED;
 
+            } catch (\ErrorException $e) {
+                empleadoEstatal::$log->addInfo(sprintf('FetchWorker: Failed to parse in Readability. Thing: %s. URL: %s', $thing->thing, $thing->url));
+                $thing->status = empleadoEstatal::THING_REJECTED;
             } catch (\Exception $e) {
                 empleadoEstatal::$log->addCritical(sprintf('FetchWorker: Failed to get newspaper (try no %s): %s. URL: %s', $thing->tries, $e->getMessage(), $thing->url));
                 $thing->info = $e->getMessage();
@@ -132,7 +133,7 @@ class NewspaperProcessor
         foreach ($links as $i) {
 
             $link = $i->getAttribute("href");
-            if (in_array(parse_url($link, PHP_URL_HOST), $this->URLShorteners)) {
+            if (in_array(parse_url($link, PHP_URL_HOST), $this->config['url_shorteners'])) {
                 $headers = get_headers($link);
 
                 $headers = array_filter($headers, function ($key) {
