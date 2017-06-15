@@ -102,7 +102,7 @@ class NewspaperProcessor
         return false;
     }
 
-    public function signPost($html)
+    private function signPost($html)
     {
         return $html . "<br/><br/><br/>" . $this->config['signature'];
     }

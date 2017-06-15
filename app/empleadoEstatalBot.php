@@ -32,14 +32,16 @@ $console->register('fetch:start')
     });
 
 $console->register('post:start')
-    ->addOption('dry-run',
-        'd',
-        InputOption::VALUE_OPTIONAL,
-        'Dry run, do not post anything.',
-        'n')
+    ->addOption('pre-fetch',
+        null,
+        InputOption::VALUE_NONE,
+        'Start the FetchWorker before and then the PostWorker')
     ->setDescription('Start the Post worker.')
     ->setCode(function (InputInterface $input, OutputInterface $output) {
         $empleado = new empleadoEstatal();
+        if ($input->getOption('pre-fetch')) {
+            $output->writeln($empleado->fetch());
+        }
         $output->writeln($empleado->post());
     });
 
@@ -58,9 +60,9 @@ class empleadoEstatal
     protected $config;
 
     const THING_REJECTED = -1;
-    const THING_TO_FETCH= 1;
-    const THING_FETCHED= 2;
-    const THING_POSTED= 3;
+    const THING_TO_FETCH = 1;
+    const THING_FETCHED = 2;
+    const THING_POSTED = 3;
 
     public function __construct()
     {
@@ -125,7 +127,7 @@ class empleadoEstatal
         self::$log->addInfo('PostWorker: Starting...');
         $reddit = new RedditManager($this->config['reddit']);
         $reddit->login();
-
+        $reddit->postComments();
         self::$log->addInfo('PostWorker: End.');
     }
 
