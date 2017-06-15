@@ -65,9 +65,9 @@ class NewspaperProcessor
             } catch (\ErrorException $e) {
                 empleadoEstatal::$log->addInfo(sprintf('FetchWorker: Failed to parse in Readability. Thing: %s. URL: %s', $thing->thing, $thing->url));
                 $thing->status = empleadoEstatal::THING_REJECTED;
-            } catch (\Exception $e) {
+            } catch (\Error $e) {
                 empleadoEstatal::$log->addCritical(sprintf('FetchWorker: Failed to get newspaper (try no %s): %s. URL: %s', $thing->tries, $e->getMessage(), $thing->url));
-                $thing->info = $e->getMessage();
+                $thing->info = substr($e->getMessage(), 0, 254);
             }
 
             $thing->save();
