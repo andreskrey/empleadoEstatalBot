@@ -1,0 +1,40 @@
+reddit:
+  client_id: 'client_id'
+  secret_key: 'secret_key'
+  redirect_uri: 'redirect_uri'
+  scopes: ['submit', 'read']
+  username: 'username'
+  password: 'password'
+  banned_domains: ['imgur.com',
+                   'i.imgur.com',
+                   'm.imgur.com',
+                   'twitter.com',
+                   'youtube.com',
+                   'np.reddit.com',
+                   'i.reddit.com',
+                   'i.redditmedia.com',
+                   'reddit.com',
+                   'self.argentina',
+                   'youtube.com',
+                   'm.youtube.com',
+                   'youtu.be',
+                   'storify.com',
+                   'buzzfeed.com',
+                   'ar.radiocut.fm',
+                   'radiocut.fm',
+                   'vid.me'
+                   ]
+  subreddits: ['empleadoEstatalBot']
+bot:
+  debug: true
+newspaper_processor:
+  url_shorteners: ['t.co',
+                   'goo.gl',
+                   'bit.ly'
+                   ]
+  signature: 'signature'
+database:
+  host: '127.0.0.1'
+  name: 'db'
+  user: 'dbuser'
+  pass: 'dbpass'

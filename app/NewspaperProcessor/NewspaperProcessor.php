@@ -2,11 +2,13 @@
 
 namespace empleadoEstatalBot\NewspaperProcessor;
 
+use empleadoEstatalBot\empleadoEstatal;
 use empleadoEstatalBot\Post;
 use andreskrey\Readability\HTMLParser;
 use GuzzleHttp\Client as HttpClient;
 use DOMDocument;
 use \ForceUTF8\Encoding;
+use League\HTMLToMarkdown\HtmlConverter;
 
 class NewspaperProcessor
 {
@@ -15,100 +17,106 @@ class NewspaperProcessor
         $this->config = $config;
     }
 
-    public function parseText($text)
-    {
-        /*
-         * Perdoname, Oh Dios, por parsear HTML con regex.
-         * Es culpa de Clarin y su espantoso JS.
-         */
-        if (strpos($text, 'CLARIN') !== false) {
-            $text = preg_replace('/inline: {(.|\n)*?},/', '', $text);
-        }
-        /*
-         * Amen
-         */
-
-        $readability = new HTMLParser(
-            array_merge(
-                $this->options,
-                ['originalURL' => $this->url]
-            )
-        );
-
-        try {
-            $result = $readability->parse($text);
-        } catch (\Error $e) {
-            $result = false;
-        }
-
-        if ($result) {
-            if ($result['image']) {
-                $html = '<h1>[' . htmlspecialchars($result['title']) . '](' . $result['image'] . ')</h1>' . "<br/><br/>";
-            } else {
-                $html = '<h1>' . htmlspecialchars($result['title']) . '</h1>' . "<br/><br/>";
-            }
-            return $html . $result['html'];
-        }
-
-        return false;
-    }
-
-    public function parse($text)
-    {
-        $parsed = $this->parseText($text);
-
-        if (!$parsed) {
-            return false;
-        }
-
-        // Envolviendo en blockquote el asunto para triggerear la regla css que oculta el texto
-        $parsed = '<blockquote>' . $parsed . '</blockquote>' . "\n";
-
-        $signed = $this->signPost($parsed);
-        $solved = $this->solveURLShorteners($signed);
-
-        // Eliminar los mails del texto asi reddit no se pone la gorra
-        $solved = $test = preg_replace_callback('/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i', function ($match) {
-            return str_replace('@', ' at ', $match[0]);
-        }, $solved);
-
-        return $solved;
-    }
-
-    public function signPost($text)
-    {
-        return $text . "<br/><br/><br/>" . Config::$SIGNATURE;
-    }
-
     public function getNewspaperText()
     {
         /**
          * @var $client HttpClient
          */
-        $client = new HttpClient();
-
-        // For the gorras out there
-//        $client->setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:50.0) Gecko/20100101 Firefox/50.0');
+        $client = new HttpClient([
+            'headers' => [
+                // Lets pretend we are the most average user
+                'User-Agent' => 'Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0;  rv:11.0) like Gecko'
+            ]]);
 
 
         foreach (Post::where(['status' => 1, ['tries', '<', 3]])->get() as $thing) {
-            $test = 12;
+            try {
+                /**
+                 * @var $thing Post
+                 */
+                $thing->tries++;
+
+                $html = (string)$client->request('GET', $thing->url)->getBody();
+
+                // Por alguna razon a veces minutouno manda gzippeado y guzzle no lo descomprime
+                // Los tres chars son los magic numbers de zip
+                if (0 === mb_strpos($html, "\x1f" . "\x8b" . "\x08")) {
+                    $html = gzdecode($html);
+                }
+
+                // Algunos diarios mandan texto en UTF8 y Content Type declarado como otra cosa
+                // y se rompe todo el texto. Force UTF8 soluciona esto
+                $html = Encoding::toUTF8($html);
+                $html = $this->parseHTML($html, $thing->url);
+
+                // Discard failed parsings
+                if ($html === false) {
+                    empleadoEstatal::$log->addInfo(sprintf('FetchWorker: Failed to parse in Readability. Thing: %s. URL: %s', $thing->thing, $thing->url));
+                    $thing->status = -1;
+                    $thing->save();
+                }
+
+                $html = $this->sanitizeHTML($html);
+                $html = $this->signPost($html);
+                $markdown = $this->buildMarkdown($html);
+
+                $thing->markdown = $markdown;
+
+            } catch (\Exception $e) {
+                empleadoEstatal::$log->addCritical(sprintf('FetchWorker: Failed to get newspaper (try no %s): %s. URL: %s', $thing->tries, $e->getMessage(), $thing->url));
+                $thing->info = $e->getMessage();
+            }
+
+            $thing->save();
+        }
+    }
+
+    private function parseHTML($html, $url)
+    {
+        /*
+         * Perdoname, Oh Dios, por parsear HTML con regex.
+         * Es culpa de Clarin y su espantoso JS.
+         */
+        if (strpos($html, 'CLARIN') !== false) {
+            $html = preg_replace('/inline: {(.|\n)*?},/', '', $html);
+        }
+        /*
+         * Amen
+         */
+
+        $readability = new HTMLParser(['originalURL' => $url]);
+        $result = $readability->parse($html);
+
+        if ($result) {
+            if ($result['image']) {
+                $image = '<h1>[' . htmlspecialchars($result['title']) . '](' . $result['image'] . ')</h1>' . "<br/><br/>";
+            } else {
+                $image = '<h1>' . htmlspecialchars($result['title']) . '</h1>' . "<br/><br/>";
+            }
+            return $image . $result['html'];
         }
 
+        return false;
+    }
 
-        $text = $client->get($this->url)->send();
-        $body = $text->getBody(true);
+    public function signPost($html)
+    {
+        return $html . "<br/><br/><br/>" . $this->config['signature'];
+    }
 
-        // Por alguna razon a veces minutouno manda gzippeado y guzzle no lo descomprime
-        // Los tres chars son los magic numbers de ztrp
-        $isGZip = 0 === mb_strpos($body, "\x1f" . "\x8b" . "\x08");
-        if ($isGZip) $body = gzdecode($body);
+    private function sanitizeHTML($html)
+    {
+        $html = $this->solveURLShorteners($html);
 
-        // Algunos diarios mandan texto en UTF8 y Content Type declarado como otra cosa
-        // y se rompe todo el texto. Force UTF8 soluciona esto
-        $body = Encoding::toUTF8($body);
+        // Eliminar los mails del texto asi reddit no se pone la gorra
+        $html = $test = preg_replace_callback('/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i', function ($match) {
+            return str_replace('@', ' at ', $match[0]);
+        }, $html);
 
-        return $body;
+        // Envolviendo en blockquote el asunto para triggerear la regla css que oculta el texto
+        $html = '<blockquote>' . $html . '</blockquote>' . "\n";
+
+        return $html;
     }
 
     private function solveURLShorteners($html)
@@ -140,24 +148,19 @@ class NewspaperProcessor
         return str_replace('<?xml encoding="utf-8"?>', '', $this->dom->saveHTML());
     }
 
-    /*
-     * La idea es solo publicar notas que tengan una buena cantidad de texto en el cuerpo.
-     * Esto se decide multiplicando por dos la cantidad de caracteres que componen el titulo y la bajada
-     * Si este numero es mayor a la cantidad de caracteres el cuerpo, no se publica el post.
-     */
-    public function checkLength($html)
+    private function buildMarkdown($html)
     {
-        $this->dom = new DOMDocument('1.0', 'utf-8');
-        $this->dom->loadHTML('<?xml encoding="utf-8"?>' . $html);
-        $this->dom->encoding = 'utf-8';
+        $converter = new HtmlConverter([
+            'strip_tags' => true,
+            'header_style' => 'atx'
+        ]);
 
-        $headerSize = 0;
-        $headerSize += mb_strlen($this->dom->getElementsByTagName('h1')->item(0)->nodeValue);
+        $markdown = $converter->convert($html);
 
-        // Cuerpo de la noticia sin la firma (sin tags html), sin los titulos
-        $bodySize = mb_strlen($this->dom->textContent) - mb_strlen(strip_tags(Config::$SIGNATURE)) - $headerSize;
+        // Agregar la marca de markdown para hacer el hover de css
 
-        // Bodysize contra headerSize por 2
-        return ($bodySize <=> $headerSize * 2) > 0;
+        $markdown = "#####&#009;\n\n######&#009;\n\n####&#009;\n\n" . $markdown;
+
+        return $markdown;
     }
 }
