@@ -60,6 +60,7 @@ class NewspaperProcessor
 
                 $thing->markdown = $markdown;
                 $thing->status = empleadoEstatal::THING_FETCHED;
+                $thing->tries = 0;
 
             } catch (\ErrorException $e) {
                 empleadoEstatal::$log->addInfo(sprintf('FetchWorker: Failed to parse in Readability. Thing: %s. URL: %s', $thing->thing, $thing->url));

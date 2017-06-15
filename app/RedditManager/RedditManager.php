@@ -6,7 +6,6 @@ use empleadoEstatalBot\Post;
 use GuzzleHttp\Client as HttpClient;
 use empleadoEstatalBot\empleadoEstatal;
 use Exception;
-use League\HTMLToMarkdown\HtmlConverter;
 use Rudolf\OAuth2\Client\Provider\Reddit;
 
 class RedditManager
@@ -31,7 +30,7 @@ class RedditManager
             'clientId' => $this->config['client_id'],
             'clientSecret' => $this->config['secret_key'],
             'redirectUri' => $this->config['redirect_uri'],
-            'userAgent' => 'PHP:empleadoEstatalBot:0.0.1, (by /u/subtepass)',
+            'userAgent' => 'PHP:empleadoEstatalBot:2.0.0, (by /u/subtepass)',
             'scopes' => $this->config['scopes']
         ]);
 
@@ -130,12 +129,27 @@ class RedditManager
 
     public function postComments($things)
     {
-        foreach ($things as $i) {
-            $this->client->post('https://oauth.reddit.com/api/comment', $this->headers, [
-                'thing_id' => 't3_' . $i['data']['id'],
-                'text' => $this->buildMarkdown($i['parsed'])
-            ])
-                ->send();
+        foreach (Post::where(['status' => empleadoEstatal::THING_FETCHED, ['tries', '<', 3]])->get() as $thing) {
+            /**
+             * @var $thing Post
+             */
+            try {
+                $thing->tries++;
+
+                $this->client->request('POST', 'https://oauth.reddit.com/api/comment', [
+                    'headers' => $this->headers,
+                    'form_params' => [
+                        'thing_id' => 't3_' . $thing->thing,
+                        'text' => $thing->markdown
+                    ]
+                ]);
+
+                $thing->status = empleadoEstatal::THING_POSTED;
+            } catch (Exception $e) {
+                empleadoEstatal::$log->addCritical(sprintf('PostWorker: Failed to post %s: %s', $thing->thing, $e->getMessage()));
+            }
+
+            $thing->save();
         }
     }
 }

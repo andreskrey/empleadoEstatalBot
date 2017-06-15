@@ -120,6 +120,15 @@ class empleadoEstatal
         self::$log->addInfo('FetchWorker: End.');
     }
 
+    public function post()
+    {
+        self::$log->addInfo('PostWorker: Starting...');
+        $reddit = new RedditManager($this->config['reddit']);
+        $reddit->login();
+
+        self::$log->addInfo('PostWorker: End.');
+    }
+
 
     public function seed()
     {
