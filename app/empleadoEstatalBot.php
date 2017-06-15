@@ -57,6 +57,11 @@ class empleadoEstatal
     public $db;
     protected $config;
 
+    const THING_REJECTED = -1;
+    const THING_TO_FETCH= 1;
+    const THING_FETCHED= 2;
+    const THING_POSTED= 3;
+
     public function __construct()
     {
         self::$log = new Logger('ChePibe');

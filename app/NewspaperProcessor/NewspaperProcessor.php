@@ -29,7 +29,7 @@ class NewspaperProcessor
             ]]);
 
 
-        foreach (Post::where(['status' => 1, ['tries', '<', 3]])->get() as $thing) {
+        foreach (Post::where(['status' => empleadoEstatal::THING_TO_FETCH, ['tries', '<', 3]])->get() as $thing) {
             try {
                 /**
                  * @var $thing Post
@@ -52,7 +52,7 @@ class NewspaperProcessor
                 // Discard failed parsings
                 if ($html === false) {
                     empleadoEstatal::$log->addInfo(sprintf('FetchWorker: Failed to parse in Readability. Thing: %s. URL: %s', $thing->thing, $thing->url));
-                    $thing->status = -1;
+                    $thing->status = empleadoEstatal::THING_REJECTED;
                     $thing->save();
                 }
 
@@ -61,6 +61,7 @@ class NewspaperProcessor
                 $markdown = $this->buildMarkdown($html);
 
                 $thing->markdown = $markdown;
+                $thing->status = empleadoEstatal::THING_FETCHED;
 
             } catch (\Exception $e) {
                 empleadoEstatal::$log->addCritical(sprintf('FetchWorker: Failed to get newspaper (try no %s): %s. URL: %s', $thing->tries, $e->getMessage(), $thing->url));

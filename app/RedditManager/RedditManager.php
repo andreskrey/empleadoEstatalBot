@@ -110,7 +110,7 @@ class RedditManager
                         'subreddit' => $subreddit,
                         'thing' => $thing['data']['name'],
                         'url' => $thing['data']['url'],
-                        'status' => 1,
+                        'status' => empleadoEstatal::THING_TO_FETCH,
                         'tries' => 0
                     ]);
 
