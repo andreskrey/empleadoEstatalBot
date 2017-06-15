@@ -97,10 +97,6 @@ class empleadoEstatal
             self::$log->addCritical('Cannot connect to database: ' . $e->getMessage());
             throw $e;
         }
-
-        if ($this->config['bot']['debug']) {
-            $this->config['bot']['subreddits'] = 'empleadoEstatalBot';
-        }
     }
 
     public function get()
