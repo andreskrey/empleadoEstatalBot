@@ -127,7 +127,7 @@ class RedditManager
         return $saved;
     }
 
-    public function postComments($things)
+    public function postComments()
     {
         foreach (Post::where(['status' => empleadoEstatal::THING_FETCHED, ['tries', '<', 3]])->get() as $thing) {
             /**
@@ -139,12 +139,12 @@ class RedditManager
                 $this->client->request('POST', 'https://oauth.reddit.com/api/comment', [
                     'headers' => $this->headers,
                     'form_params' => [
-                        'thing_id' => 't3_' . $thing->thing,
+                        'thing_id' => $thing->thing,
                         'text' => $thing->markdown
                     ]
                 ]);
-
                 $thing->status = empleadoEstatal::THING_POSTED;
+                empleadoEstatal::$log->addInfo(sprintf('PostWorker: posted %s.', $thing->thing));
             } catch (Exception $e) {
                 empleadoEstatal::$log->addCritical(sprintf('PostWorker: Failed to post %s: %s', $thing->thing, $e->getMessage()));
             }
