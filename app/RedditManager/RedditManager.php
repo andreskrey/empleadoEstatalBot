@@ -85,9 +85,11 @@ class RedditManager
     {
         foreach ($this->things as $subreddit => $things) {
             foreach ($things as $key => $thing) {
-                if (in_array($thing['data']['domain'], $this->config['banned_domains'])) {
-                    empleadoEstatal::$log->addInfo('GetWorker: Discarded ' . $thing['data']['name'] . '. Banned domain: ' . $thing['data']['domain']);
-                    unset($this->things[$subreddit][$key]);
+                foreach ($this->config['banned_domains'] as $banned_domain) {
+                    if (fnmatch($banned_domain, $thing['data']['domain'], FNM_CASEFOLD)) {
+                        empleadoEstatal::$log->addInfo(sprintf('GetWorker: Discarded %s. Banned domain: %s. Matched rule: %s', $thing['data']['name'], $thing['data']['domain'], $banned_domain));
+                        unset($this->things[$subreddit][$key]);
+                    }
                 }
             }
         }

@@ -6,22 +6,20 @@ reddit:
   username: 'username'
   password: 'password'
   banned_domains: ['imgur.com',
-                   'i.imgur.com',
-                   'm.imgur.com',
+                   '*.imgur.com',
                    'twitter.com',
                    'youtube.com',
-                   'np.reddit.com',
-                   'i.reddit.com',
-                   'i.redditmedia.com',
                    'reddit.com',
-                   'self.argentina',
+                   '*.reddit.com',
+                   '*.redditmedia.com',
+                   'self.*',
                    'youtube.com',
-                   'm.youtube.com',
                    'youtu.be',
+                   '*.youtube.com',
                    'storify.com',
                    'buzzfeed.com',
-                   'ar.radiocut.fm',
                    'radiocut.fm',
+                   '*.radiocut.fm',
                    'vid.me'
                    ]
   subreddits: ['empleadoEstatalBot']
