@@ -68,7 +68,7 @@ class empleadoEstatal
     {
         $test=__DIR__;
         self::$log = new Logger('ChePibe');
-        self::$log->pushHandler(new StreamHandler('tmp/empleadoEstatalBot.log'));
+        self::$log->pushHandler(new StreamHandler(__DIR__ . '/tmp/empleadoEstatalBot.log'));
 
         try {
             $this->config = Yaml::parse(file_get_contents(__DIR__ . '/config/config.yml'));
