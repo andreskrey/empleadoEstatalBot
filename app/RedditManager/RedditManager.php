@@ -34,10 +34,10 @@ class RedditManager
             'scopes' => $this->config['scopes']
         ]);
 
-        $tokenExists = file_exists('tmp/tokens.reddit');
-        if ($tokenExists && filemtime('tmp/tokens.reddit') + (60 * 50) < time()) {
+        $tokenExists = file_exists(__DIR__ . '/tmp/tokens.reddit');
+        if ($tokenExists && filemtime(__DIR__ . '/tmp/tokens.reddit') + (60 * 50) < time()) {
             $tokenExists = false;
-            unlink('tmp/tokens.reddit');
+            unlink(__DIR__ . '/tmp/tokens.reddit');
         }
 
         if (!$tokenExists) {
@@ -47,9 +47,9 @@ class RedditManager
             ]);
 
             $token = $accessToken->getToken();
-            file_put_contents('tmp/tokens.reddit', $token);
+            file_put_contents(__DIR__ . '/tmp/tokens.reddit', $token);
         } else {
-            $token = file_get_contents('tmp/tokens.reddit');
+            $token = file_get_contents(__DIR__ . '/tmp/tokens.reddit');
         }
 
         $this->client = $reddit->getHttpClient();
@@ -70,7 +70,7 @@ class RedditManager
                 $this->things[$subreddit] = $response['data']['children'];
             } catch (Exception $e) {
                 if ($e->getCode() === 401) {
-                    unlink('tmp/tokens.reddit');
+                    unlink(__DIR__ . '/tmp/tokens.reddit');
                 }
 
                 empleadoEstatal::$log->addCritical('GetWorker: Failed to get subreddit /new posts: ' . $e->getMessage());
