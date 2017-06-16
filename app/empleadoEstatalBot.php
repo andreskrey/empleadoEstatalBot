@@ -66,11 +66,12 @@ class empleadoEstatal
 
     public function __construct()
     {
+        $test=__DIR__;
         self::$log = new Logger('ChePibe');
         self::$log->pushHandler(new StreamHandler('tmp/empleadoEstatalBot.log'));
 
         try {
-            $this->config = Yaml::parse(file_get_contents('config/config.yml'));
+            $this->config = Yaml::parse(file_get_contents(__DIR__ . '/config/config.yml'));
         } catch (\Exception $e) {
             self::$log->addCritical('Missing or wrong config: ' . $e->getMessage());
             throw $e;
