@@ -66,7 +66,6 @@ class empleadoEstatal
 
     public function __construct()
     {
-        $test=__DIR__;
         self::$log = new Logger('ChePibe');
         self::$log->pushHandler(new StreamHandler(__DIR__ . '/tmp/empleadoEstatalBot.log'));
 
