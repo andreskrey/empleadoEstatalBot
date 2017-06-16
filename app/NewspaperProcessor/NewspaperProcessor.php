@@ -25,7 +25,7 @@ class NewspaperProcessor
         $client = new HttpClient([
             'headers' => [
                 // Lets pretend we are the most average user
-                'User-Agent' => 'Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0;  rv:11.0) like Gecko'
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
             ]]);
 
 
@@ -64,6 +64,7 @@ class NewspaperProcessor
 
             } catch (\ErrorException $e) {
                 empleadoEstatal::$log->addInfo(sprintf('FetchWorker: Failed to parse in Readability. Thing: %s. URL: %s', $thing->thing, $thing->url));
+                $thing->info = 'Failed to parse in Readability';
                 $thing->status = empleadoEstatal::THING_REJECTED;
             } catch (\Exception $e) {
                 empleadoEstatal::$log->addCritical(sprintf('FetchWorker: Failed to get newspaper (try no %s): %s. URL: %s', $thing->tries, $e->getMessage(), $thing->url));
@@ -71,9 +72,9 @@ class NewspaperProcessor
             } catch (\Error $e) {
                 empleadoEstatal::$log->addCritical(sprintf('FetchWorker: General Error (?) (try no %s): %s. URL: %s', $thing->tries, $e->getMessage(), $thing->url));
                 $thing->info = substr($e->getMessage(), 0, 254);
+            } finally {
+                $thing->save();
             }
-
-            $thing->save();
         }
     }
 
