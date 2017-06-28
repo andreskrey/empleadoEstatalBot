@@ -4,8 +4,8 @@ namespace empleadoEstatalBot;
 
 use empleadoEstatalBot\NewspaperProcessor\NewspaperProcessor;
 use empleadoEstatalBot\RedditManager\RedditManager;
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
@@ -67,7 +67,7 @@ class empleadoEstatal
     public function __construct()
     {
         self::$log = new Logger('ChePibe');
-        self::$log->pushHandler(new StreamHandler(__DIR__ . '/tmp/empleadoEstatalBot.log'));
+        self::$log->pushHandler(new RotatingFileHandler(__DIR__ . '/tmp/empleadoEstatalBot.log', 5));
 
         try {
             $this->config = Yaml::parse(file_get_contents(__DIR__ . '/config/config.yml'));
