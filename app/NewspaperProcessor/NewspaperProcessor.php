@@ -44,9 +44,7 @@ class NewspaperProcessor
                     $html = gzdecode($html);
                 }
 
-                // Algunos diarios mandan texto en UTF8 y Content Type declarado como otra cosa
-                // y se rompe todo el texto. Force UTF8 soluciona esto
-                $html = Encoding::toUTF8($html);
+
                 $html = $this->parseHTML($html, $thing->url);
 
                 // Discard failed parsings
@@ -122,6 +120,11 @@ class NewspaperProcessor
 
         // Envolviendo en blockquote el asunto para triggerear la regla css que oculta el texto
         $html = '<blockquote>' . $html . '</blockquote>' . "\n";
+
+
+        // Algunos diarios mandan texto en UTF8 y Content Type declarado como otra cosa
+        // y se rompe todo el texto. Force UTF8 soluciona esto
+        $html = Encoding::toUTF8($html);
 
         return $html;
     }
