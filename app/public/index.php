@@ -15,7 +15,7 @@ $mapping = [
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>empleadoEstatalBot</title>
     <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -23,7 +23,7 @@ $mapping = [
 <div class="container-fluid">
     <h1>empleadoEstatalBot</h1>
 
-    <h2>Ultimos diez posts</h2>
+    <h2>Latest ten posts</h2>
 
     <table class="table-striped">
         <tr>
@@ -48,3 +48,5 @@ $mapping = [
 </div>
 </body>
 </html>
+
+
