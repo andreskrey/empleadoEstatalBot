@@ -33,6 +33,7 @@ $mapping = [
             <th>Status</th>
             <th>Tries</th>
             <th>Info</th>
+            <th>Last update</th>
         </tr>
         <?php foreach (Post::limit(10)->orderBy('updated_at', 'desc')->get() as $thing) { ?>
             <tr>
@@ -42,6 +43,7 @@ $mapping = [
                 <td><?= $mapping[$thing->status] ?></td>
                 <td><?= $thing->tries ?></td>
                 <td><?= $thing->info ?></td>
+                <td><?= $thing->updated_at ?></td>
             </tr>
         <?php } ?>
     </table>
