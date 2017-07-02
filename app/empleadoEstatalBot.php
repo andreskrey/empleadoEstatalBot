@@ -15,6 +15,10 @@ use Symfony\Component\Yaml\Yaml;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+// Console only
+if (PHP_SAPI !== 'cli') {
+    return;
+}
 
 $console = new Application();
 $console->register('get:start')
@@ -126,7 +130,6 @@ class empleadoEstatal
         $reddit->postComments();
         self::$log->addInfo('PostWorker: End.');
     }
-
 
     public function seed()
     {
