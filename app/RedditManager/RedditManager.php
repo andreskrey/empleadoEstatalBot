@@ -138,7 +138,7 @@ class RedditManager
             try {
                 $thing->tries++;
 
-                $this->client->request('POST', 'https://oauth.reddit.com/api/comment', [
+                $request = $this->client->request('POST', 'https://oauth.reddit.com/api/comment', [
                     'headers' => $this->headers,
                     'form_params' => [
                         'thing_id' => $thing->thing,
@@ -146,7 +146,9 @@ class RedditManager
                     ]
                 ]);
                 $thing->status = empleadoEstatal::THING_POSTED;
-                empleadoEstatal::$log->addInfo(sprintf('PostWorker: posted %s.', $thing->thing));
+                $response = json_decode($request->getBody(), true);
+
+                empleadoEstatal::$log->addInfo(sprintf('PostWorker: posted %s. Response: %s', $thing->thing, $response));
             } catch (Exception $e) {
                 empleadoEstatal::$log->addCritical(sprintf('PostWorker: Failed to post %s: %s', $thing->thing, $e->getMessage()));
             }
