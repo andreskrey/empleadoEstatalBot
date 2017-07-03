@@ -146,7 +146,7 @@ class RedditManager
                     ]
                 ]);
                 $thing->status = empleadoEstatal::THING_POSTED;
-                $response = json_decode($request->getBody(), true);
+                $response = $request->getBody();
 
                 empleadoEstatal::$log->addInfo(sprintf('PostWorker: posted %s. Response: %s', $thing->thing, $response));
             } catch (Exception $e) {
