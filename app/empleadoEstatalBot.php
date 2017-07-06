@@ -4,6 +4,7 @@ namespace empleadoEstatalBot;
 
 use empleadoEstatalBot\NewspaperProcessor\NewspaperProcessor;
 use empleadoEstatalBot\RedditManager\RedditManager;
+use empleadoEstatalBot\Utilities\Locker;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -25,14 +26,14 @@ $console->register('get:start')
     ->setDescription('Start the Get worker.')
     ->setCode(function (InputInterface $input, OutputInterface $output) {
         $empleado = new empleadoEstatal();
-        $output->writeln($empleado->get());
+        $empleado->get();
     });
 
 $console->register('fetch:start')
     ->setDescription('Start the Fetch worker.')
     ->setCode(function (InputInterface $input, OutputInterface $output) {
         $empleado = new empleadoEstatal();
-        $output->writeln($empleado->fetch());
+        $empleado->fetch();
     });
 
 $console->register('post:start')
@@ -44,16 +45,16 @@ $console->register('post:start')
     ->setCode(function (InputInterface $input, OutputInterface $output) {
         $empleado = new empleadoEstatal();
         if ($input->getOption('pre-fetch')) {
-            $output->writeln($empleado->fetch());
+            $empleado->fetch();
         }
-        $output->writeln($empleado->post());
+        $empleado->post();
     });
 
 $console->register('config:seed')
     ->setDescription('Seed the db.')
     ->setCode(function (InputInterface $input, OutputInterface $output) {
         $empleado = new empleadoEstatal();
-        $output->writeln($empleado->seed());
+        $empleado->seed();
     });
 $console->run();
 
@@ -67,6 +68,8 @@ class empleadoEstatal
     const THING_TO_FETCH = 1;
     const THING_FETCHED = 2;
     const THING_POSTED = 3;
+
+    const TMP_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
 
     public function __construct()
     {
@@ -103,32 +106,60 @@ class empleadoEstatal
         }
     }
 
-    public function get()
+    public function __call($name, $arguments)
     {
-        self::$log->addInfo('GetWorker: Starting...');
-        $reddit = new RedditManager($this->config['reddit']);
-        $reddit->login();
-        $reddit->getNewPosts();
-        $reddit->filterPosts();
-        $reddit->savePosts();
-        self::$log->addInfo('GetWorker: End.');
+        if (method_exists($this, $name)) {
+            try {
+                return call_user_func_array([$this, $name], $arguments);
+            } catch (\Exception $e) {
+                self::$log->addEmergency(sprintf('empleadoEstatalBot: General exception. Error no: %s. File: %s. Line: %s. Message: %s ', $e->getCode(), $e->getFile(), $e->getLine(), $e->getMessage()));
+            }
+        }
+
+        throw new \BadMethodCallException(sprintf('Function "%s" not found.', $name));
     }
 
-    public function fetch()
+    protected function get()
     {
-        self::$log->addInfo('FetchWorker: Starting...');
-        $news = new NewspaperProcessor($this->config['newspaper_processor']);
-        $news->getNewspaperText();
-        self::$log->addInfo('FetchWorker: End.');
+        if (Locker::checkLock('GetWorker')) {
+            self::$log->addInfo('GetWorker: Starting...');
+            $reddit = new RedditManager($this->config['reddit']);
+            $reddit->login();
+            $reddit->getNewPosts();
+            $reddit->filterPosts();
+            $reddit->savePosts();
+            self::$log->addInfo('GetWorker: End.');
+            Locker::releaseLock('GetWorker');
+        } else {
+            self::$log->addNotice('GetWorker: Not allowed to start, lock present.');
+        }
     }
 
-    public function post()
+    protected function fetch()
     {
-        self::$log->addInfo('PostWorker: Starting...');
-        $reddit = new RedditManager($this->config['reddit']);
-        $reddit->login();
-        $reddit->postComments();
-        self::$log->addInfo('PostWorker: End.');
+        if (Locker::checkLock('FetchWorker')) {
+            self::$log->addInfo('FetchWorker: Starting...');
+            $news = new NewspaperProcessor($this->config['newspaper_processor']);
+            $news->getNewspaperText();
+            self::$log->addInfo('FetchWorker: End.');
+            Locker::releaseLock('FetchWorker');
+        } else {
+            self::$log->addNotice('FetchWorker: Not allowed to start, lock present.');
+        }
+    }
+
+    protected function post()
+    {
+        if (Locker::checkLock('PostWorker')) {
+            self::$log->addInfo('PostWorker: Starting...');
+            $reddit = new RedditManager($this->config['reddit']);
+            $reddit->login();
+            $reddit->postComments();
+            self::$log->addInfo('PostWorker: End.');
+            Locker::releaseLock('PostWorker');
+        } else {
+            self::$log->addNotice('PostWorker: Not allowed to start, lock present.');
+        }
     }
 
     public function seed()
