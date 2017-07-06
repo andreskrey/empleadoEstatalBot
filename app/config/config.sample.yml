@@ -1,3 +1,7 @@
+bot:
+  # Log level. Recommended: 200 (info)
+  log_level: 200
+
 reddit:
 
   # reddit login data

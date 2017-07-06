@@ -81,15 +81,14 @@ class empleadoEstatal
 
     public function __construct()
     {
-        self::$log = new Logger('ChePibe');
-        self::$log->pushHandler(new RotatingFileHandler(__DIR__ . '/tmp/empleadoEstatalBot.log', 5));
-
         try {
             $this->config = Yaml::parse(file_get_contents(__DIR__ . '/config/config.yml'));
         } catch (\Exception $e) {
-            self::$log->addCritical('Missing or wrong config: ' . $e->getMessage());
-            throw $e;
+            exit('Missing or wrong config on yml: ' . $e->getMessage());
         }
+
+        self::$log = new Logger('ChePibe');
+        self::$log->pushHandler(new RotatingFileHandler(__DIR__ . '/tmp/empleadoEstatalBot.log', 5, $this->config['bot']['log_level']));
 
         try {
             $capsule = new Capsule;
