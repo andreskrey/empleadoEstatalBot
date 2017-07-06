@@ -85,4 +85,44 @@ class Locker
 
         return true;
     }
+
+    /**
+     * clearLocks
+     *
+     * Clears all locks.
+     *
+     * @return true
+     */
+    static public function clearLocks()
+    {
+        $result = true;
+        foreach (glob(empleadoEstatal::TMP_DIR . '*.lock') as $file) {
+            if (unlink($file) === false) {
+                empleadoEstatal::$log->addEmergency(sprintf('LockerUtility: Error while trying to delete lock file on clear locks. File %s', $file));
+                $result = false;
+            };
+        }
+
+        return $result;
+    }
+
+    /**
+     * clearLock
+     *
+     * Clears specific lock.
+     *
+     * @return true
+     */
+    static public function clearLock($worker)
+    {
+        $lockFile = empleadoEstatal::TMP_DIR . $worker . '.lock';
+
+        if (unlink($lockFile) === false) {
+            empleadoEstatal::$log->addEmergency(sprintf('LockerUtility: Error while trying to delete lock file on clear specific lock. File %s', $lockFile));
+
+            return false;
+        };
+
+        return true;
+    }
 }

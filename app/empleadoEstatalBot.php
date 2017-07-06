@@ -56,6 +56,14 @@ $console->register('config:seed')
         $empleado = new empleadoEstatal();
         $empleado->seed();
     });
+
+$console->register('config:clear-locks')
+    ->setDescription('Clears all locks.')
+    ->setCode(function (InputInterface $input, OutputInterface $output) {
+        $empleado = new empleadoEstatal();
+        $empleado->clearLocks();
+    });
+
 $console->run();
 
 class empleadoEstatal
@@ -106,6 +114,15 @@ class empleadoEstatal
         }
     }
 
+    /**
+     * Wrapper for workers. Catches any exception, logs and clears locks.
+     *
+     * @param $name
+     * @param $arguments
+     * @throws \Exception
+     *
+     * @return mixed
+     */
     public function __call($name, $arguments)
     {
         if (method_exists($this, $name)) {
@@ -113,10 +130,12 @@ class empleadoEstatal
                 return call_user_func_array([$this, $name], $arguments);
             } catch (\Exception $e) {
                 self::$log->addEmergency(sprintf('empleadoEstatalBot: General exception. Error no: %s. File: %s. Line: %s. Message: %s ', $e->getCode(), $e->getFile(), $e->getLine(), $e->getMessage()));
+                Locker::clearLocks();
+                throw $e;
             }
+        } else {
+            throw new \BadMethodCallException(sprintf('Function "%s" not found.', $name));
         }
-
-        throw new \BadMethodCallException(sprintf('Function "%s" not found.', $name));
     }
 
     protected function get()
@@ -177,5 +196,10 @@ class empleadoEstatal
         });
 
         return 'Done.';
+    }
+
+    public function clearLocks()
+    {
+        return Locker::clearLocks();
     }
 }
