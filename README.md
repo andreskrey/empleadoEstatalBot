@@ -7,5 +7,5 @@ Also known as 'the bot that steals content from other sites and posts it as a co
 1) \> git clone
 2) \> composer install
 3) Create your config.yml in app/config
-4) Add a cron for empleadoEstatalBot.php get:start, empleadoEstatalBot.php fetch:start and empleadoEstatalBot.php post:start
-
+4) empleadoEstatalBot.php config:seed
+5) Add a cron for empleadoEstatalBot.php get:start, empleadoEstatalBot.php fetch:start and empleadoEstatalBot.php post:start
