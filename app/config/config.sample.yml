@@ -1,10 +1,16 @@
 reddit:
+
+  # reddit login data
   client_id: 'client_id'
   secret_key: 'secret_key'
   redirect_uri: 'redirect_uri'
-  scopes: ['submit', 'read']
   username: 'username'
   password: 'password'
+
+  # Should be left as "submit, read"
+  scopes: ['submit', 'read']
+
+  # Domains you don't want the bot to take care of. Wildcards accepted.
   banned_domains: ['imgur.com',
                    '*.imgur.com',
                    'twitter.com',
@@ -22,14 +28,24 @@ reddit:
                    '*.radiocut.fm',
                    'vid.me'
                    ]
+
+  # Subreddits you want to monitor
   subreddits: ['empleadoEstatalBot']
+
 newspaper_processor:
+
+  # URL Shorteners you want to resolve (reddit doesn't like those services)
   url_shorteners: ['t.co',
                    'goo.gl',
                    'bit.ly'
                    ]
+
+  # Bot signature. In HTML or markdown
   signature: 'signature'
+
 database:
+
+  #DB connection information
   host: '127.0.0.1'
   name: 'db'
   user: 'dbuser'
