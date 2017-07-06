@@ -129,6 +129,8 @@ class empleadoEstatal
                 return call_user_func_array([$this, $name], $arguments);
             } catch (\Exception $e) {
                 self::$log->addEmergency(sprintf('empleadoEstatalBot: General exception. Error no: %s. File: %s. Line: %s. Message: %s ', $e->getCode(), $e->getFile(), $e->getLine(), $e->getMessage()));
+
+                // TODO: Change this to clearLock but first map the worker that was running. Maybe read the PHPdoc of the func?
                 Locker::clearLocks();
                 throw $e;
             }
