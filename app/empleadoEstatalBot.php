@@ -132,7 +132,6 @@ class empleadoEstatal
 
                 // TODO: Change this to clearLock but first map the worker that was running. Maybe read the PHPdoc of the func?
                 Locker::clearLocks();
-                throw $e;
             }
         } else {
             throw new \BadMethodCallException(sprintf('Function "%s" not found.', $name));

@@ -74,7 +74,6 @@ class RedditManager
                 }
 
                 empleadoEstatal::$log->addCritical('GetWorker: Failed to get subreddit /new posts: ' . $e->getMessage());
-                throw $e;
             }
         }
 
