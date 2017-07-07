@@ -141,6 +141,7 @@ class RedditManager
                 $request = $this->client->request('POST', 'https://oauth.reddit.com/api/comment', [
                     'headers' => $this->headers,
                     'form_params' => [
+                        'api_type' => 'json',
                         'thing_id' => $thing->thing,
                         'text' => $thing->markdown
                     ]
