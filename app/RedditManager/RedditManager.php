@@ -145,15 +145,23 @@ class RedditManager
                         'text' => $thing->markdown
                     ]
                 ]);
-                $thing->status = empleadoEstatal::THING_POSTED;
-                $response = $request->getBody();
 
-                empleadoEstatal::$log->addInfo(sprintf('PostWorker: posted %s. Response: %s', $thing->thing, $response));
+                /*
+                 * Check for errors on the response and handle them.
+                 */
+                $response = json_decode((string)$request->getBody(), true);
+                if (isset($response['json']['errors']) && !empty($response['json']['errors'])) {
+                    throw new Exception(sprintf('Error from reddit: %s', json_encode($response['json']['errors'])));
+                }
+
+                $thing->status = empleadoEstatal::THING_POSTED;
+
+                empleadoEstatal::$log->addInfo(sprintf('PostWorker: posted %s.', $thing->thing));
             } catch (Exception $e) {
                 empleadoEstatal::$log->addCritical(sprintf('PostWorker: Failed to post %s: %s', $thing->thing, $e->getMessage()));
+            } finally {
+                $thing->save();
             }
-
-            $thing->save();
         }
     }
 }
