@@ -61,7 +61,7 @@ class RedditManager
         foreach ($this->config['subreddits'] as $subreddit) {
             try {
                 $request = $this->client
-                    ->request('GET', 'https://oauth.reddit.com/r/' . $subreddit . '/new/.json', [
+                    ->request('GET', sprintf('https://oauth.reddit.com/r/%s/new/.json', $subreddit), [
                         'headers' => $this->headers,
                         'query' => [
                             'limit' => 10
