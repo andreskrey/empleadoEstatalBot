@@ -158,6 +158,7 @@ class RedditManager
 
                 empleadoEstatal::$log->addInfo(sprintf('PostWorker: posted %s.', $thing->thing));
             } catch (Exception $e) {
+                $thing->info = substr($e->getMessage(), 0, 254);
                 empleadoEstatal::$log->addCritical(sprintf('PostWorker: Failed to post %s: %s', $thing->thing, $e->getMessage()));
             } finally {
                 $thing->save();
