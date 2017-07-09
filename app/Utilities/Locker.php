@@ -26,7 +26,7 @@ class Locker
              */
             if (filemtime($lockFile) < time() - 60 * 10) {
                 /*
-                 * Something went horribly wrong (like a segfault or a uncaught exception) and the lock file wasn't
+                 * Something went horribly wrong (like a segfault or an uncaught exception) and the lock file wasn't
                  * deleted. Remove the file, allow the worker to run and pray to god that the script isn't stuck
                  * in another process.
                  */
@@ -80,7 +80,8 @@ class Locker
 
         if (unlink($lockFile) === false) {
             empleadoEstatal::$log->addEmergency('LockerUtility: Error while trying to delete lock file on release.');
-            return true;
+
+            return false;
         };
 
         return true;
