@@ -42,7 +42,7 @@ $mapping = [
                 <td><?= $thing->url ?></td>
                 <td><?= $mapping[$thing->status] ?></td>
                 <td><?= $thing->tries ?></td>
-                <td><?= $thing->info ?></td>
+                <td><?= htmlspecialchars($thing->info) ?></td>
                 <td><?= $thing->updated_at ?></td>
             </tr>
         <?php } ?>
