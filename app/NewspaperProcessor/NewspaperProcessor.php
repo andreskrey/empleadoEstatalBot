@@ -56,6 +56,13 @@ class NewspaperProcessor
                 $html = $this->signPost($html);
                 $markdown = $this->buildMarkdown($html);
 
+                /*
+                 * Some newspapers like to mix every possible encoding out there making a mess after the processing
+                 * We need to force everything into UTF8 no matter what original encoding we have.
+                 */
+                // Disabling for now
+//                $markdown = Encoding::fixUTF8($markdown);
+
                 $thing->markdown = $markdown;
                 $thing->status = empleadoEstatal::THING_FETCHED;
                 $thing->tries = 0;
@@ -89,7 +96,7 @@ class NewspaperProcessor
          * Amen
          */
 
-        $readability = new HTMLParser(['originalURL' => $url]);
+        $readability = new HTMLParser(['originalURL' => $url, 'normalizeEntities' => true]);
         $result = $readability->parse($html);
 
         if ($result) {
@@ -114,29 +121,23 @@ class NewspaperProcessor
         $html = $this->solveURLShorteners($html);
 
         // Eliminar los mails del texto asi reddit no se pone la gorra
-        $html = $test = preg_replace_callback('/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i', function ($match) {
+        $html = preg_replace_callback('/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i', function ($match) {
             return str_replace('@', ' at ', $match[0]);
         }, $html);
 
         // Envolviendo en blockquote el asunto para triggerear la regla css que oculta el texto
         $html = '<blockquote>' . $html . '</blockquote>' . "\n";
 
-
-        // Algunos diarios mandan texto en UTF8 y Content Type declarado como otra cosa
-        // y se rompe todo el texto. Force UTF8 soluciona esto
-        $html = Encoding::toUTF8($html);
-
         return $html;
     }
 
     private function solveURLShorteners($html)
     {
-        $this->dom = new DOMDocument('1.0', 'utf-8');
-        // Hack horrible para evitar que DOMDocument se mande cagadas con UTF8
-        $this->dom->loadHTML('<?xml encoding="utf-8"?>' . $html);
-        $this->dom->encoding = 'utf-8';
+        $dom = new DOMDocument('1.0', 'utf-8');
+        $dom->loadHTML('<?xml encoding="UTF-8">' . $html);
+        $dom->encoding = 'utf-8';
 
-        $links = $this->dom->getElementsByTagName('a');
+        $links = $dom->getElementsByTagName('a');
 
         foreach ($links as $i) {
 
@@ -154,8 +155,7 @@ class NewspaperProcessor
             }
         }
 
-        // Hack horrible para sacar el hack horrible anterior
-        return str_replace('<?xml encoding="utf-8"?>', '', $this->dom->saveHTML());
+        return str_ireplace('<?xml encoding="UTF-8"?>', '', $dom->C14N());
     }
 
     private function buildMarkdown($html)
