@@ -96,7 +96,7 @@ class NewspaperProcessor
          * Amen
          */
 
-        $readability = new HTMLParser(['originalURL' => $url, 'normalizeEntities' => true]);
+        $readability = new HTMLParser(['originalURL' => $url, 'normalizeEntities' => false]);
         $result = $readability->parse($html);
 
         if ($result) {
