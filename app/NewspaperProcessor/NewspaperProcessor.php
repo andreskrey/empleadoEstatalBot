@@ -85,17 +85,6 @@ class NewspaperProcessor
 
     private function parseHTML($html, $url)
     {
-        /*
-         * Perdoname, Oh Dios, por parsear HTML con regex.
-         * Es culpa de Clarin y su espantoso JS.
-         */
-        if (strpos($html, 'CLARIN') !== false) {
-            $html = preg_replace('/inline: {(.|\n)*?},/', '', $html);
-        }
-        /*
-         * Amen
-         */
-
         $readability = new HTMLParser(['originalURL' => $url, 'normalizeEntities' => false]);
         $result = $readability->parse($html);
 
