@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fa6fbf38c5cd70bec82fd837da13db19",
+    "hash": "902cf19041965770d7d84ef3cd71e233",
     "content-hash": "eef23a457289914cbb707eb0adf4487b",
     "packages": [
         {
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/andreskrey/readability.php.git",
-                "reference": "dfbb67d45e988cf19253882348ec5026647eff5d"
+                "reference": "3adef37f90e75971ae5faa6ab8ba16db55fdb42d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/dfbb67d45e988cf19253882348ec5026647eff5d",
-                "reference": "dfbb67d45e988cf19253882348ec5026647eff5d",
+                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/3adef37f90e75971ae5faa6ab8ba16db55fdb42d",
+                "reference": "3adef37f90e75971ae5faa6ab8ba16db55fdb42d",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "html",
                 "readability"
             ],
-            "time": "2017-06-02 22:53:11"
+            "time": "2017-09-14 19:31:40"
         },
         {
             "name": "doctrine/inflector",
