@@ -85,7 +85,11 @@ class NewspaperProcessor
 
     private function parseHTML($html, $url)
     {
-        $readability = new HTMLParser(['originalURL' => $url, 'normalizeEntities' => false]);
+        $readability = new HTMLParser([
+            'originalURL' => $url,
+            'normalizeEntities' => false,
+            'summonCthulhu' => true
+            ]);
         $result = $readability->parse($html);
 
         if ($result) {
