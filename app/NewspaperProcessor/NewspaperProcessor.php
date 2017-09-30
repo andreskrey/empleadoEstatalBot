@@ -88,7 +88,8 @@ class NewspaperProcessor
         $readability = new HTMLParser([
             'originalURL' => $url,
             'normalizeEntities' => false,
-            'summonCthulhu' => true
+            'summonCthulhu' => true,
+            'fixRelativeURLs' => true
             ]);
         $result = $readability->parse($html);
 
