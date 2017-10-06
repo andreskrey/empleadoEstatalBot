@@ -8,7 +8,7 @@
     ],
     "require": {
         "rtheunissen/oauth2-reddit": "^2.0",
-        "league/html-to-markdown": "dev-reddit-flavored-markdown as 4.2",
+        "league/html-to-markdown": "dev-dev-reddit-flavored-markdown as 4.2",
         "ext-mbstring": "*",
         "monolog/monolog": "^1",
         "andreskrey/Readability.php": "dev-development",

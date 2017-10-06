@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fa6fbf38c5cd70bec82fd837da13db19",
-    "content-hash": "eef23a457289914cbb707eb0adf4487b",
+    "hash": "3468480f70275e1aba164ad24e087ca9",
+    "content-hash": "68b67fa52207733261e022b3951e08b1",
     "packages": [
         {
             "name": "andreskrey/readability.php",
@@ -504,16 +504,16 @@
         },
         {
             "name": "league/html-to-markdown",
-            "version": "dev-reddit-flavored-markdown",
+            "version": "dev-dev-reddit-flavored-markdown",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andreskrey/html-to-markdown.git",
-                "reference": "5a5b08eab3c23474f82800af2a1a35a708fee8e9"
+                "reference": "5da5f9aee9a7487698152103358726b2e3d0fab4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andreskrey/html-to-markdown/zipball/5a5b08eab3c23474f82800af2a1a35a708fee8e9",
-                "reference": "5a5b08eab3c23474f82800af2a1a35a708fee8e9",
+                "url": "https://api.github.com/repos/andreskrey/html-to-markdown/zipball/5da5f9aee9a7487698152103358726b2e3d0fab4",
+                "reference": "5da5f9aee9a7487698152103358726b2e3d0fab4",
                 "shasum": ""
             },
             "require": {
@@ -569,9 +569,9 @@
                 "markdown"
             ],
             "support": {
-                "source": "https://github.com/andreskrey/html-to-markdown/tree/reddit-flavored-markdown"
+                "source": "https://github.com/andreskrey/html-to-markdown/tree/dev-reddit-flavored-markdown"
             },
-            "time": "2017-01-18 12:48:50"
+            "time": "2017-10-06 09:06:58"
         },
         {
             "name": "league/oauth2-client",
@@ -1300,7 +1300,7 @@
         {
             "alias": "4.2",
             "alias_normalized": "4.2.0.0",
-            "version": "dev-reddit-flavored-markdown",
+            "version": "dev-dev-reddit-flavored-markdown",
             "package": "league/html-to-markdown"
         }
     ],
