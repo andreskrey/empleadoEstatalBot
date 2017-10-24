@@ -90,14 +90,14 @@ class NewspaperProcessor
             'normalizeEntities' => false,
             'summonCthulhu' => true,
             'fixRelativeURLs' => true
-            ]);
+        ]);
         $result = $readability->parse($html);
 
         if ($result) {
             if ($result['image']) {
-                $image = '<h1>[' . htmlspecialchars($result['title']) . '](' . $result['image'] . ')</h1>' . "<br/><br/>";
+                $image = sprintf('<h1><img src="%s" alt="%s"></h1><br /><br />', $result['image'], htmlspecialchars($result['title']));
             } else {
-                $image = '<h1>' . htmlspecialchars($result['title']) . '</h1>' . "<br/><br/>";
+                $image = sprintf('<h1>%s</h1><br/><br/>', htmlspecialchars($result['title']));
             }
             return $image . $result['html'];
         }
