@@ -7,7 +7,7 @@ use empleadoEstatalBot\Post;
 use andreskrey\Readability\HTMLParser;
 use GuzzleHttp\Client as HttpClient;
 use DOMDocument;
-use \ForceUTF8\Encoding;
+use Illuminate\Database\QueryException;
 use League\HTMLToMarkdown\HtmlConverter;
 
 class NewspaperProcessor
@@ -78,7 +78,19 @@ class NewspaperProcessor
                 empleadoEstatal::$log->addNotice(sprintf('FetchWorker: General Error (?) (try no %s): %s. URL: %s', $thing->tries, $e->getMessage(), $thing->url));
                 $thing->info = substr($e->getMessage(), 0, 254);
             } finally {
-                $thing->save();
+                try {
+                    $thing->save();
+                } catch (QueryException $e) {
+                    // Catch any query errors for really weird markdown (5 bytes unicode that MySQL doesn't like)
+
+                    $thing->markdown = null;
+                    $thing->status = empleadoEstatal::THING_REJECTED;
+                    $thing->info = substr($e->getMessage(), 0, 254);
+                    empleadoEstatal::$log->addEmergency(sprintf('FetchWorker: Failed to save text to db (try no %s): %s. URL: %s', $thing->tries, $e->getMessage(), $thing->url));
+
+                    // Pleeeease work this time :D
+                    $thing->save();
+                }
             }
         }
     }
