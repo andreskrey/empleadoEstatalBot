@@ -11,7 +11,7 @@
         "league/html-to-markdown": "dev-dev-reddit-flavored-markdown as 4.2",
         "ext-mbstring": "*",
         "monolog/monolog": "^1",
-        "andreskrey/Readability.php": "dev-development",
+        "andreskrey/Readability.php": "^0.2.2",
         "neitanod/forceutf8": "^2.0",
         "illuminate/database": "^5.4",
         "symfony/console": "^3.3",

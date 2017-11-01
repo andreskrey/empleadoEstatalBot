@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3468480f70275e1aba164ad24e087ca9",
-    "content-hash": "68b67fa52207733261e022b3951e08b1",
+    "hash": "9b1ffc4930519b5abe56a75df9103008",
+    "content-hash": "6de2fd31ece57ff61f73f53ea43c9186",
     "packages": [
         {
             "name": "andreskrey/readability.php",
-            "version": "dev-development",
+            "version": "v0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andreskrey/readability.php.git",
-                "reference": "dfbb67d45e988cf19253882348ec5026647eff5d"
+                "reference": "48c7d66dfc484b31e331530ead464e29e0f01c4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/dfbb67d45e988cf19253882348ec5026647eff5d",
-                "reference": "dfbb67d45e988cf19253882348ec5026647eff5d",
+                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/48c7d66dfc484b31e331530ead464e29e0f01c4e",
+                "reference": "48c7d66dfc484b31e331530ead464e29e0f01c4e",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "html",
                 "readability"
             ],
-            "time": "2017-06-02 22:53:11"
+            "time": "2017-09-14 19:31:55"
         },
         {
             "name": "doctrine/inflector",
@@ -1306,8 +1306,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "league/html-to-markdown": 20,
-        "andreskrey/readability.php": 20
+        "league/html-to-markdown": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
