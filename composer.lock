@@ -4,21 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9b1ffc4930519b5abe56a75df9103008",
-    "content-hash": "6de2fd31ece57ff61f73f53ea43c9186",
+    "content-hash": "e42b4e0246a8283e0ec836915e655ea8",
     "packages": [
         {
             "name": "andreskrey/readability.php",
-            "version": "v0.2.2",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andreskrey/readability.php.git",
-                "reference": "48c7d66dfc484b31e331530ead464e29e0f01c4e"
+                "reference": "f460eb5fec22ce6b08ae9e3c0bd25fe819eacea3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/48c7d66dfc484b31e331530ead464e29e0f01c4e",
-                "reference": "48c7d66dfc484b31e331530ead464e29e0f01c4e",
+                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/f460eb5fec22ce6b08ae9e3c0bd25fe819eacea3",
+                "reference": "f460eb5fec22ce6b08ae9e3c0bd25fe819eacea3",
                 "shasum": ""
             },
             "require": {
@@ -38,7 +37,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "Apache-2.0"
             ],
             "authors": [
                 {
@@ -53,7 +52,7 @@
                 "html",
                 "readability"
             ],
-            "time": "2017-09-14 19:31:55"
+            "time": "2017-11-12T20:50:31+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -120,7 +119,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06 14:35:42"
+            "time": "2015-11-06T14:35:42+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -182,7 +181,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-02-28 22:50:30"
+            "time": "2017-02-28T22:50:30+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -233,7 +232,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20 10:07:11"
+            "time": "2016-12-20T10:07:11+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -298,7 +297,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-03-20 17:10:46"
+            "time": "2017-03-20T17:10:46+00:00"
         },
         {
             "name": "illuminate/container",
@@ -341,7 +340,7 @@
             ],
             "description": "The Illuminate Container package.",
             "homepage": "https://laravel.com",
-            "time": "2017-04-16 13:32:45"
+            "time": "2017-04-16T13:32:45+00:00"
         },
         {
             "name": "illuminate/contracts",
@@ -383,7 +382,7 @@
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "https://laravel.com",
-            "time": "2017-03-29 13:17:47"
+            "time": "2017-03-29T13:17:47+00:00"
         },
         {
             "name": "illuminate/database",
@@ -443,7 +442,7 @@
                 "orm",
                 "sql"
             ],
-            "time": "2017-04-11 22:53:18"
+            "time": "2017-04-11T22:53:18+00:00"
         },
         {
             "name": "illuminate/support",
@@ -500,7 +499,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2017-04-09 14:34:57"
+            "time": "2017-04-09T14:34:57+00:00"
         },
         {
             "name": "league/html-to-markdown",
@@ -571,7 +570,7 @@
             "support": {
                 "source": "https://github.com/andreskrey/html-to-markdown/tree/dev-reddit-flavored-markdown"
             },
-            "time": "2017-10-24 18:58:46"
+            "time": "2017-10-24T18:58:46+00:00"
         },
         {
             "name": "league/oauth2-client",
@@ -638,7 +637,7 @@
                 "oauth2",
                 "single sign on"
             ],
-            "time": "2017-04-25 14:43:14"
+            "time": "2017-04-25T14:43:14+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -716,7 +715,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-03-13 07:08:03"
+            "time": "2017-03-13T07:08:03+00:00"
         },
         {
             "name": "neitanod/forceutf8",
@@ -750,7 +749,7 @@
             ],
             "description": "PHP Class Encoding featuring popular Encoding::toUTF8() function --formerly known as forceUTF8()-- that fixes mixed encoded strings.",
             "homepage": "https://github.com/neitanod/forceutf8",
-            "time": "2017-05-22 18:50:57"
+            "time": "2017-05-22T18:50:57+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -803,7 +802,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2017-01-16 07:55:07"
+            "time": "2017-01-16T07:55:07+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -851,7 +850,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-13 16:27:32"
+            "time": "2017-03-13T16:27:32+00:00"
         },
         {
             "name": "psr/http-message",
@@ -901,7 +900,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "psr/log",
@@ -948,7 +947,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
         },
         {
             "name": "rtheunissen/oauth2-reddit",
@@ -989,7 +988,7 @@
                 }
             ],
             "description": "Reddit OAuth2 provider for league/oauth2-client",
-            "time": "2017-04-23 16:49:08"
+            "time": "2017-04-23T16:49:08+00:00"
         },
         {
             "name": "symfony/console",
@@ -1057,7 +1056,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-28 14:08:56"
+            "time": "2017-05-28T14:08:56+00:00"
         },
         {
             "name": "symfony/debug",
@@ -1113,7 +1112,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-27 16:02:27"
+            "time": "2017-05-27T16:02:27+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1172,7 +1171,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14 01:06:16"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/translation",
@@ -1237,7 +1236,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-22 07:42:36"
+            "time": "2017-05-22T07:42:36+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -1292,7 +1291,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-28 10:56:20"
+            "time": "2017-05-28T10:56:20+00:00"
         }
     ],
     "packages-dev": [],
