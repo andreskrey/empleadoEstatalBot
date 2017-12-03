@@ -2,9 +2,11 @@
 
 namespace empleadoEstatalBot\NewspaperProcessor;
 
+use andreskrey\Readability\Configuration;
+use andreskrey\Readability\ParseException;
+use andreskrey\Readability\Readability;
 use empleadoEstatalBot\empleadoEstatal;
 use empleadoEstatalBot\Post;
-use andreskrey\Readability\HTMLParser;
 use GuzzleHttp\Client as HttpClient;
 use DOMDocument;
 use Illuminate\Database\QueryException;
@@ -97,24 +99,26 @@ class NewspaperProcessor
 
     private function parseHTML($html, $url)
     {
-        $readability = new HTMLParser([
-            'originalURL' => $url,
-            'normalizeEntities' => false,
-            'summonCthulhu' => true,
-            'fixRelativeURLs' => true
-        ]);
-        $result = $readability->parse($html);
+        $readability = new Readability((new Configuration())
+            ->setOriginalURL($url)
+            ->setNormalizeEntities(false)
+            ->setSummonCthulhu(true)
+            ->setFixRelativeURLs(true)
+        );
 
-        if ($result) {
-            if ($result['image']) {
-                $image = sprintf('<h1><img src="%s" alt="%s"></h1><br /><br />', $result['image'], htmlspecialchars($result['title']));
-            } else {
-                $image = sprintf('<h1>%s</h1><br/><br/>', htmlspecialchars($result['title']));
-            }
-            return $image . $result['html'];
+        try {
+            $readability->parse($html);
+        } catch (ParseException $e) {
+            return false;
         }
 
-        return false;
+        if ($readability->getImage()) {
+            $image = sprintf('<h1><img src="%s" alt="%s"></h1><br /><br />', $readability->getImage(), htmlspecialchars($readability->getTitle()));
+        } else {
+            $image = sprintf('<h1>%s</h1><br/><br/>', htmlspecialchars($readability->getTitle()));
+        }
+
+        return $image . $readability->getContent();
     }
 
     private function signPost($html)

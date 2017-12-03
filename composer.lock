@@ -4,30 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e42b4e0246a8283e0ec836915e655ea8",
+    "content-hash": "1b50095a6130d7b8660d2983598007bf",
     "packages": [
         {
             "name": "andreskrey/readability.php",
-            "version": "v0.3.0",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andreskrey/readability.php.git",
-                "reference": "f460eb5fec22ce6b08ae9e3c0bd25fe819eacea3"
+                "reference": "16d807bfeb0f7b37a6652cb9d1c38986f510fe0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/f460eb5fec22ce6b08ae9e3c0bd25fe819eacea3",
-                "reference": "f460eb5fec22ce6b08ae9e3c0bd25fe819eacea3",
+                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/16d807bfeb0f7b37a6652cb9d1c38986f510fe0a",
+                "reference": "16d807bfeb0f7b37a6652cb9d1c38986f510fe0a",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
+                "ext-mbstring": "*",
                 "ext-xml": "*",
-                "league/html-to-markdown": "^4.2",
-                "php": ">=5.4.0"
+                "php": ">=5.6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*"
+                "phpunit/phpunit": "^5.7"
             },
             "type": "library",
             "autoload": {
@@ -52,7 +52,7 @@
                 "html",
                 "readability"
             ],
-            "time": "2017-11-12T20:50:31+00:00"
+            "time": "2017-12-03T12:24:28+00:00"
         },
         {
             "name": "doctrine/inflector",
