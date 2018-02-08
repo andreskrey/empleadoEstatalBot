@@ -36,6 +36,10 @@ reddit:
   # Subreddits you want to monitor
   subreddits: ['empleadoEstatalBot']
 
+  # Subreddits you want the bot comments to be distinguished and sticked
+  # (You HAVE to be a mod and your account MUST HAVE the 'post' permission)
+  distinguishable: ['empleadoEstatalBot']
+
 newspaper_processor:
 
   # URL Shorteners you want to resolve (reddit doesn't like those services)
