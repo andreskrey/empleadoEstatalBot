@@ -157,6 +157,22 @@ class RedditManager
 
                 $thing->status = empleadoEstatal::THING_POSTED;
 
+                if (in_array($thing->subreddit, $this->config['distinguishable'])) {
+                    try {
+                        $this->client->request('POST', 'https://oauth.reddit.com/api/distinguish', [
+                            'headers' => $this->headers,
+                            'form_params' => [
+                                'api_type' => 'json',
+                                'how' => 'yes',
+                                'sticky' => true,
+                                'id' => $response['json']['data']['things'][0]['data']['name']
+                            ]
+                        ]);
+                    } catch (Exception $e) {
+                        empleadoEstatal::$log->addError(sprintf('PostWorker: Failed to distinguish %s: %s. Are you a mod?', $thing->thing, $e->getMessage()));
+                    }
+                }
+
                 empleadoEstatal::$log->addInfo(sprintf('PostWorker: posted %s.', $thing->thing));
             } catch (Exception $e) {
                 $thing->info = substr($e->getMessage(), 0, 254);
