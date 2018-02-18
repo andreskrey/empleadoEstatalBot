@@ -156,6 +156,7 @@ class RedditManager
                 }
 
                 $thing->status = empleadoEstatal::THING_POSTED;
+                $thing->comment_id = $response['json']['data']['things'][0]['data']['name'];
 
                 if (in_array($thing->subreddit, $this->config['distinguishable'])) {
                     try {
