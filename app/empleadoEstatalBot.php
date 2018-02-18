@@ -192,6 +192,8 @@ class empleadoEstatal
             $table->tinyInteger('status')->default(1);
             $table->tinyInteger('tries')->unsigned()->default(0);
             $table->string('info')->nullable()->default(null);
+            $table->string('comment_id')->nullable()->default(null);
+            $table->integer('parent_id')->nullable()->default(null);
             $table->timestamps();
         });
 

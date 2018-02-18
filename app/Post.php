@@ -11,6 +11,6 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = ['subreddit', 'thing', 'url', 'status', 'tries'];
+    protected $fillable = ['subreddit', 'thing', 'url', 'status', 'tries', 'comment_id', 'parent_id'];
     protected $table = 'posts';
 }
