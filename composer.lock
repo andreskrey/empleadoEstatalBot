@@ -507,12 +507,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/andreskrey/html-to-markdown.git",
-                "reference": "066bf8aaa0005d41331bc468299b00ff17899532"
+                "reference": "78f09bc8aade2b130fbeb5d4c8ea7d7204ee0d47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andreskrey/html-to-markdown/zipball/066bf8aaa0005d41331bc468299b00ff17899532",
-                "reference": "066bf8aaa0005d41331bc468299b00ff17899532",
+                "url": "https://api.github.com/repos/andreskrey/html-to-markdown/zipball/78f09bc8aade2b130fbeb5d4c8ea7d7204ee0d47",
+                "reference": "78f09bc8aade2b130fbeb5d4c8ea7d7204ee0d47",
                 "shasum": ""
             },
             "require": {
@@ -570,7 +570,7 @@
             "support": {
                 "source": "https://github.com/andreskrey/html-to-markdown/tree/dev-reddit-flavored-markdown"
             },
-            "time": "2017-10-24T18:58:46+00:00"
+            "time": "2018-02-18T12:31:59+00:00"
         },
         {
             "name": "league/oauth2-client",
