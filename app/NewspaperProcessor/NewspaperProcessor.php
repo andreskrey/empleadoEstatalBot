@@ -76,9 +76,6 @@ class NewspaperProcessor
             } catch (\Exception $e) {
                 empleadoEstatal::$log->addNotice(sprintf('FetchWorker: Failed to get newspaper (try no %s): %s. URL: %s', $thing->tries, $e->getMessage(), $thing->url));
                 $thing->info = substr($e->getMessage(), 0, 254);
-            } catch (\Error $e) {
-                empleadoEstatal::$log->addNotice(sprintf('FetchWorker: General Error (?) (try no %s): %s. URL: %s', $thing->tries, $e->getMessage(), $thing->url));
-                $thing->info = substr($e->getMessage(), 0, 254);
             } finally {
                 try {
                     $thing->save();
