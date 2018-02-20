@@ -126,6 +126,7 @@ class NewspaperProcessor
                 $post = $thing->replicate(['markdown']);
                 $post->parent_id = $parent_id;
                 $post->markdown = $split;
+                $post->info = sprintf('Multicomment. Parent is %s.', $thing->thing);
                 $post->save();
                 $parent_id = $post->id;
             }
