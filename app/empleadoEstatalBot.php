@@ -186,7 +186,7 @@ class empleadoEstatal
         Capsule::schema()->create('posts', function ($table) {
             $table->increments('id');
             $table->string('subreddit');
-            $table->string('thing')->unique();
+            $table->string('thing');
             $table->string('url');
             $table->text('markdown')->nullable();
             $table->tinyInteger('status')->default(1);

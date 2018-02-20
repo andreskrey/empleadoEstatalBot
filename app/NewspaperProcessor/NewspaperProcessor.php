@@ -79,6 +79,7 @@ class NewspaperProcessor
             } finally {
                 try {
                     $thing->save();
+                    $this->checkLength($thing);
                 } catch (QueryException $e) {
                     // Catch any query errors for really weird markdown (5 bytes unicode that MySQL doesn't like)
 
@@ -90,6 +91,40 @@ class NewspaperProcessor
                     // Pleeeease work this time :D
                     $thing->save();
                 }
+            }
+        }
+    }
+
+    /**
+     * Comments cannot exceed a certain amount of characters. Longer comments must be split in chained comments
+     *
+     * @param Post $thing
+     */
+    private function checkLength(Post $thing)
+    {
+        if (mb_strlen($thing->markdown) > $this->config['max_length']) {
+            $splits = [];
+            $text = $thing->markdown;
+
+            while (true) {
+                if (mb_strlen($text) < $this->config['max_length']) {
+                    $splits[] = $text;
+                    break;
+                }
+
+                $newLine = mb_strrpos($text, "\n", -(mb_strlen($text)) + $this->config['max_length']);
+                $splits[] = mb_substr($text, 0, $newLine + 1);
+                $text = mb_substr($text, $newLine + 1 );
+            }
+
+            $thing->markdown = array_shift($splits);
+            $thing->save();
+
+            foreach($splits as $split){
+                $post = $thing->replicate(['markdown']);
+                $post->parent_id = $thing->id;
+                $post->markdown = $split;
+                $post->save();
             }
         }
     }

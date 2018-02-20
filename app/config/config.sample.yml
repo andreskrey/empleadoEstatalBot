@@ -51,6 +51,9 @@ newspaper_processor:
   # Bot signature. In HTML or markdown
   signature: 'signature'
 
+  # Max reddit comment length. Right now is 10000. Set a conservative value like 9000.
+  max_length: 9000
+
 database:
 
   #DB connection information

@@ -131,11 +131,12 @@ class RedditManager
 
     public function postComments()
     {
-        foreach (Post::where(['status' => empleadoEstatal::THING_FETCHED, ['tries', '<', 3]])->get() as $thing) {
+        foreach (Post::where(['status' => empleadoEstatal::THING_FETCHED, ['tries', '<', 3], 'parent_id' => null])->get() as $thing) {
             /**
              * @var $thing Post
              */
             try {
+                $thing->children();
                 $thing->tries++;
 
                 $request = $this->client->request('POST', 'https://oauth.reddit.com/api/comment', [
