@@ -131,19 +131,28 @@ class RedditManager
 
     public function postComments()
     {
-        foreach (Post::where(['status' => empleadoEstatal::THING_FETCHED, ['tries', '<', 3], 'parent_id' => null])->get() as $thing) {
+        foreach (Post::where(['status' => empleadoEstatal::THING_FETCHED, ['tries', '<', 3]])->get() as $thing) {
+            $parent_comment_id = null;
+
             /**
              * @var $thing Post
              */
             try {
-                $thing->children();
+                if (count($thing->parent()) > 0) {
+                    // Is child, first check if parent already commented
+                    if (is_null($thing->parent()->get()->first()->comment_id)) {
+                        continue;
+                    } else {
+                        $parent_comment_id = $thing->parent()->get()->first()->comment_id;
+                    }
+                }
                 $thing->tries++;
 
                 $request = $this->client->request('POST', 'https://oauth.reddit.com/api/comment', [
                     'headers' => $this->headers,
                     'form_params' => [
                         'api_type' => 'json',
-                        'thing_id' => $thing->thing,
+                        'thing_id' => $parent_comment_id ?? $thing->thing,
                         'text' => $thing->markdown
                     ]
                 ]);
@@ -159,7 +168,7 @@ class RedditManager
                 $thing->status = empleadoEstatal::THING_POSTED;
                 $thing->comment_id = $response['json']['data']['things'][0]['data']['name'];
 
-                if (in_array($thing->subreddit, $this->config['distinguishable'])) {
+                if (in_array($thing->subreddit, $this->config['distinguishable']) && count($thing->parent()) === 0) {
                     try {
                         $this->client->request('POST', 'https://oauth.reddit.com/api/distinguish', [
                             'headers' => $this->headers,

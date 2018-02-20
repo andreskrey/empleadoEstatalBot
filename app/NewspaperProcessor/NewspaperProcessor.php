@@ -120,11 +120,14 @@ class NewspaperProcessor
             $thing->markdown = array_shift($splits);
             $thing->save();
 
+            $parent_id = $thing->id;
+
             foreach($splits as $split){
                 $post = $thing->replicate(['markdown']);
-                $post->parent_id = $thing->id;
+                $post->parent_id = $parent_id;
                 $post->markdown = $split;
                 $post->save();
+                $parent_id = $post->id;
             }
         }
     }
