@@ -113,8 +113,17 @@ class NewspaperProcessor
                 }
 
                 $newLine = mb_strrpos($text, "\n", -(mb_strlen($text)) + $this->config['max_length']);
-                $splits[] = mb_substr($text, 0, $newLine + 1) . "\n" . '> ***(continues in next comment)***';
-                $text = mb_substr($text, $newLine + 1 );
+
+                if ($newLine === false) {
+                    $thing->status = empleadoEstatal::THING_REJECTED;
+                    $thing->info = sprintf('Too long, impossible to split with current limits. Limit is %s.', $this->config['max_length']);
+                    $thing->save();
+                    empleadoEstatal::$log->addAlert(sprintf('FetchWorker: Failed to split long post. Thing: %s, limit: %s, text length: %s', $thing->thing, $this->config['max_length'], mb_strlen($thing->markdown)));
+                    return;
+                }
+
+                $splits[] = mb_substr($text, 0, $newLine + 1) . "\n" . '> ***(continued in next comment)***';
+                $text = mb_substr($text, $newLine + 1);
             }
 
             $thing->markdown = array_shift($splits);
@@ -122,7 +131,7 @@ class NewspaperProcessor
 
             $parent_id = $thing->id;
 
-            foreach($splits as $split){
+            foreach ($splits as $split) {
                 $post = $thing->replicate(['markdown']);
                 $post->parent_id = $parent_id;
                 $post->markdown = $split;
