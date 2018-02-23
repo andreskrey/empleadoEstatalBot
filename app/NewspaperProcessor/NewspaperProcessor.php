@@ -122,7 +122,7 @@ class NewspaperProcessor
                     return;
                 }
 
-                $splits[] = mb_substr($text, 0, $newLine + 1) . "\n" . '> ***(continued in next comment)***';
+                $splits[] = mb_substr($text, 0, $newLine + 1) . "\n" . '> ***(continues in next comment)***';
                 $text = mb_substr($text, $newLine + 1);
             }
 
