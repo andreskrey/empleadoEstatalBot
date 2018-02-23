@@ -113,7 +113,7 @@ class NewspaperProcessor
                 }
 
                 $newLine = mb_strrpos($text, "\n", -(mb_strlen($text)) + $this->config['max_length']);
-                $splits[] = mb_substr($text, 0, $newLine + 1) . "\n" . '> ***(continued in next comment)***';
+                $splits[] = mb_substr($text, 0, $newLine + 1) . "\n" . '> ***(continues in next comment)***';
                 $text = mb_substr($text, $newLine + 1 );
             }
 
