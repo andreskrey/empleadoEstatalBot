@@ -146,7 +146,7 @@ class NewspaperProcessor
     {
         $readability = new Readability((new Configuration())
             ->setOriginalURL($url)
-            ->setNormalizeEntities(false)
+            ->setNormalizeEntities(true)
             ->setSummonCthulhu(true)
             ->setFixRelativeURLs(true)
         );
