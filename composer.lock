@@ -4,30 +4,35 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b50095a6130d7b8660d2983598007bf",
+    "content-hash": "28905d6cc47a8d301f2c6f471465a8b6",
     "packages": [
         {
             "name": "andreskrey/readability.php",
-            "version": "v1.0.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andreskrey/readability.php.git",
-                "reference": "16d807bfeb0f7b37a6652cb9d1c38986f510fe0a"
+                "reference": "992a11260de32a036c932a8ba61bcc8a46c34dd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/16d807bfeb0f7b37a6652cb9d1c38986f510fe0a",
-                "reference": "16d807bfeb0f7b37a6652cb9d1c38986f510fe0a",
+                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/992a11260de32a036c932a8ba61bcc8a46c34dd1",
+                "reference": "992a11260de32a036c932a8ba61bcc8a46c34dd1",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-mbstring": "*",
                 "ext-xml": "*",
-                "php": ">=5.6.0"
+                "php": ">=5.6.0",
+                "psr/log": "^1.0"
             },
             "require-dev": {
+                "monolog/monolog": "^1.23",
                 "phpunit/phpunit": "^5.7"
+            },
+            "suggest": {
+                "monolog/monolog": "Allow logging debug information"
             },
             "type": "library",
             "autoload": {
@@ -52,7 +57,7 @@
                 "html",
                 "readability"
             ],
-            "time": "2017-12-03T12:24:28+00:00"
+            "time": "2018-03-19T13:37:49+00:00"
         },
         {
             "name": "doctrine/inflector",
