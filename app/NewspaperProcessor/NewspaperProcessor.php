@@ -152,6 +152,10 @@ class NewspaperProcessor
 
         try {
             $readability->parse($html);
+
+            if (mb_strlen($readability->getContent()) < 1000) {
+                throw new ParseException();
+            }
         } catch (ParseException $e) {
             return false;
         }
