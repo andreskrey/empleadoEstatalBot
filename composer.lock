@@ -1,35 +1,35 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28905d6cc47a8d301f2c6f471465a8b6",
+    "content-hash": "b28564c1561c52e55c4cd696e0a22d05",
     "packages": [
         {
             "name": "andreskrey/readability.php",
-            "version": "v1.2.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andreskrey/readability.php.git",
-                "reference": "992a11260de32a036c932a8ba61bcc8a46c34dd1"
+                "reference": "e1b31f9284225cc7121d8798d4757ea81704e44c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/992a11260de32a036c932a8ba61bcc8a46c34dd1",
-                "reference": "992a11260de32a036c932a8ba61bcc8a46c34dd1",
+                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/e1b31f9284225cc7121d8798d4757ea81704e44c",
+                "reference": "e1b31f9284225cc7121d8798d4757ea81704e44c",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-mbstring": "*",
                 "ext-xml": "*",
-                "php": ">=5.6.0",
+                "php": ">=7.0.0",
                 "psr/log": "^1.0"
             },
             "require-dev": {
-                "monolog/monolog": "^1.23",
-                "phpunit/phpunit": "^5.7"
+                "monolog/monolog": "^1.24",
+                "phpunit/phpunit": "^6.5"
             },
             "suggest": {
                 "monolog/monolog": "Allow logging debug information"
@@ -57,7 +57,7 @@
                 "html",
                 "readability"
             ],
-            "time": "2018-03-19T13:37:49+00:00"
+            "time": "2018-11-25T12:47:06+00:00"
         },
         {
             "name": "doctrine/inflector",
