@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "andreskrey/readability.php",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andreskrey/readability.php.git",
-                "reference": "e1b31f9284225cc7121d8798d4757ea81704e44c"
+                "reference": "23f21756562adbd04c172d14995802030bf81595"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/e1b31f9284225cc7121d8798d4757ea81704e44c",
-                "reference": "e1b31f9284225cc7121d8798d4757ea81704e44c",
+                "url": "https://api.github.com/repos/andreskrey/readability.php/zipball/23f21756562adbd04c172d14995802030bf81595",
+                "reference": "23f21756562adbd04c172d14995802030bf81595",
                 "shasum": ""
             },
             "require": {
@@ -57,7 +57,7 @@
                 "html",
                 "readability"
             ],
-            "time": "2018-11-25T12:47:06+00:00"
+            "time": "2018-11-27T19:33:56+00:00"
         },
         {
             "name": "doctrine/inflector",
